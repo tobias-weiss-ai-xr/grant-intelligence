@@ -81,6 +81,10 @@ Model-Context-Protocol (MCP), ist datenschutzfreundlich angelegt (Daten bleiben 
 arbeitet mit frei lizenzierten Quellen statt mit teuren
 Abo-Datenbanken (PIVOT, GrantForward).
 
+Für einzelne Einsätze lässt sich die KI-Komponente individuell über die
+SAIA-KI-API betreiben, die allen Hochschulangehörigen zur Verfügung steht und
+beantragt werden kann – lokal, ohne zusätzliche Lizenzen, ohne Cloud-Abhängigkeit.
+
 Der angestrebte Nutzen: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen,
 eine verständliche Entscheidungsgrundlage über alle öffentlichen Töpfe. Ein
 Pilot am eigenen Fachbereich ist in wenigen Wochen umsetzbar und zeigt den
