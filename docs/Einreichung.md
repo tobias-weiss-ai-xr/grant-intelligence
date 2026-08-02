@@ -85,7 +85,7 @@ Für einzelne Einsätze lässt sich die KI-Komponente individuell über die
 SAIA (Scalable AI AI Accelerator) der Gesellschaft für wissenschaftliche
 Datenverarbeitung mbH Göttingen (GWDG) betreiben, die allen Hochschulangehörigen
 zur Verfügung steht und beantragt werden kann – lokal, ohne zusätzliche
-Lizenzen, ohne Cloud-Abhängigkeit.
+Lizenzen, ohne weitere Cloud-Abhängigkeit.
 
 Der angestrebte Nutzen: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen,
 eine verständliche Entscheidungsgrundlage über alle öffentlichen Töpfe. Ein
