@@ -1,37 +1,90 @@
-# FLASH-Einreichung (≤300 Wörter)
+# Grant-Agent (Förder-Radar) – FLASH-Einreichung (Business)
 
-**Titel:** Förder-Radar – dein fristgesteuerter Fördermittel-Monitor
-
-## Wortlaut
-
-Forschung lebt von Drittmitteln – doch die vielen Förderoptionen (DFG, ERC,
-BMBF, Stiftungen) machen die Suche zum Zeitfresser. Meist fehlt es nicht an
-Programmen, sondern an Klarheit: Passt eine Ausschreibung wirklich zu mir, und
-wann muss ich sie einreichen?
-
-Förder-Radar ist ein persönlicher Fördermonitor. Er speichert ein kurzes Profil
-(Forschungsfelder, Karrierestufe, Publikationen) und verbindet es mit kuratierten,
-von offiziellen Quellen gepflegten Ausschreibungen aus DFG, ERC und
-Ländern/Stiftungen. Er errechnet die zwei bis drei realistischsten nächsten
-Programme – mit verständlicher Begründung („Thema passt, Karrierestufe passt,
-du führst als Lead") und einem Fristzähler. Die Frist ist das eigentliche
-Produkt: Sie zeigt, wann eine passende Chance wirklich kommt.
-
-Die Grenzen sind bewusst gesetzt: kein Programm das Anträge schreibt, keine
-weitere Riesen-Datenbank. Die Person bleibt für die Entscheidung verantwortlich
-(Mensch-im-Loop); die Empfehlung ist nur Orientierung. Das Scoring ist
-transparent, jede Quelle trägt ein Stand-Datum.
-
-Warum jetzt: Hochschulen brauchen jede gut vorbereitete Einreichung, um
-Drittmittel nachvollziehbar zu sichern. Förder-Radar schließt die Lücke zwischen
-großer Datenbank und dem einzelnen Standort – deutsch, auf die eigene Fakultät
-zugeschnitten. Als Pilot startet eine Fakultät; Transferstellen und erfolgreiche
-Antragsteller können das später weitergeben.
-
-Machbarkeit: Ein erster Prototyp (eine Seite zum Vorzeigen) steht in wenigen
-Tagen, ganz ohne Prototyp oder Team. Nicht Vollständigkeit ist das Ziel, sondern
-Profil + Frist.
+Status: iterativ verbesserter Text. Ziel: < 300 Wörter im Online-Formular.
 
 ---
-*Abgabe über das Online-Formular mit Uni-Login, max. 300 Wörter, Deadline
-15.08.2026.*
+
+## V0 (Roh)
+
+**„Grant-Agent" – der persönliche Förder-Radar**
+
+Forschende verlieren wöchentlich erhebliche Zeit damit, die richtige
+Förderung zu finden, Profil und Programm abzugleichen und Fristen zu
+überwachen. Viele Töpfe existieren – DFG, ERC, Bund, Land, Stiftungen –,
+aber es fehlt eine persönliche, offene Stelle, an der man in Minuten weiß:
+„Das passt zu mir, das läuft bald ab". Der Grant-Agent schließt diese Lücke.
+
+Der Grant-Agent ist ein kleiner, selbst bestellter Software-Assistent, der
+per Agenten-Ralle (Aufnahme -> Suche -> Meldung) aus offenen, offiziellen
+Quellen für ein Personenstehen: Top-Treffer nach Themefeld und Karriere,
+Begründung, Budget, und Frist-Warnungen, wenn ein Programm betreffend wird.
+Er nutzt den Model-Context-Protocol Standard, ist lokal setzbar und
+datenschutzkonform (DSGVO), und setzt auf frei lizenzierte Quellen statt auf
+teure Abo-Datenbanken wie PIVOT oder GrantForward.
+
+Der Mehrwert ist dreifach: Antworten in Minuten statt Stunden an Kommunität;
+eine klare, begründete eKurzliste statt Überangebot; und nächtliche Notizen
+statt verpasster Fristen. Für die Einführung genügt ein Pilot an einem
+Dienste/Verband (first customer = unsere), der in wenigen Wochen läuft und
+die Grundlage für ein debtbarertes Produkt bildet.
+
+Der Grant-Agent bringt (Wissenschafts-)Zeit mit offenen Daten zusammen –
+ein kleiner, souverärer Schritt zur Daten-Inteiligen einer Hochschule.
+
+---
+
+## V1 (mittelfristig geschliffen)
+
+**„Grant-Agent" – „Profil + Frist", das den Drittmittel-Dschungel individuell sortiert**
+
+Forschende verlieren wöchentlich Zeit mit der Frage, welche Förderung wirklich
+passt und wann sie läuft. An Angeboten fehlt es nicht (DFG, ERC, Bund, Land,
+Stiftungen) – aber an einer offenen, persönlichen Stellen. Der Grant-Agent
+fremdet das: ein lokal gelässiger Assistent, der offene, offizielle Quellen in
+einer Ralle (Aufnahme, Suche, Meldung) zu einem Personenprofil verdichtet.
+
+Er liefert drei Antworten, die sonst fehlen: die Top-Matches nach Feldern und
+Karriere mit Begründung und Budget; eine einfache Kurzliste statt
+Überblick; und automatische Fristwarnung kurz vor Ablauf. Er baut auf dem
+Model-Code-Protocol (MCP) auf, läuft lokal, bleibt DSGVO-konform (keine
+Rechenschaft an Cloud), und arbeitet auf offenen Datenquellen statt auf
+teurer Abo-Datenbanken (PIVOT, GrantForward).
+
+Damit hat die Einrichtung einen konkreten, sofort bezifferbaren Nutzen:
+weniger Abstimmungs-Sonderungen, weniger verpasste Fristen, eine einfach
+verständliche Rail aus aller Fördertöpfen. Ein Pilot (ein Datenbereich
+anda) benötigt nur wenige Wochen und liefert die Basis für wiederkehrende
+(data-) & eine landbare spätere SaaS-AusfüllungSkaliert.
+
+Der Grant-Agent ist ein kleiner, souveräner, handhabbarer Schrittavicl la:
+er zeigt, wie eine Hochschule offene Daten und Agent-Technologie verbinden
+kann – unauffällig, verlässlich, mit ehrlichem Nutzen statt Überantbot.
+
+---
+
+## V2 (final, ≤300)
+
+**„Grant-Agent" – „Profil + Frist" gegen den Drittmittel-Dschungel**
+
+Forschende verlieren jede Woche Zeit mit zwei Fragen: „Welche Förderung passt zu
+mir?“ und „Wann ist Schluss?“ Es fehlt nicht an Angeboten (DFG, ERC, Bund,
+Land, Stiftungen) – sondern an einer offenen, persönlichen Anlaufstelle.
+
+Der Grant-Agent ist ein kleiner, selbst aufsetzbarer Assistent, der offene,
+offizielle Quellen in einer Agent-Schleife (Aufnahme, Suche, Meldung) zu einem
+Personenprofil verdichtet. Er liefert, was sonst fehlt: die Top-Treffer nach
+Themenfeld und Karriere mit Begründung und Budget, eine kurze, klare Liste
+statt Überangebot, und rechtzeitige Fristwarnungen. Er nutzt das
+Model-Context-Protocol (MCP), läuft lokal und datenschutzkonform (DSGVO) und
+arbeitet über frei lizenzierte Quellen statt über teure
+Abo-Datenbanken (PIVOT, GrantForward).
+
+Der Nutzen ist unmittelbar: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen,
+eine verständliche Entscheidungsgrundlage über alle öffentlichen Töpfe. Ein
+Pilot am eigenen Fachbereich braucht nur wenige Wochen, demonstriert den
+Wert ohne Zusagen und liefert die Grundlage für eine wiederkehrende, bezahlte Nutzung. Erster Anwender ist der eigene Fachbereich – echte
+Rahmendaten statt Behauptungen.
+
+So zeigt er, wie eine Hochschule offene Daten und Agent-Technologie souverän
+verbinden kann – unauffällig, verlässlich, ehrlich: konkreter Nutzen statt
+Übertreibung.
