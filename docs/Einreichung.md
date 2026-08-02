@@ -66,6 +66,8 @@ kann – unauffällig, verlässlich, mit ehrlichem Nutzen statt Überantbot.
 
 **„Grant-Agent" – „Profil + Frist" gegen den Drittmittel-Dschungel**
 
+**Kennzeichnung:** Text KI-gestützt erstellt und anschließend gegen Overstatements geprüft.
+
 Forschende verlieren jede Woche Zeit mit zwei Fragen: „Welche Förderung passt zu
 mir?“ und „Wann ist Schluss?“ Es fehlt nicht an Angeboten (DFG, ERC, Bund,
 Land, Stiftungen) – sondern an einer offenen, persönlichen Anlaufstelle.
@@ -75,14 +77,14 @@ offizielle Quellen in einer Agent-Schleife (Aufnahme, Suche, Meldung) zu einem
 Personenprofil verdichtet. Er liefert, was sonst fehlt: die Top-Treffer nach
 Themenfeld und Karriere mit Begründung und Budget, eine kurze, klare Liste
 statt Überangebot sowie rechtzeitige Fristwarnungen. Er nutzt das
-Model-Context-Protocol (MCP), läuft lokal und datenschutzkonform (DSGVO) und
+Model-Context-Protocol (MCP), ist datenschutzfreundlich angelegt (Daten bleiben lokal) und
 arbeitet mit frei lizenzierten Quellen statt mit teuren
 Abo-Datenbanken (PIVOT, GrantForward).
 
-Der Nutzen ist unmittelbar: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen,
+Der angestrebte Nutzen: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen,
 eine verständliche Entscheidungsgrundlage über alle öffentlichen Töpfe. Ein
-Pilot am eigenen Fachbereich braucht nur wenige Wochen, demonstriert den
-Wert ohne Zusagen und liefert die Grundlage für eine wiederkehrende, bezahlte Nutzung. Erster Anwender ist der eigene Fachbereich – reale Kennzahlen statt überhöhter Behauptungen.
+Pilot am eigenen Fachbereich ist in wenigen Wochen umsetzbar und zeigt den
+Wert, ohne eine Zusage zu machen, und liefert die Grundlage für eine wiederkehrende, bezahlte Nutzung. Erster Anwender ist der eigene Fachbereich – reale Kennzahlen statt überhöhter Behauptungen.
 
 So zeigt er, wie eine Hochschule offene Daten und Agent-Technologie souverän
 verbinden kann – unauffällig, verlässlich, ehrlich: konkreter Nutzen statt
