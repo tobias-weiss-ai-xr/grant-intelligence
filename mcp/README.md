@@ -1,20 +1,25 @@
-# Förder-Radar – MCP-Prototyp
+# Grant-Agent – MCP-Prototyp
 
 Minimaler MCP-Server auf Basis des **offiziellen MCP-SDK** (FastMCP). Lädt die
-kuratierte `catalog.json` und stellt Profil-Matching und Fristen als MCP-Tools bereit.
+kuratierte `catalog.json` und stellt eine Agent-Schleife (ingest -> search ->
+match -> fristen -> notify) als MCP-Tools bereit.
 
 > Demo zu Entwicklungszwecken; die Katalog-Daten sind Beispielwerte, nicht verbindlich.
 
 ## Dateien
-- `catalog.json` – kuratierte Förderprogramme (DFG/ERC/BMBF/Land/Stiftung).
-- `match.py`   – Matching-/Logik-Schicht (ohne MCP, frei testbar).
-- `server.py`  – MCP-Server (stdio).
+- `catalog.json`  – kuratierte Förderprogramme (DFG/ERC/BMBF/Land/Stiftung).
+- `match.py`      – Matching-/Logik-Schicht (ohne MCP, frei testbar).
+- `server.py`     – MCP-Server (stdio).
+- `demo.py`       – ausführbare Demo der Agent-Schleife (für Vorstellung / Test).
 - `requirements.txt` – `mcp` (SDK).
 
 ## Ausprobieren
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
+
+# Logik-/Agent-Schleife-Demo (ohne MCP-Client):
+python3 demo.py
 
 # Logik-Test ohne MCP:
 python3 match.py
@@ -35,10 +40,14 @@ programs(kategorie="DFG")
 | Tool | Antwort |
 |---|---|
 | `programs(kategorie?)` | gefilterte Liste aus `catalog.json` |
+| `search(kategorie?, stichwort?)` | Stichwort-Suche (Name/Themen/Quelle) |
+| `ingest(programme)` | Quellen/Programme per Upsert in den laufenden Katalog |
 | `match_best(felder, karriere, top)` | beste Programme + Begründung |
 | `nächste_fristen(felder, karriere, top)` | wie zuvor + Tage bis Frist |
+| `notify(felder, karriere, tage)` | Fristwarnungen (<= `tage` Tage / Rolling) |
 
 ## Weiteres
 - Produktionsdaten pflegen und aus den offiziellen Quellen aktualisieren
-  (siehe `docs/Datenquellen.md`); Katalog scheint `catalog.json` ersetzt zu werden.
+  (siehe `docs/Datenquellen.md`).
+- `ingest` mutiert den laufenden Katalog nur im Speicher; für die Demo genügt das.
 - Transport standardmäßig stdio; ein Streamable-HTTP-Transport ist später möglich.
