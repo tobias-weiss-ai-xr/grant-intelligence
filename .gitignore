@@ -1,0 +1,16 @@
+# virtualenv / py
+.venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Daten/Credentials
+*.env
+credentials*
+secrets*
+
+# Dauerhaftes Daten, sofern sie nur lokal erzeugt werden
+data/local/*
