@@ -74,16 +74,15 @@ Der Grant-Agent ist ein kleiner, selbst aufsetzbarer Assistent, der offene,
 offizielle Quellen in einer Agent-Schleife (Aufnahme, Suche, Meldung) zu einem
 Personenprofil verdichtet. Er liefert, was sonst fehlt: die Top-Treffer nach
 Themenfeld und Karriere mit Begründung und Budget, eine kurze, klare Liste
-statt Überangebot, und rechtzeitige Fristwarnungen. Er nutzt das
+statt Überangebot sowie rechtzeitige Fristwarnungen. Er nutzt das
 Model-Context-Protocol (MCP), läuft lokal und datenschutzkonform (DSGVO) und
-arbeitet über frei lizenzierte Quellen statt über teure
+arbeitet mit frei lizenzierten Quellen statt mit teuren
 Abo-Datenbanken (PIVOT, GrantForward).
 
 Der Nutzen ist unmittelbar: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen,
 eine verständliche Entscheidungsgrundlage über alle öffentlichen Töpfe. Ein
 Pilot am eigenen Fachbereich braucht nur wenige Wochen, demonstriert den
-Wert ohne Zusagen und liefert die Grundlage für eine wiederkehrende, bezahlte Nutzung. Erster Anwender ist der eigene Fachbereich – echte
-Rahmendaten statt Behauptungen.
+Wert ohne Zusagen und liefert die Grundlage für eine wiederkehrende, bezahlte Nutzung. Erster Anwender ist der eigene Fachbereich – reale Kennzahlen statt überhöhter Behauptungen.
 
 So zeigt er, wie eine Hochschule offene Daten und Agent-Technologie souverän
 verbinden kann – unauffällig, verlässlich, ehrlich: konkreter Nutzen statt
