@@ -1,0 +1,76 @@
+{
+  "stand": "2026-08-02",
+  "quelleHinweis": "Beispielkatalog zu Demo-Zwecken, NICHT rechtlich verbindlich. Nur zu Entwicklungs-Demo; bitte für produktive Nutzung gegen offizielle Stellen prüfen.",
+  "programme": [
+    {
+      "id": "dfg-einzel",
+      "name": "DFG – Sachbeihilfe n / Eigene Anträge",
+      "kategorie": "DFG",
+      "themen": ["Biologie", "Chemie", "Physik", "Lebewissenschaften", "Maschinelle Kompetenz"],
+      "karriere": ["postdoc", "junior", "prof"],
+      "rolle": ["lead", "partner"],
+      "budget_min": 30000,
+      "budget_max": 400000,
+      "frist": "2027-02-15",
+      "rolling": true,
+      "geolimit": "DE",
+      "quelle": "DFG-Website (Demo)",
+      "standDatum": "2026-08-02"
+    },
+    {
+      "id": "erc-stg",
+      "name": "ERC Starting Grant (StG)",
+      "kategorie": "ERC",
+      "themen": ["frei"],
+      "karriere": ["postdoc", "junior"],
+      "rolle": ["lead"],
+      "budget_min": 50000,
+      "budget_max": 2000000,
+      "frist": "2026-10-14",
+      "rolling": false,
+      "quelle": "ERC-Portal (Demo)",
+      "standDatum": "2026-08-02"
+    },
+    {
+      "id": "bmbf-suffizient",
+      "name": "BMBF – Kleine Forschungsverbunde (Demo)",
+      "kategorie": "BMBF",
+      "themen": ["Energie", "Digital", "Biologie", "Suffizienz"],
+      "karriere": ["postdoc", "junior", "prof"],
+      "rolle": ["lead", "partner"],
+      "budget_min": 80000,
+      "budget_max": 900000,
+      "frist": "2027-04-30",
+      "rolling": false,
+      "quelle": "BMBF-Förderportal (Demo)",
+      "standDatum": "2026-08-02"
+    },
+    {
+      "id": "land-klein",
+      "name": "Land – regionale Kurzförderung",
+      "kategorie": "Land",
+      "themen": ["alle"],
+      "karriere": ["postdoc", "prof", "junior"],
+      "rolle": ["lead", "partner"],
+      "budget_min": 10000,
+      "budget_max": 120000,
+      "frist": "2026-12-01",
+      "rolling": true,
+      "quelle": "Landes-Programm (Demo)",
+      "standDatum": "2026-08-02"
+    },
+    {
+      "id": "stiftung-klein",
+      "name": "Regionale Stiftung – Nachwuchschance",
+      "kategorie": "Stiftung",
+      "themen": ["Biologie", "Nachhaltigkeit", "Medizin"],
+      "karriere": ["postdoc", "junior"],
+      "rolle": ["lead"],
+      "budget_max": 90000,
+      "frist": "2026-11-30",
+      "rolling": false,
+      "quelle": "Stiftungs-Info (Demo)",
+      "standDatum": "2026-08-02"
+    }
+  ]
+}

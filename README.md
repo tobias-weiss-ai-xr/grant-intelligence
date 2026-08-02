@@ -21,6 +21,7 @@ Abo-Datenbanken.
 | `docs/Architektur.md` | Bausteine, Datenquellen, Datenmodell-Skizze |
 | `docs/MVP-Demo.md` | 1-Seiten-Demo-Skizze (was der Prototyp zeigt) |
 | `docs/Wettbewerb.md` | Kompetitive Landschaft (Open Source & kommerziell) |
+| `docs/Datenquellen.md` | Primär-Quellen (verifiziert) + Verarbeitung/Aktualisierung |
 | `docs/Einreichung.md` | FLASH-Einreichungstext (≤300 Wörter) |
 
 ## Grundsätze
