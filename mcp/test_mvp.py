@@ -71,15 +71,15 @@ class TestMatch:
     def test_karriere_harter_filter(self):
         # Emmy Noether nur postdoc -> darf bei prof nicht erscheinen
         r = match_profile(PROGS, ["Biologie"], "prof", top=10)
-        assert all(x["id"] != "dfg-emmy-noether" for x in r)
+        assert all(x.id != "dfg-emmy-noether" for x in r)
 
     def test_karriere_filter_laesst_passende_durch(self):
         r = match_profile(PROGS, ["Biologie"], "postdoc", top=10)
-        assert any(x["id"] == "dfg-emmy-noether" for x in r)
+        assert any(x.id == "dfg-emmy-noether" for x in r)
 
     def test_frei_passt_immer(self):
         r = match_profile(PROGS, ["Gartenbau", "Quantenphysik"], "postdoc", top=10)
-        assert any(x["id"] == "erc-stg-2027" for x in r)  # themen frei
+        assert any(x.id == "erc-stg-2027" for x in r)  # themen frei
 
     def test_leere_felder_keine_treffer(self):
         assert match_profile(PROGS, [], "postdoc") == []
@@ -94,24 +94,24 @@ class TestMatch:
     def test_rolle_filter(self):
         # StG erlaubt nur lead -> bei rolle=partner ausgeschlossen
         r = match_profile(PROGS, POSTDOC, "postdoc", rolle="partner", top=10)
-        assert all(x["id"] != "erc-stg-2027" for x in r)
+        assert all(x.id != "erc-stg-2027" for x in r)
         # Sachbeihilfe (lead+partner) bleibt
-        assert any(x["id"] == "dfg-sachbeihilfe" for x in r)
+        assert any(x.id == "dfg-sachbeihilfe" for x in r)
 
     def test_score_range(self):
         for r in match_profile(PROGS, POSTDOC, "postdoc", top=10):
-            assert 1 <= r["score"] <= 5
-            assert r["begruendung"]
+            assert 1 <= r.score <= 5
+            assert r.begruendung
 
     def test_sortierung_score_dann_frist(self):
         r = match_profile(PROGS, POSTDOC, "postdoc", top=10)
-        scores = [x["score"] for x in r]
+        scores = [x.score for x in r]
         assert scores == sorted(scores, reverse=True)
 
     def test_unbekanntes_feld_trifft_freie_programme(self):
         # ERC ist themenfrei -> auch exotische Felder matchen (ehrlich, kein Bug)
         r = match_profile(PROGS, ["Astroteilchenphysik"], "postdoc", top=10)
-        assert any(x["id"] == "erc-stg-2027" for x in r)
+        assert any(x.id == "erc-stg-2027" for x in r)
 
     def test_kein_fehler_bei_kein_match(self):
         # Völlig unbekannte Karrierestufe -> harter Filter, kein Match, kein Crash
@@ -124,14 +124,14 @@ class TestFristen:
     def test_tage_bis_frist(self):
         r = next_deadline(PROGS, POSTDOC, "postdoc", top=10)
         for x in r:
-            if x["frist"]:
-                d = datetime.strptime(x["frist"], "%Y-%m-%d").date()
-                assert x["tageBisFrist"] == (d - date.today()).days
+            if x.frist:
+                d = datetime.strptime(x.frist, "%Y-%m-%d").date()
+                assert x.tage_bis_frist == (d - date.today()).days
 
     def test_rolling_frist_none(self):
         r = next_deadline(PROGS, POSTDOC, "postdoc", top=10)
-        rolling = [x for x in r if x.get("rolling")]
-        assert rolling and all(x["tageBisFrist"] is None for x in rolling)
+        rolling = [x for x in r if x.rolling]
+        assert rolling and all(x.tage_bis_frist is None for x in rolling)
 
     def test_frist_text_abgelaufen(self):
         t = _frist_text("2020-01-01", False)
@@ -142,7 +142,7 @@ class TestFristen:
 
     def test_frist_text_kaputt(self):
         t = _frist_text("bald", False)
-        assert "pruefen" in t
+        assert "prüfen" in t
 
     def test_begruendung_felder_und_karriere(self):
         p = next(p for p in PROGS if p["id"] == "erc-stg-2027")

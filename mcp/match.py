@@ -3,41 +3,106 @@
 Reine Logik ohne MCP-/Web-Abhaengigkeit: Katalog laden/speichern,
 gewichteter Matching-Score, menschenlesbare Begruendung (deutsch, regelbasiert),
 naechste Fristen.
+
+Type-safe, well-documented, and testable.
 """
 from __future__ import annotations
+
 import json
+import logging
 from datetime import date, datetime
 from pathlib import Path
+from typing import Any
+
+from grant_types import MatchResult
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
 
 CATALOG = Path(__file__).with_name("catalog.json")
 
 
-# --------------------------------------------------------------------------- Daten
-def load_catalog(path: Path | None = None) -> list[dict]:
-    path = path or CATALOG  # zur Laufzeit aufloesen (testbar, Default nicht eingefroren)
-    with open(path, encoding="utf-8") as fh:
-        return json.load(fh).get("programme", [])
+# =============================================================================
+# Data Layer
+# =============================================================================
+
+class CatalogError(Exception):
+    """Raised when catalog operations fail."""
+    pass
 
 
-def save_catalog(programme: list[dict], path: Path | None = None) -> None:
-    """Katalog persistieren: Inhalte + Stand-Datum neu setzen (Governance)."""
-    path = path or CATALOG  # zur Laufzeit aufloesen (testbar, Default nicht eingefroren)
+def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:
+    """Load the program catalog from JSON.
+
+    Args:
+        path: Path to catalog file. Defaults to catalog.json in same directory.
+
+    Returns:
+        List of program dictionaries.
+
+    Raises:
+        CatalogError: If file cannot be read or parsed.
+    """
+    path = path or CATALOG
+    try:
+        with open(path, encoding="utf-8") as fh:
+            data = json.load(fh)
+            return data.get("programme", [])
+    except FileNotFoundError:
+        log.error(f"Catalog file not found: {path}")
+        raise CatalogError(f"Catalog file not found: {path}")
+    except json.JSONDecodeError as e:
+        log.error(f"Invalid JSON in catalog: {path} - {e}")
+        raise CatalogError(f"Invalid JSON in catalog: {e}")
+
+
+def save_catalog(programme: list[dict[str, Any]], path: Path | None = None) -> None:
+    """Persist the catalog with updated metadata.
+
+    Sets the 'stand' date to today and includes governance information.
+
+    Args:
+        programme: List of program dictionaries to save.
+        path: Output path. Defaults to catalog.json in same directory.
+
+    Raises:
+        CatalogError: If file cannot be written.
+    """
+    path = path or CATALOG
     doc = {
         "stand": date.today().isoformat(),
         "quelleHinweis": (
-            "Kuratierter Katalog. status = verifiziert (live geprueft am standDatum) | "
+            "Kuratierter Katalog. status = verifiziert (live geprüft am standDatum) | "
             "laufend (keine Frist, rolling) | zu-pruefen (bekanntes Programm, Frist vor "
-            "Nutzung gegen Portal pruefen). Keine rechtliche Bindung; fuer produktive "
-            "Nutzung gegen offizielle Stellen pruefen."
+            "Nutzung gegen Portal prüfen). Keine rechtliche Bindung; für produktive "
+            "Nutzung gegen offizielle Stellen prüfen."
         ),
         "programme": programme,
     }
-    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        log.info(f"Catalog saved: {path} ({len(programme)} programmes)")
+    except OSError as e:
+        log.error(f"Failed to write catalog: {path} - {e}")
+        raise CatalogError(f"Failed to write catalog: {e}")
 
 
-# ----------------------------------------------------------------------- Matching
+# =============================================================================
+# Matching Logic
+# =============================================================================
+
 def _fits(theme_defs: list[str], field: str) -> bool:
-    """'alle'/'frei' passt immer; sonst Substring-Match (case-insensitive)."""
+    """Check if a field matches the program's theme definitions.
+
+    'alle'/'frei' matches everything. Otherwise, case-insensitive substring match.
+
+    Args:
+        theme_defs: List of theme definitions from the program.
+        field: User-provided research field.
+
+    Returns:
+        True if field matches any theme definition.
+    """
     f = field.lower()
     return any(
         t.lower() in ("alle", "frei") or t.lower() in f or f in t.lower()
@@ -45,107 +110,224 @@ def _fits(theme_defs: list[str], field: str) -> bool:
     )
 
 
-def _theme_score(prog: dict, fields: list[str]) -> tuple[int, list[str]]:
-    """Gewichtete Themen-Ueberlappung (max 3) + getroffene Felder."""
+def _theme_score(prog: dict[str, Any], fields: list[str]) -> tuple[int, list[str]]:
+    """Calculate weighted theme overlap score.
+
+    Maximum score of 3, with list of matched fields.
+
+    Args:
+        prog: Program dictionary.
+        fields: User-provided research fields.
+
+    Returns:
+        Tuple of (score, list of matched fields).
+    """
     hits = [f for f in fields if _fits(prog.get("themen", []), f)]
     return min(len(hits), 3), hits
 
 
-def _score(prog: dict, fields: list[str], karriere: str | None) -> dict:
-    """Gewichteter Score (0..5) + Teilscores fuer die Begruendung."""
+def _score(prog: dict[str, Any], fields: list[str], karriere: str | None) -> dict[str, Any]:
+    """Calculate weighted match score (0-5) with component breakdown.
+
+    Components:
+        - Thema: 0-3 points for theme overlap
+        - Karriere: 1 point if career level matches
+
+    Args:
+        prog: Program dictionary.
+        fields: User-provided research fields.
+        karriere: User's career level.
+
+    Returns:
+        Dictionary with total score, theme score, career score, and matched fields.
+    """
     t, hits = _theme_score(prog, fields)
     k = 1 if (karriere and karriere in prog.get("karriere", [])) else 0
-    s = t + k
-    return {"gesamt": s, "thema": t, "karriere": k, "felder": hits}
+    return {"gesamt": t + k, "thema": t, "karriere": k, "felder": hits}
 
 
 def _frist_text(frist: str | None, rolling: bool) -> str:
+    """Generate human-readable deadline text.
+
+    Args:
+        frist: Deadline date in ISO format (YYYY-MM-DD) or None.
+        rolling: Whether the program has rolling admissions.
+
+    Returns:
+        Human-readable deadline description.
+    """
     if rolling:
         return "Rolling – jederzeit einreichbar, keine feste Frist"
     if not frist:
-        return "Frist noch offen – vor Nutzung gegen Portal pruefen"
+        return "Frist noch offen – vor Nutzung gegen Portal prüfen"
     try:
         d = datetime.strptime(frist, "%Y-%m-%d").date()
         delta = (d - date.today()).days
         if delta < 0:
             return f"Frist {d.strftime('%d.%m.%Y')} – bereits abgelaufen ({-delta} Tage)"
         return f"Frist {d.strftime('%d.%m.%Y')} – noch {delta} Tage"
-    except Exception:
-        return f"Frist {frist} (Format unklar, pruefen)"
+    except ValueError:
+        return f"Frist {frist} (Format unklar, prüfen)"
 
 
-def _begruendung(prog: dict, parts: dict, score: int) -> str:
-    """Regelbasierte, menschenlesbare Begruendung (deutsch)."""
+def _begruendung(prog: dict[str, Any], parts: dict[str, Any], score: int) -> str:
+    """Generate human-readable explanation for match score.
+
+    Args:
+        prog: Program dictionary.
+        parts: Score breakdown from _score().
+        score: Total score.
+
+    Returns:
+        German explanation string.
+    """
     bits: list[str] = []
+
+    # Theme overlap
     if parts["felder"]:
         bits.append("Themen-Ueberlappung: " + ", ".join(parts["felder"]))
+
+    # Open to all fields
     if prog.get("themen") in (["frei"], ["alle"]) or "frei" in (prog.get("themen") or []):
         bits.append("offen fuer alle Fachrichtungen")
+
+    # Career level
     if parts["karriere"]:
         bits.append("Karrierestufe passt zum Programm")
     elif not (prog.get("karriere") or []):
-        bits.append("Karrierestufe nicht gelistet – Eignung im Einzelfall pruefen")
+        bits.append("Karrierestufe nicht gelistet – Eignung im Einzelfall prüfen")
+
+    # Deadline
     bits.append(_frist_text(prog.get("frist"), prog.get("rolling", False)))
+
+    # Budget
     budget = prog.get("budget_max")
     if budget:
-        bits.append(f"bis ca. {budget/1e6:.1f} Mio. Euro" if budget >= 1e6 else f"bis ca. {budget/1000:.0f} Tausend Euro")
+        bits.append(prog.get("budget_text") or (
+            f"bis ca. {budget/1e6:.1f} Mio. Euro" if budget >= 1e6
+            else f"bis ca. {budget/1000:.0f} Tausend Euro"
+        ))
+
+    # Status warning
     if prog.get("status") == "zu-pruefen":
-        bits.append("Achtung: Details/Frist vor Antrag gegen Portal pruefen")
+        bits.append("Achtung: Details/Frist vor Antrag gegen Portal prüfen")
+
     return "; ".join(bits)
 
 
-# ------------------------------------------------------------------ Abfrage-Ebene
-def match_profile(programme, fields, karriere=None, rolle=None, top=3):
-    """Top-Treffer mit Begruendung, sortiert nach Score und Frist.
+# =============================================================================
+# Query Layer
+# =============================================================================
 
-    Karrierestufe ist ein harter Filter: Programme ohne passende Stufe
-    werden nicht gelistet. Ohne Felder gibt es keine Empfehlung ([]).
+def match_profile(
+    programme: list[dict[str, Any]],
+    fields: list[str],
+    karriere: str | None = None,
+    rolle: str | None = None,
+    top: int = 3
+) -> list[MatchResult]:
+    """Find top matching programs for a profile.
+
+    Career level is a hard filter: programs without the specified career level
+    are excluded. Empty fields return no results.
+
+    Args:
+        programme: List of program dictionaries.
+        fields: User's research fields.
+        karriere: User's career level (hard filter).
+        rolle: Optional role filter (lead/partner).
+        top: Maximum number of results to return.
+
+    Returns:
+        List of MatchResult objects, sorted by score and deadline.
     """
     if not fields:
+        log.debug("Empty fields, returning no matches")
         return []
-    scored = []
+
+    scored: list[MatchResult] = []
     for p in programme:
-        # Karrierestufe als harter Filter: Programm muss die Stufe explizit fuehren
-        if karriere and (prog_karriere := p.get("karriere")):
-            if karriere not in prog_karriere:
-                continue
+        # Hard career filter
+        prog_karriere = p.get("karriere", [])
+        if karriere and prog_karriere and karriere not in prog_karriere:
+            continue
+
+        # Calculate score
         parts = _score(p, fields, karriere)
         if parts["gesamt"] <= 0 or parts["thema"] <= 0:
             continue
+
+        # Role filter
         if rolle and rolle not in p.get("rolle", []):
             continue
-        scored.append({
-            "id": p.get("id"),
-            "name": p.get("name"),
-            "kategorie": p.get("kategorie"),
-            "score": parts["gesamt"],
-            "frist": p.get("frist"),
-            "rolling": p.get("rolling", False),
-            "status": p.get("status"),
-            "quelle": p.get("quelle", ""),
-            "standDatum": p.get("standDatum"),
-            "begruendung": _begruendung(p, parts, parts["gesamt"]),
-        })
-    scored.sort(key=lambda x: (-x["score"], x["frist"] or "9999-99-99"))
+
+        # Build result
+        begruendung = _begruendung(p, parts, parts["gesamt"])
+        result = MatchResult(
+            id=p.get("id", ""),
+            name=p.get("name", ""),
+            kategorie=p.get("kategorie", ""),
+            score=parts["gesamt"],
+            frist=p.get("frist"),
+            rolling=bool(p.get("rolling", False)),
+            status=p.get("status", ""),
+            quelle=p.get("quelle", ""),
+            stand_datum=p.get("standDatum", ""),
+            begruendung=begruendung,
+        )
+        scored.append(result)
+
+    # Sort by score (desc) then deadline (asc, None last)
+    scored.sort(key=lambda x: (-x.score, x.frist or "9999-99-99"))
     return scored[:top]
 
 
-def next_deadline(programs, fields, karriere=None, rolle=None, top=2, today=None):
-    """Wie match_profile, zusaetzlich Tage bis zur Frist (oder None)."""
+def next_deadline(
+    programs: list[dict[str, Any]],
+    fields: list[str],
+    karriere: str | None = None,
+    rolle: str | None = None,
+    top: int = 2,
+    today: date | None = None
+) -> list[MatchResult]:
+    """Find programs with upcoming deadlines.
+
+    Like match_profile, but includes days until deadline.
+
+    Args:
+        programs: List of program dictionaries.
+        fields: User's research fields.
+        karriere: User's career level.
+        rolle: Optional role filter.
+        top: Maximum number of results.
+        today: Reference date (defaults to today).
+
+    Returns:
+        List of MatchResult objects with tage_bis_frist set.
+    """
     today = today or date.today()
-    out = []
-    for r in match_profile(programs, fields, karriere, rolle=rolle, top=top):
+    results = match_profile(programs, fields, karriere, rolle=rolle, top=top)
+
+    out: list[MatchResult] = []
+    for r in results:
         delta = None
-        try:
-            d = datetime.strptime(r["frist"], "%Y-%m-%d").date()
-            delta = (d - today).days
-        except Exception:
-            delta = None
-        out.append({**r, "tageBisFrist": delta})
+        if r.frist:
+            try:
+                d = datetime.strptime(r.frist, "%Y-%m-%d").date()
+                delta = (d - today).days
+            except ValueError:
+                delta = None
+        out.append(MatchResult(
+            id=r.id,
+            name=r.name,
+            kategorie=r.kategorie,
+            score=r.score,
+            frist=r.frist,
+            rolling=r.rolling,
+            status=r.status,
+            quelle=r.quelle,
+            stand_datum=r.stand_datum,
+            begruendung=r.begruendung,
+            tage_bis_frist=delta,
+        ))
     return out
-
-
-if __name__ == "__main__":
-    progs = load_catalog()
-    print(json.dumps(match_profile(progs, ["Biologie", "Nachhaltigkeit"], "postdoc"),
-                     ensure_ascii=False, indent=2))

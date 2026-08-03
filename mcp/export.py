@@ -1,12 +1,8 @@
-#!/usr/bin/env python3
 """Förder-Radar – Export-Funktionen.
 
-Exportiert Katalog in verschiedene Formate:
-- CSV (für Excel/Sheets)
-- JSON (für weitere Verarbeitung)
-- Markdown (für Dokumentation)
+Exports the grant catalog in various formats (CSV, JSON, Markdown).
 
-Beispiel:
+Usage:
     python mcp/export.py --format csv --out docs/export.csv
     python mcp/export.py --format json --out docs/export.json
     python mcp/export.py --format markdown --out docs/export.md
@@ -16,15 +12,24 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from match import load_catalog
 
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
+
 
 def export_csv(programme: list[dict[str, Any]], out: Path) -> None:
-    """Export to CSV."""
+    """Export catalog to CSV format.
+
+    Args:
+        programme: List of program dictionaries.
+        out: Output file path.
+    """
     rows = []
     for p in programme:
         row = {
@@ -53,11 +58,16 @@ def export_csv(programme: list[dict[str, Any]], out: Path) -> None:
         writer.writeheader()
         writer.writerows(rows)
 
-    print(f"CSV exportiert: {out} ({len(rows)} Zeilen)")
+    log.info(f"CSV exported: {out} ({len(rows)} rows)")
 
 
 def export_json(programme: list[dict[str, Any]], out: Path) -> None:
-    """Export to JSON."""
+    """Export catalog to JSON format.
+
+    Args:
+        programme: List of program dictionaries.
+        out: Output file path.
+    """
     doc = {
         "stand": datetime.now().isoformat()[:10],
         "exportiert_am": datetime.now().isoformat(),
@@ -67,11 +77,16 @@ def export_json(programme: list[dict[str, Any]], out: Path) -> None:
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, ensure_ascii=False, indent=2)
 
-    print(f"JSON exportiert: {out} ({len(programme)} Programme)")
+    log.info(f"JSON exported: {out} ({len(programme)} programmes)")
 
 
 def export_markdown(programme: list[dict[str, Any]], out: Path) -> None:
-    """Export to Markdown table."""
+    """Export catalog to Markdown format.
+
+    Args:
+        programme: List of program dictionaries.
+        out: Output file path.
+    """
     lines = [
         "# Förder-Radar – Programm-Übersicht",
         "",
@@ -86,10 +101,10 @@ def export_markdown(programme: list[dict[str, Any]], out: Path) -> None:
 
     for p in sorted(programme, key=lambda x: x.get("kategorie", "")):
         id_ = p.get("id", "")
-        name = p.get("name", "")[:40]
+        name = (p.get("name", "") or "")[:40]
         kategorie = p.get("kategorie", "")
-        themen = "; ".join(p.get("themen", [])[:3])
-        karriere = "; ".join(p.get("karriere", [])[:2])
+        themen = "; ".join((p.get("themen", []) or [])[:3])
+        karriere = "; ".join((p.get("karriere", []) or [])[:2])
         frist = p.get("frist") or ("Rolling" if p.get("rolling") else "-")
         status = p.get("status", "")
 
@@ -97,6 +112,7 @@ def export_markdown(programme: list[dict[str, Any]], out: Path) -> None:
 
     lines.extend(["", "## Nach Kategorie", ""])
 
+    # Group by category
     categories: dict[str, list[dict]] = {}
     for p in programme:
         cat = p.get("kategorie", "Unknown")
@@ -110,20 +126,24 @@ def export_markdown(programme: list[dict[str, Any]], out: Path) -> None:
         lines.append("")
         for p in progs:
             frist = p.get("frist") or ("Rolling" if p.get("rolling") else "-")
-            lines.append(f"- **{p.get('name', '')}** ({frist})")
+            name = p.get("name", "") or ""
+            lines.append(f"- **{name}** ({frist})")
         lines.append("")
 
     with open(out, "w", encoding="utf-8") as fh:
         fh.write("\n".join(lines))
 
-    print(f"Markdown exportiert: {out} ({len(programme)} Programme)")
+    log.info(f"Markdown exported: {out} ({len(programme)} programmes)")
 
 
 def main() -> None:
+    """CLI entry point."""
     ap = argparse.ArgumentParser(description="Förder-Radar – Export")
-    ap.add_argument("--format", choices=["csv", "json", "markdown"], required=True,
-                    help="Export-Format")
-    ap.add_argument("--out", type=Path, required=True, help="Ausgabedatei")
+    ap.add_argument(
+        "--format", choices=["csv", "json", "markdown"], required=True,
+        help="Export format"
+    )
+    ap.add_argument("--out", type=Path, required=True, help="Output file path")
     args = ap.parse_args()
 
     programme = load_catalog()
