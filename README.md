@@ -35,16 +35,31 @@ python3 brief.py --felder Biologie --karriere postdoc
 
 ## Architektur (vereinfacht)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  UI (FastAPI) ──┐                                           │
-│                 ├──► Matching Engine ──► Katalog (JSON)     │
-│  MCP-Server ────┘     (Score + Begründung)                  │
-│                                     │                        │
-│                          Fristen-Prüfung ──► Warnungen       │
-│                                     │                        │
-│                          Update-Pipeline ──► Fetchers        │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph UI["UI Layer"]
+        A["FastAPI Web UI"]
+        B["MCP Server"]
+    end
+    
+    subgraph CORE["Core Engine"]
+        C["Matching Engine\n(Score + Begründung)"]
+        D["Katalog (JSON)"]
+    end
+    
+    subgraph SERVICES["Services"]
+        E["Fristen-Prüfung\n► Warnungen"]
+        F["Update-Pipeline\n► Fetchers"]
+        G["Export\nCSV/JSON/MD"]
+    end
+    
+    A --> C
+    B --> C
+    C --> D
+    C --> E
+    F --> D
+    E --> H["Nutzer"]
+    G --> H
 ```
 
 **Details:**
