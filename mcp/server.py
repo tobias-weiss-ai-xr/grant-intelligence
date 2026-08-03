@@ -89,5 +89,15 @@ def notify(felder: list[str], karriere: str | None = None, tage: int = 60) -> li
     return out
 
 
+@mcp.tool()
+def brief(felder: list[str], karriere: str | None = None, top: int = 3, tage: int = 60) -> dict:
+    """Wochen-Brief in einem Aufruf: Top-Matches, naechste Frist, Warnungen."""
+    return {
+        "top_matches": match_profile(PROGRAMME, felder, karriere, top=top),
+        "naechste_frist": next_deadline(PROGRAMME, felder, karriere, top=1)[0],
+        "warnungen": notify(felder, karriere, tage=tage),
+    }
+
+
 if __name__ == "__main__":
     mcp.run(transport="stdio")

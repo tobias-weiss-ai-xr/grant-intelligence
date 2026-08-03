@@ -45,6 +45,7 @@ programs(kategorie="DFG")
 | `match_best(felder, karriere, top)` | beste Programme + Begründung |
 | `nächste_fristen(felder, karriere, top)` | wie zuvor + Tage bis Frist |
 | `notify(felder, karriere, tage)` | Fristwarnungen (<= `tage` Tage / Rolling) |
+| `brief(felder, karriere, top, tage)` | Wochen-Brief: Top-Matches + Frist + Warnungen in einem Aufruf |
 
 ## Weiteres
 - Produktionsdaten pflegen und aus den offiziellen Quellen aktualisieren

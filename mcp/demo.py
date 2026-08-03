@@ -67,6 +67,17 @@ def main():
     for r in notify(prof, karr, tage=60):
         print(_line(r))
 
+    print("5) brief (Wochen-Brief in einem Aufruf)")
+    b = {
+        "top_matches": match_profile(PROGRAMME, prof, karr, top=2),
+        "naechste_frist": next_deadline(PROGRAMME, prof, karr, top=1)[0],
+        "warnungen": notify(prof, karr, tage=60),
+    }
+    print(f"   Top 2: {', '.join(r['name'] for r in b['top_matches'])}")
+    print(f"   Naechste Frist: {b['naechste_frist']['name']} "
+          f"({b['naechste_frist']['tageBisFrist']} Tage)")
+    print(f"   Warnungen: {len(b['warnungen'])} Programme")
+
     print("Fertig. Katalog/Daten: bewusst grob, Demo-Stand.")
 
 
