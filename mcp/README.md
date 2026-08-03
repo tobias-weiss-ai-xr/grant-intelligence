@@ -50,5 +50,7 @@ programs(kategorie="DFG")
 ## Weiteres
 - Produktionsdaten pflegen und aus den offiziellen Quellen aktualisieren
   (siehe `docs/Datenquellen.md`).
+- Langfristige Vision (nur skizziert): zentraler Uni-MCP-Server – siehe
+  [`docs/Roadmap.md`](../docs/Roadmap.md).
 - `ingest` mutiert den laufenden Katalog nur im Speicher; für die Demo genügt das.
 - Transport standardmäßig stdio; ein Streamable-HTTP-Transport ist später möglich.
