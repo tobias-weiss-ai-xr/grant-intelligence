@@ -64,34 +64,14 @@ kann – unauffällig, verlässlich, mit ehrlichem Nutzen statt Überantbot.
 
 ## V2 (final, ≤300)
 
-**„Grant-Agent" – „Profil + Frist" gegen den Drittmittel-Dschungel**
+**„Grant-Agent" – der persönliche Förder-Assistent für die Philipps-Universität**
 
 **Kennzeichnung:** Text KI-gestützt erstellt und anschließend gegen Overstatements geprüft.
 
-Forschende verlieren jede Woche Zeit mit zwei Fragen: „Welche Förderung passt zu
-mir?“ und „Wann ist Schluss?“ Es fehlt nicht an Angeboten (DFG, ERC, Bund,
-Land, Stiftungen) – sondern an einer offenen, persönlichen Anlaufstelle.
+Forschende beantworten Woche für Woche zwei Fragen von Hand: „Welche Förderung passt zu mir?“ und „Wann ist Schluss?“ Die Antworten verstecken sich in Portalen, Mails und Kalendern – und verpasste Fristen bedeuten verpasste Fördermittel, ohne dass es jemandem auffällt.
 
-Der Grant-Agent ist ein kleiner, selbst aufsetzbarer Assistent, der offene,
-offizielle Quellen in einer Agent-Schleife (Aufnahme, Suche, Meldung) zu einem
-Personenprofil verdichtet. Er liefert, was sonst fehlt: die Top-Treffer nach
-Themenfeld und Karriere mit Begründung und Budget, eine kurze, klare Liste
-statt Überangebot sowie rechtzeitige Fristwarnungen. Er nutzt das
-Model-Context-Protocol (MCP), ist datenschutzfreundlich angelegt (Daten bleiben lokal) und
-arbeitet mit frei lizenzierten Quellen statt mit teuren
-Abo-Datenbanken (PIVOT, GrantForward).
+Der Grant-Agent ist kein weiteres Portal, sondern ein kleiner, selbst aufsetzbarer Assistent. Er verdichtet offizielle, frei lizenzierte Quellen (DFG, ERC, Bund, Land, Stiftungen) in einer Agent-Schleife – Aufnahme, Suche, Meldung – zu einem persönlichen Brief: Top-Treffer mit Begründung und Budget, die nächste Frist in Tagen, Warnungen rechtzeitig. Er baut auf dem Model-Context-Protocol (MCP) auf, ist datenschutzfreundlich angelegt (Daten bleiben lokal) und nutzt statt teurer Abo-Datenbanken (PIVOT, GrantForward) offene Quellen. Für einzelne Einsätze lässt sich die KI-Komponente individuell über die SAIA-KI-API (Scalable AI Accelerator) der Gesellschaft für wissenschaftliche Datenverarbeitung mbH Göttingen (GWDG) betreiben – sie steht allen Hochschulangehörigen zur Verfügung und kann beantragt werden.
 
-Für einzelne Einsätze lässt sich die KI-Komponente individuell über die
-SAIA (Scalable AI AI Accelerator) der Gesellschaft für wissenschaftliche
-Datenverarbeitung mbH Göttingen (GWDG) betreiben, die allen Hochschulangehörigen
-zur Verfügung steht und beantragt werden kann – lokal, ohne zusätzliche
-Lizenzen, ohne weitere Cloud-Abhängigkeit.
+Der Nutzen ist konkret und messbar: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen, eine verständliche Entscheidungsgrundlage. Ein Pilot am eigenen Fachbereich ist in wenigen Wochen umsetzbar, zeigt den Wert ohne Zusagen und liefert echte Kennzahlen als Grundlage für eine wiederkehrende, bezahlte Nutzung – zuerst in Marburg, später übertragbar auf andere Hochschulen.
 
-Der angestrebte Nutzen: weniger Such- und Abstimmungsaufwand, weniger verpasste Fristen,
-eine verständliche Entscheidungsgrundlage über alle öffentlichen Töpfe. Ein
-Pilot am eigenen Fachbereich ist in wenigen Wochen umsetzbar und zeigt den
-Wert, ohne eine Zusage zu machen, und liefert die Grundlage für eine wiederkehrende, bezahlte Nutzung. Erster Anwender ist der eigene Fachbereich – reale Kennzahlen statt überhöhter Behauptungen.
-
-So zeigt er, wie eine Hochschule offene Daten und Agent-Technologie souverän
-verbinden kann – unauffällig, verlässlich, ehrlich: konkreter Nutzen statt
-Übertreibung.
+So verbindet die Hochschule offene Daten und Agenten-Technologie souverän: verlässlich, ehrlich, ohne Übertreibung – ein kleiner Schritt, der allen Forschenden Zeit zurückgibt.
