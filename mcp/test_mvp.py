@@ -302,11 +302,11 @@ class TestAppHttp:
         assert "<script>x</script>" not in r.text
 
     def test_post_unbekannte_karriere_whitelist(self, client):
-        r = client.post("/brief", data={"felder": "Biologie", "karriere": "student"})
+        # 'abgelehnt' ist keine gueltige Karrierestufe -> Whitelist greift
+        r = client.post("/brief", data={"felder": "Biologie", "karriere": "abgelehnt"})
         assert r.status_code == 200
-        assert 'value="student"' not in r.text
-        # DAAD und Studienstiftung sind fuer student verfuegbar
-        assert "DAAD" in r.text or "Studienstiftung" in r.text
+        assert 'value="abgelehnt"' not in r.text
+        assert 'value="postdoc"' in r.text  # Default fallback
 
 
 # ------------------------------------------------------------------ Wochen-Brief

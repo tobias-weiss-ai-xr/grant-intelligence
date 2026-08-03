@@ -17,7 +17,7 @@ from match import load_catalog, match_profile, _frist_text
 
 app = FastAPI(title="Förder-Radar (MVP)")
 PROGRAMME = load_catalog()
-KARRIEREN = ["postdoc", "junior", "prof"]
+KARRIEREN = ["postdoc", "junior", "prof", "verwaltung", "service", "IT", "bibliothek", "student", "senior"]
 
 PAGE = """<!doctype html>
 <html lang="de"><head><meta charset="utf-8">

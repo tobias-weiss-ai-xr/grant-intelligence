@@ -56,7 +56,7 @@ def generate(felder: list[str], karriere: str | None, top: int = 3, tage: int = 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Förder-Radar Wochen-Brief")
     ap.add_argument("--felder", nargs="+", required=True, help="Forschungsfelder (z.B. Biologie Nachhaltigkeit oder \"Biologie, Nachhaltigkeit\")")
-    ap.add_argument("--karriere", choices=["postdoc", "junior", "prof"], default=None)
+    ap.add_argument("--karriere", choices=["postdoc", "junior", "prof", "verwaltung", "service", "IT", "bibliothek", "student", "senior"], default=None)
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--tage", type=int, default=60, help="Warnfenster in Tagen")
     ap.add_argument("--out", default=None, help="Zieldatei (sonst stdout)")
