@@ -28,12 +28,8 @@ Abo-Datenbanken.
 | `mcp/` | Prototyp: MCP-Server, Matching, UI, Wochen-Brief (Details: `mcp/README.md`) |
 
 ## Stand (2026-08-03)
-- **Katalog:** 6 Programme aus ERC/DFG/Land; ERC-Fristen (StG 14.10.2026,
-  AdG 27.08.2026, SyG 11.05.2027) live vom Portal verifiziert; je Programm
-  `status` (verifiziert/laufend/zu-pruefen) + `standDatum`.
-- **Läuft:** Agent-Schleife als MCP-Server (`mcp/server.py`), Ein-Bildschirm-UI
-  (`mcp/app.py`), Wochen-Brief per Cron (`mcp/brief.py`), Persistenz über
-  `ingest`/`loeschen`.
+- **Katalog:** Diverse Programme aus ERC, DFG, BMBF, EU, Stiftungen, Land und Industrie; abgedeckt sind Forschungsfelder (Medizin, Technik, Digital, KI, Energie, Umwelt) sowie Service-Institutionen (UB, HRZ, Verwaltung); je Programm `status` (verifiziert/laufend/zu-pruefen) + `standDatum`.
+- **Läuft:** Agent-Schleife als MCP-Server (`mcp/server.py`), Ein-Bildschirm-UI (`mcp/app.py`), Wochen-Brief per Cron (`mcp/brief.py`), Persistenz über `ingest`/`loeschen`, Export-Funktionen (CSV/JSON/Markdown), automatisches Fetching mit Fristen-Prüfung.
 
 ```bash
 cd mcp && pip install -r requirements.txt
