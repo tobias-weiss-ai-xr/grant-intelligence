@@ -7,12 +7,13 @@ Bewusst minimal: keine DB, keine Auth, lokaler Pilot-Einsatz.
 """
 from __future__ import annotations
 
-from datetime import date
+import html
+from datetime import date, datetime
 
 from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 
-from match import load_catalog, match_profile, next_deadline, _frist_text
+from match import load_catalog, match_profile, _frist_text
 
 app = FastAPI(title="Förder-Radar (MVP)")
 PROGRAMME = load_catalog()
@@ -60,12 +61,14 @@ KARTE = """<div class="karte {kclass}">
 
 
 def _render(felder: str = "", karriere: str = "postdoc", inhalt: str = "") -> str:
+    if karriere not in KARRIEREN:
+        karriere = "postdoc"  # Whitelist: unbekannte Werte nicht ins HTML uebernehmen
     opt = "".join(
         f'<option value="{k}"{" selected" if k == karriere else ""}>{k}</option>'
         for k in KARRIEREN
     )
     return PAGE.format(
-        heute=date.today().isoformat(), felder=felder, optionen=opt, inhalt=inhalt,
+        heute=date.today().isoformat(), felder=html.escape(felder), optionen=opt, inhalt=inhalt,
         katalog=len(PROGRAMME), stand=date.today().isoformat(),
     )
 
@@ -75,18 +78,24 @@ def _cards(felder: list[str], karriere: str) -> str:
     out = []
     for r in m:
         f = r.get("frist")
+        delta = None
         if f:
-            delta = next((x["tageBisFrist"] for x in next_deadline(PROGRAMME, felder, karriere, top=10) if x["id"] == r["id"]), None)
-        else:
-            delta = None
+            try:
+                delta = (datetime.strptime(f, "%Y-%m-%d").date() - date.today()).days
+            except ValueError:
+                delta = None
         dringend = delta is not None and delta <= 60
         status = f'<span class="warn">⚠ noch {delta} Tage</span>' if dringend else \
                  ('<span class="frist">Rolling</span>' if r.get("rolling") else
                   ('<span class="frist">' + _frist_text(f, False) + '</span>'))
+        # Karten-Daten HTML-escaped und Format-Klammern neutralisiert
+        name = html.escape(r["name"]).replace("{", "&#123;").replace("}", "&#125;")
+        begr = html.escape(r["begruendung"]).replace("{", "&#123;").replace("}", "&#125;")
+        quelle = html.escape(r["quelle"]).replace("{", "&#123;").replace("}", "&#125;")
         out.append(KARTE.format(
             kclass="dringend" if dringend else "",
-            name=r["name"], kategorie=r["kategorie"], score=r["score"], status=status,
-            begruendung=r["begruendung"], quelle=r["quelle"], stand=r["standDatum"],
+            name=name, kategorie=r["kategorie"], score=r["score"], status=status,
+            begruendung=begr, quelle=quelle, stand=r["standDatum"],
         ))
     if not out:
         return '<p>Keine Treffer – Felder oder Karrierestufe anpassen.</p>'
@@ -99,7 +108,8 @@ def index() -> str:
 
 
 @app.post("/brief", response_class=HTMLResponse)
-def brief(felder: str = Form(...), karriere: str = Form("postdoc")) -> str:
+def brief(felder: str = Form(""), karriere: str = Form("postdoc")) -> str:
+    # Optionales Feld: leeres/fehlendes Profil -> freundliche Meldung, kein 422
     felder_liste = [f.strip() for f in felder.split(",") if f.strip()]
     inhalt = f"<h2>Deine nächsten Chancen</h2>{_cards(felder_liste, karriere)}"
     return _render(felder=felder, karriere=karriere, inhalt=inhalt)

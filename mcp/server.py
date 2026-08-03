@@ -64,7 +64,9 @@ def ingest(programme: list[dict]) -> dict:
             added += 1
             PROGRAMME.append(p)
             ids.add(pid)
-    save_catalog(PROGRAMME)
+    if added or updated:
+        # Nur bei echter Aenderung persistieren (kein No-op-Rewrite)
+        save_catalog(PROGRAMME)
     return {"status": "ok", "neu": added, "aktualisiert": updated, "gesamt": len(PROGRAMME)}
 
 
@@ -106,9 +108,10 @@ def notify(felder: list[str], karriere: str | None = None, rolle: str | None = N
 @mcp.tool()
 def brief(felder: list[str], karriere: str | None = None, rolle: str | None = None, top: int = 3, tage: int = 60) -> dict:
     """Wochen-Brief in einem Aufruf: Top-Matches, naechste Frist, Warnungen."""
+    fristen = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=1)
     return {
         "top_matches": match_profile(PROGRAMME, felder, karriere, rolle=rolle, top=top),
-        "naechste_frist": next_deadline(PROGRAMME, felder, karriere, top=1)[0],
+        "naechste_frist": fristen[0] if fristen else None,
         "warnungen": notify(felder, karriere, rolle=rolle, tage=tage),
     }
 

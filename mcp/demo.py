@@ -68,14 +68,16 @@ def main():
         print(_line(r))
 
     print("5) brief (Wochen-Brief in einem Aufruf)")
+    fristen = next_deadline(PROGRAMME, prof, karr, top=1)
     b = {
         "top_matches": match_profile(PROGRAMME, prof, karr, top=2),
-        "naechste_frist": next_deadline(PROGRAMME, prof, karr, top=1)[0],
+        "naechste_frist": fristen[0] if fristen else None,
         "warnungen": notify(prof, karr, tage=60),
     }
     print(f"   Top 2: {', '.join(r['name'] for r in b['top_matches'])}")
-    print(f"   Naechste Frist: {b['naechste_frist']['name']} "
-          f"({b['naechste_frist']['tageBisFrist']} Tage)")
+    nf = b['naechste_frist']
+    print(f"   Naechste Frist: {nf['name'] if nf else 'keine'} "
+          f"({nf['tageBisFrist'] if nf else '-'} Tage)")
     print(f"   Warnungen: {len(b['warnungen'])} Programme")
 
     print("Fertig. Katalog/Daten: offizielle Quellen (ERC verifiziert 2026-08-03), "

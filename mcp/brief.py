@@ -2,7 +2,7 @@
 
 Beispiel:
     python mcp/brief.py --felder Biologie Nachhaltigkeit --karriere postdoc
-    python mcp/brief.py --felder Medizin --karriere prof --out docs/brief.md
+    python mcp/brief.py --felder "Biologie, Nachhaltigkeit" --karriere prof --out docs/brief.md
 
 Schreibt Markdown nach stdout oder in eine Datei. Kein Mailversand im MVP;
 der Brief liegt dann z.B. in einem geteilten Ordner.
@@ -55,14 +55,19 @@ def generate(felder: list[str], karriere: str | None, top: int = 3, tage: int = 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Förder-Radar Wochen-Brief")
-    ap.add_argument("--felder", nargs="+", required=True, help="Forschungsfelder (z.B. Biologie Nachhaltigkeit)")
+    ap.add_argument("--felder", nargs="+", required=True, help="Forschungsfelder (z.B. Biologie Nachhaltigkeit oder \"Biologie, Nachhaltigkeit\")")
     ap.add_argument("--karriere", choices=["postdoc", "junior", "prof"], default=None)
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--tage", type=int, default=60, help="Warnfenster in Tagen")
     ap.add_argument("--out", default=None, help="Zieldatei (sonst stdout)")
     args = ap.parse_args()
 
-    text = generate(args.felder, args.karriere, top=args.top, tage=args.tage)
+    # Kommagetrennte Einzelargumente wie im UI behandeln ("Biologie, Nachhaltigkeit")
+    felder: list[str] = []
+    for token in args.felder:
+        felder.extend(f.strip() for f in token.split(",") if f.strip())
+
+    text = generate(felder, args.karriere, top=args.top, tage=args.tage)
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:
             fh.write(text)

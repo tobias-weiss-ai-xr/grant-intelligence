@@ -13,13 +13,15 @@ CATALOG = Path(__file__).with_name("catalog.json")
 
 
 # --------------------------------------------------------------------------- Daten
-def load_catalog(path: Path = CATALOG) -> list[dict]:
+def load_catalog(path: Path | None = None) -> list[dict]:
+    path = path or CATALOG  # zur Laufzeit aufloesen (testbar, Default nicht eingefroren)
     with open(path, encoding="utf-8") as fh:
         return json.load(fh).get("programme", [])
 
 
-def save_catalog(programme: list[dict], path: Path = CATALOG) -> None:
+def save_catalog(programme: list[dict], path: Path | None = None) -> None:
     """Katalog persistieren: Inhalte + Stand-Datum neu setzen (Governance)."""
+    path = path or CATALOG  # zur Laufzeit aufloesen (testbar, Default nicht eingefroren)
     doc = {
         "stand": date.today().isoformat(),
         "quelleHinweis": (
@@ -97,7 +99,10 @@ def match_profile(programme, fields, karriere=None, rolle=None, top=3):
     """Top-Treffer mit Begruendung, sortiert nach Score und Frist.
 
     Karrierestufe ist ein harter Filter: Programme ohne passende Stufe
-    werden nicht gelistet."""
+    werden nicht gelistet. Ohne Felder gibt es keine Empfehlung ([]).
+    """
+    if not fields:
+        return []
     scored = []
     for p in programme:
         # Karrierestufe als harter Filter: Programm muss die Stufe explizit fuehren
@@ -105,7 +110,7 @@ def match_profile(programme, fields, karriere=None, rolle=None, top=3):
             if karriere not in prog_karriere:
                 continue
         parts = _score(p, fields, karriere)
-        if parts["gesamt"] <= 0:
+        if parts["gesamt"] <= 0 or parts["thema"] <= 0:
             continue
         if rolle and rolle not in p.get("rolle", []):
             continue
