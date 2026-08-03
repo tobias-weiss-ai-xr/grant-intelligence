@@ -1,0 +1,184 @@
+# Förder-Radar – Quellen-Registrierung
+# Jede Quelle wird hier mit Update-Frequenz, Methode und Hinweisen dokumentiert.
+
+erc:
+  name: "ERC"
+  url: "https://erc.europa.eu/funding"
+  type: "manual"
+  update_frequency: "monthly"
+  last_check: "2026-08-03"
+  hinweis: "ERC-Fristen per Portal-Check aktualisieren (StG, AdG, SyG)"
+  calls:
+    - id: "erc-stg-2027"
+      name: "ERC Starting Grant 2027"
+      deadline: "2026-10-14"
+      status: "open"
+      verified: true
+    - id: "erc-adg-2027"
+      name: "ERC Advanced Grant 2027"
+      deadline: "2026-08-27"
+      status: "open"
+      verified: true
+    - id: "erc-syg-2027"
+      name: "ERC Synergy Grant 2027"
+      deadline: "2027-05-11"
+      status: "open"
+      verified: true
+
+dfg:
+  name: "DFG"
+  url: "https://www.dfg.de/foerderung"
+  type: "manual"
+  update_frequency: "monthly"
+  last_check: "2026-08-03"
+  hinweis: "DFG-Stichtage (1.2./1.10.) strukturell bekannt"
+  programs:
+    - id: "dfg-sachbeihilfe"
+      name: "DFG Sachbeihilfe"
+      rolling: true
+    - id: "dfg-emmy-noether"
+      name: "DFG Emmy Noether"
+      stichtage: ["02-01", "10-01"]
+    - id: "dfg-heisenberg"
+      name: "DFG Heisenberg-Programm"
+      stichtage: ["02-01", "10-01"]
+    - id: "dfg-graduiertenkolleg"
+      name: "DFG Graduiertenkollegs"
+      stichtage: ["09-15"]
+    - id: "dfg-sfb"
+      name: "DFG Sonderforschungsbereich"
+      stichtage: ["11-01"]
+    - id: "dfg-fdm"
+      name: "DFG Forschungsdaten-Management"
+      rolling: true
+    - id: "dfg-ub-digiserv"
+      name: "DFG Bibliotheks- und Informationsdienste"
+      stichtage: ["10-15"]
+    - id: "dfz-it-infra"
+      name: "DFG IT-Infrastruktur für Forschung"
+      stichtage: ["11-01"]
+
+bmbf:
+  name: "BMBF"
+  url: "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen"
+  type: "manual"
+  update_frequency: "weekly"
+  last_check: "2026-08-03"
+  hinweis: "BMBF-Bekanntmachungen per Portal-Check"
+  programs:
+    - id: "bmbf-digital-ai"
+      name: "BMBF KI-Forschungsverbünde"
+      deadline: "2026-12-15"
+    - id: "bmbf-energie-nachhaltigkeit"
+      name: "BMBF Energieforschung"
+      deadline: "2027-02-28"
+    - id: "bmbf-gesundheit-medizin"
+      name: "BMBF Gesundheitsforschung"
+      deadline: "2026-11-30"
+    - id: "bmbf-forschungsdaten"
+      name: "BMBF Forschungsdaten-Infrastruktur"
+      deadline: "2026-11-30"
+    - id: "bmbf-digiserv"
+      name: "BMBF Digitale Dienstleistungen"
+      deadline: "2027-01-15"
+
+eu:
+  name: "EU Horizon"
+  url: "https://ec.europa.eu/info/funding-tenders"
+  type: "manual"
+  update_frequency: "weekly"
+  last_check: "2026-08-03"
+  hinweis: "EU Horizon Calls per Portal-Check"
+  calls:
+    - id: "eu-horizon-climate"
+      name: "EU Horizon Europe – Klima/Energie (Cluster 5)"
+      deadline: "2026-10-20"
+    - id: "eu-horizon-digital"
+      name: "EU Horizon Europe – Digital/Industrie (Cluster 4)"
+      deadline: "2026-11-08"
+    - id: "eu-open-science"
+      name: "EU Horizon – Open Science Infrastructure"
+      deadline: "2026-10-20"
+
+cost:
+  name: "COST"
+  url: "https://www.cost.eu/funding/"
+  type: "manual"
+  update_frequency: "weekly"
+  last_check: "2026-08-03"
+  hinweis: "COST Actions per Portal-Check"
+  calls:
+    - id: "cost-netzwerk"
+      name: "COST – European Cooperation in Science"
+      deadline: "2026-09-10"
+
+loewe:
+  name: "LOEWE (Hessen)"
+  url: "https://wissenschaft.hessen.de/forschung/loewe"
+  type: "manual"
+  update_frequency: "monthly"
+  last_check: "2026-08-03"
+  hinweis: "Jaehrliche LOEWE-Runde mit Stichtag; aktueller Stichtag via Landesportal pruefen"
+  programs:
+    - id: "loewe-hessen"
+      name: "LOEWE – Exzellenzforschung"
+      rolling: false
+    - id: "loewe-verwaltung"
+      name: "LOEWE – Verwaltungs- und Serviceinnovation"
+      rolling: false
+
+stiftungen:
+  name: "Deutsche Stiftungen"
+  type: "manual"
+  update_frequency: "monthly"
+  last_check: "2026-08-03"
+  hinweis: "Stiftungen per Portal-Check aktualisieren"
+  sources:
+    - id: "volkswagen-stiftung"
+      name: "VolkswagenStiftung – Explorationsfonds"
+      url: "https://www.volkswagenstiftung.de/foerdern/unsere-programme"
+      stichtage: ["10-15", "04-15"]
+    - id: "dbu-umwelt"
+      name: "DBU – Umweltforschung"
+      url: "https://www.dbu.de/foerderung"
+      deadline: "2026-12-01"
+    - id: "krebshilfe-onkologie"
+      name: "Deutsche Krebshilfe – Forschungsprojekte"
+      url: "https://www.krebshilfe.de/forschung"
+      stichtage: ["10-01", "02-01", "05-01", "08-01"]
+    - id: "carl-zeiss-technik"
+      name: "Carl-Zeiss-Stiftung – Technik/Ingenieurwissenschaften"
+      url: "https://www.carl-zeiss-stiftung.de"
+      deadline: "2026-11-15"
+    - id: "humboldt-prof"
+      name: "Alexander-von-Humboldt-Stiftung – Humboldt-Professur"
+      url: "https://www.humboldt-foundation.de"
+      rolling: true
+    - id: "daad-stipendium"
+      name: "DAAD – Forschungsstipendium"
+      url: "https://www.daad.de"
+      deadline: "2026-12-31"
+    - id: "studienstiftung-promotion"
+      name: "Studienstiftung – Promotionsstipendium"
+      url: "https://www.studienstiftung.de"
+      rolling: true
+
+industrie:
+  name: "Industrieförderung"
+  type: "manual"
+  update_frequency: "weekly"
+  last_check: "2026-08-03"
+  hinweis: "AiF/ZIM per Portal-Check aktualisieren"
+  programs:
+    - id: "aif-industrie"
+      name: "AiF – Industrielle Gemeinschaftsforschung"
+      url: "https://www.aif.de"
+      rolling: true
+    - id: "zim-kmu"
+      name: "ZIM – Zentrum für Innovation und Mittelstand"
+      url: "https://www.zim.de"
+      rolling: true
+    - id: "aif-verwaltung"
+      name: "AiF – Verwaltungs-IT"
+      url: "https://www.aif.de"
+      rolling: true

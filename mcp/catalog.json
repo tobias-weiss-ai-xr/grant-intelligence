@@ -6,9 +6,16 @@
       "id": "erc-stg-2027",
       "name": "ERC Starting Grant (StG) 2027",
       "kategorie": "ERC",
-      "themen": ["frei"],
-      "karriere": ["postdoc", "junior"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 1500000,
       "dauerJahre": 5,
@@ -22,9 +29,16 @@
       "id": "erc-adg-2027",
       "name": "ERC Advanced Grant (AdG) 2027",
       "kategorie": "ERC",
-      "themen": ["frei"],
-      "karriere": ["prof", "senior"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 2500000,
       "dauerJahre": 5,
@@ -38,9 +52,19 @@
       "id": "erc-syg-2027",
       "name": "ERC Synergy Grant (SyG) 2027",
       "kategorie": "ERC",
-      "themen": ["frei"],
-      "karriere": ["prof", "senior", "postdoc", "junior"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 0,
       "budget_max": 10000000,
       "dauerJahre": 6,
@@ -54,9 +78,18 @@
       "id": "dfg-sachbeihilfe",
       "name": "DFG – Sachbeihilfe (Einzelprojekte)",
       "kategorie": "DFG",
-      "themen": ["frei"],
-      "karriere": ["postdoc", "junior", "prof"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 30000,
       "budget_max": 400000,
       "dauerJahre": 3,
@@ -70,9 +103,15 @@
       "id": "dfg-emmy-noether",
       "name": "DFG – Emmy Noether-Programm (Nachwuchsgruppenleitung)",
       "kategorie": "DFG",
-      "themen": ["frei"],
-      "karriere": ["postdoc"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 1500000,
       "dauerJahre": 6,
@@ -87,9 +126,16 @@
       "id": "dfg-heisenberg",
       "name": "DFG – Heisenberg-Programm (Etablierte Forschende)",
       "kategorie": "DFG",
-      "themen": ["frei"],
-      "karriere": ["prof", "senior"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 1200000,
       "dauerJahre": 5,
@@ -104,9 +150,18 @@
       "id": "dfg-graduiertenkolleg",
       "name": "DFG – Graduiertenkolleg (Graduiertenkollegs)",
       "kategorie": "DFG",
-      "themen": ["frei"],
-      "karriere": ["student", "junior", "postdoc"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "student",
+        "junior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 0,
       "budget_max": 3000000,
       "dauerJahre": 8,
@@ -121,9 +176,18 @@
       "id": "dfg-sfb",
       "name": "DFG – Sonderforschungsbereich (SFB/Transregio)",
       "kategorie": "DFG",
-      "themen": ["frei"],
-      "karriere": ["prof", "senior", "postdoc"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 0,
       "budget_max": 10000000,
       "dauerJahre": 8,
@@ -138,9 +202,21 @@
       "id": "bmbf-digital-ai",
       "name": "BMBF – KI-Forschungsverbünde (Digital/KI)",
       "kategorie": "BMBF",
-      "themen": ["Digital", "KI", "Informatik", "Maschinelles Lernen"],
-      "karriere": ["prof", "senior", "postdoc"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "Digital",
+        "KI",
+        "Informatik",
+        "Maschinelles Lernen"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 500000,
       "budget_max": 5000000,
       "dauerJahre": 4,
@@ -155,9 +231,22 @@
       "id": "bmbf-energie-nachhaltigkeit",
       "name": "BMBF – Energieforschung (Nachhaltigkeit/Energie)",
       "kategorie": "BMBF",
-      "themen": ["Energie", "Nachhaltigkeit", "Klimawandel", "Erneuerbare"],
-      "karriere": ["prof", "senior", "postdoc", "junior"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "Energie",
+        "Nachhaltigkeit",
+        "Klimawandel",
+        "Erneuerbare"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 300000,
       "budget_max": 4000000,
       "dauerJahre": 5,
@@ -172,9 +261,22 @@
       "id": "bmbf-gesundheit-medizin",
       "name": "BMBF – Gesundheitsforschung (Medizin/Public Health)",
       "kategorie": "BMBF",
-      "themen": ["Medizin", "Gesundheit", "Public Health", "Pflege"],
-      "karriere": ["prof", "senior", "postdoc", "junior"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "Medizin",
+        "Gesundheit",
+        "Public Health",
+        "Pflege"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 200000,
       "budget_max": 3000000,
       "dauerJahre": 4,
@@ -189,9 +291,19 @@
       "id": "loewe-hessen",
       "name": "LOEWE – Exzellenzforschung (Hessen)",
       "kategorie": "Land",
-      "themen": ["frei"],
-      "karriere": ["prof", "senior", "postdoc", "junior"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 0,
       "budget_max": 1000000,
       "dauerJahre": 4,
@@ -206,9 +318,17 @@
       "id": "volkswagen-stiftung",
       "name": "VolkswagenStiftung – Explorationsfonds",
       "kategorie": "Stiftung",
-      "themen": ["frei"],
-      "karriere": ["postdoc", "junior", "prof"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 250000,
       "dauerJahre": 2,
@@ -223,9 +343,20 @@
       "id": "dbu-umwelt",
       "name": "DBU – Umweltforschung (Ökologie/Nachhaltigkeit)",
       "kategorie": "Stiftung",
-      "themen": ["Umwelt", "Ökologie", "Nachhaltigkeit", "Klimawandel"],
-      "karriere": ["postdoc", "junior", "prof"],
-      "rolle": ["lead"],
+      "themen": [
+        "Umwelt",
+        "Ökologie",
+        "Nachhaltigkeit",
+        "Klimawandel"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 300000,
       "dauerJahre": 3,
@@ -240,9 +371,20 @@
       "id": "krebshilfe-onkologie",
       "name": "Deutsche Krebshilfe – Forschungsprojekte (Onkologie)",
       "kategorie": "Stiftung",
-      "themen": ["Medizin", "Onkologie", "Krebsforschung", "Gesundheit"],
-      "karriere": ["postdoc", "junior", "prof"],
-      "rolle": ["lead"],
+      "themen": [
+        "Medizin",
+        "Onkologie",
+        "Krebsforschung",
+        "Gesundheit"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 500000,
       "dauerJahre": 3,
@@ -257,9 +399,20 @@
       "id": "carl-zeiss-technik",
       "name": "Carl-Zeiss-Stiftung – Technik/Ingenieurwissenschaften",
       "kategorie": "Stiftung",
-      "themen": ["Technik", "Ingenieurwissenschaften", "Optik", "Digital"],
-      "karriere": ["prof", "senior", "postdoc"],
-      "rolle": ["lead"],
+      "themen": [
+        "Technik",
+        "Ingenieurwissenschaften",
+        "Optik",
+        "Digital"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 400000,
       "dauerJahre": 3,
@@ -274,9 +427,16 @@
       "id": "humboldt-prof",
       "name": "Alexander-von-Humboldt-Stiftung – Humboldt-Professur",
       "kategorie": "Stiftung",
-      "themen": ["frei"],
-      "karriere": ["prof", "senior"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 5000000,
       "dauerJahre": 5,
@@ -291,9 +451,21 @@
       "id": "aif-industrie",
       "name": "AiF – Industrielle Gemeinschaftsforschung (Anwendung)",
       "kategorie": "Industrie",
-      "themen": ["Technik", "Digital", "Innovation", "Anwendung"],
-      "karriere": ["prof", "senior", "postdoc"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "Technik",
+        "Digital",
+        "Innovation",
+        "Anwendung"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 100000,
       "budget_max": 800000,
       "dauerJahre": 2,
@@ -308,9 +480,21 @@
       "id": "zim-kmu",
       "name": "ZIM – Zentrum für Innovation und Mittelstand (KMU-Partnerschaft)",
       "kategorie": "Industrie",
-      "themen": ["Digital", "Technik", "Innovation", "Nachhaltigkeit"],
-      "karriere": ["prof", "senior", "postdoc"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "Digital",
+        "Technik",
+        "Innovation",
+        "Nachhaltigkeit"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 50000,
       "budget_max": 450000,
       "dauerJahre": 2,
@@ -325,9 +509,19 @@
       "id": "cost-netzwerk",
       "name": "COST – European Cooperation in Science (Netzwerke)",
       "kategorie": "EU",
-      "themen": ["frei"],
-      "karriere": ["postdoc", "junior", "prof", "senior"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 0,
       "budget_max": 500000,
       "dauerJahre": 4,
@@ -342,9 +536,21 @@
       "id": "eu-horizon-climate",
       "name": "EU Horizon Europe – Klima/Energie (Cluster 5)",
       "kategorie": "EU",
-      "themen": ["Klimawandel", "Energie", "Nachhaltigkeit", "Umwelt"],
-      "karriere": ["prof", "senior", "postdoc"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "Klimawandel",
+        "Energie",
+        "Nachhaltigkeit",
+        "Umwelt"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 1000000,
       "budget_max": 15000000,
       "dauerJahre": 4,
@@ -359,9 +565,21 @@
       "id": "eu-horizon-digital",
       "name": "EU Horizon Europe – Digital/Industrie (Cluster 4)",
       "kategorie": "EU",
-      "themen": ["Digital", "KI", "Informatik", "Technik"],
-      "karriere": ["prof", "senior", "postdoc"],
-      "rolle": ["lead", "partner"],
+      "themen": [
+        "Digital",
+        "KI",
+        "Informatik",
+        "Technik"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
       "budget_min": 1000000,
       "budget_max": 20000000,
       "dauerJahre": 4,
@@ -376,9 +594,17 @@
       "id": "daad-stipendium",
       "name": "DAAD – Forschungsstipendium (Promovierende/PostDocs)",
       "kategorie": "Stiftung",
-      "themen": ["frei"],
-      "karriere": ["student", "junior", "postdoc"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "student",
+        "junior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 60000,
       "dauerJahre": 2,
@@ -393,9 +619,15 @@
       "id": "studienstiftung-promotion",
       "name": "Studienstiftung – Promotionsstipendium (Studenten)",
       "kategorie": "Stiftung",
-      "themen": ["frei"],
-      "karriere": ["student"],
-      "rolle": ["lead"],
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "student"
+      ],
+      "rolle": [
+        "lead"
+      ],
       "budget_min": 0,
       "budget_max": 30000,
       "dauerJahre": 3,
@@ -407,82 +639,240 @@
       "hinweis": "Rolling; für herausragende Studierende; themenoffen."
     },
     {
-      "id": "bmbf-forschungsdaten", "name": "BMBF – Forschungsdaten-Infrastruktur (UB/HRZ)",
-      "kategorie": "BMBF", "themen": ["Forschungsdaten", "Digital", "Infrastruktur", "Open Access"],
-      "karriere": ["verwaltung", "service", "IT", "bibliothek", "prof"],
-      "rolle": ["lead", "partner"], "budget_min": 200000, "budget_max": 2000000,
-      "dauerJahre": 4, "frist": "2026-11-30", "rolling": false,
-      "status": "zu-pruefen", "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+      "id": "bmbf-forschungsdaten",
+      "name": "BMBF – Forschungsdaten-Infrastruktur (UB/HRZ)",
+      "kategorie": "BMBF",
+      "themen": [
+        "Forschungsdaten",
+        "Digital",
+        "Infrastruktur",
+        "Open Access"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 200000,
+      "budget_max": 2000000,
+      "dauerJahre": 4,
+      "frist": "2026-11-30",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
       "standDatum": "2026-08-03",
       "hinweis": "Forschungsdaten-Management für Bibliotheken/HRZ; thematisch fokussiert."
     },
     {
-      "id": "bmbf-digiserv", "name": "BMBF – Digitale Dienstleistungen (UB/HRZ/Admin)",
-      "kategorie": "BMBF", "themen": ["Digital", "IT-Infrastruktur", "Service", "Verwaltung"],
-      "karriere": ["verwaltung", "service", "IT", "bibliothek"],
-      "rolle": ["lead", "partner"], "budget_min": 100000, "budget_max": 1500000,
-      "dauerJahre": 3, "frist": "2027-01-15", "rolling": false,
-      "status": "zu-pruefen", "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+      "id": "bmbf-digiserv",
+      "name": "BMBF – Digitale Dienstleistungen (UB/HRZ/Admin)",
+      "kategorie": "BMBF",
+      "themen": [
+        "Digital",
+        "IT-Infrastruktur",
+        "Service",
+        "Verwaltung"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 100000,
+      "budget_max": 1500000,
+      "dauerJahre": 3,
+      "frist": "2027-01-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
       "standDatum": "2026-08-03",
       "hinweis": "Digitale Service-Infrastruktur; für Bibliotheken, HRZ, Verwaltung."
     },
     {
-      "id": "dfg-fdm", "name": "DFG – Forschungsdaten-Management (FDM)",
-      "kategorie": "DFG", "themen": ["Forschungsdaten", "Open Access", "Digital"],
-      "karriere": ["verwaltung", "service", "IT", "bibliothek", "prof"],
-      "rolle": ["lead", "partner"], "budget_min": 0, "budget_max": 500000,
-      "dauerJahre": 3, "frist": null, "rolling": true,
-      "status": "laufend", "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/forschungsdaten",
+      "id": "dfg-fdm",
+      "name": "DFG – Forschungsdaten-Management (FDM)",
+      "kategorie": "DFG",
+      "themen": [
+        "Forschungsdaten",
+        "Open Access",
+        "Digital"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 0,
+      "budget_max": 500000,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/forschungsdaten",
       "standDatum": "2026-08-03",
       "hinweis": "Rolling; FDM-Infrastruktur und Services für Bibliotheken/HRZ."
     },
     {
-      "id": "dfg-ub-digiserv", "name": "DFG – Bibliotheks- und Informationsdienste (UB)",
-      "kategorie": "DFG", "themen": ["Bibliothek", "Open Access", "Digital", "Service"],
-      "karriere": ["bibliothek", "verwaltung", "service"],
-      "rolle": ["lead", "partner"], "budget_min": 0, "budget_max": 300000,
-      "dauerJahre": 3, "frist": "2026-10-15", "rolling": false,
-      "status": "zu-pruefen", "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung/bibliothek",
+      "id": "dfg-ub-digiserv",
+      "name": "DFG – Bibliotheks- und Informationsdienste (UB)",
+      "kategorie": "DFG",
+      "themen": [
+        "Bibliothek",
+        "Open Access",
+        "Digital",
+        "Service"
+      ],
+      "karriere": [
+        "bibliothek",
+        "verwaltung",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 0,
+      "budget_max": 300000,
+      "dauerJahre": 3,
+      "frist": "2026-10-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung/bibliothek",
       "standDatum": "2026-08-03",
       "hinweis": "FDM, Open Access, digitale Dienste; für Universitätsbibliotheken."
     },
     {
-      "id": "hrz-it-infra", "name": "DFG – IT-Infrastruktur für Forschung (HRZ)",
-      "kategorie": "DFG", "themen": ["IT-Infrastruktur", "Digital", "HPC", "Service"],
-      "karriere": ["IT", "verwaltung", "service"],
-      "rolle": ["lead", "partner"], "budget_min": 0, "budget_max": 800000,
-      "dauerJahre": 4, "frist": "2026-11-01", "rolling": false,
-      "status": "zu-pruefen", "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/it",
+      "id": "hrz-it-infra",
+      "name": "DFG – IT-Infrastruktur für Forschung (HRZ)",
+      "kategorie": "DFG",
+      "themen": [
+        "IT-Infrastruktur",
+        "Digital",
+        "HPC",
+        "Service"
+      ],
+      "karriere": [
+        "IT",
+        "verwaltung",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 0,
+      "budget_max": 800000,
+      "dauerJahre": 4,
+      "frist": "2026-11-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/it",
       "standDatum": "2026-08-03",
       "hinweis": "IT-Infrastruktur, HPC, Cloud-Services; für HRZ und zentrale IT."
     },
     {
-      "id": "eu-open-science", "name": "EU Horizon – Open Science Infrastructure (UB/HRZ)",
-      "kategorie": "EU", "themen": ["Open Access", "Forschungsdaten", "Digital", "Infrastruktur"],
-      "karriere": ["verwaltung", "service", "IT", "bibliothek", "prof"],
-      "rolle": ["lead", "partner"], "budget_min": 1000000, "budget_max": 8000000,
-      "dauerJahre": 4, "frist": "2026-10-20", "rolling": false,
-      "status": "zu-pruefen", "quelle": "https://ec.europa.eu/info/funding-tenders",
+      "id": "eu-open-science",
+      "name": "EU Horizon – Open Science Infrastructure (UB/HRZ)",
+      "kategorie": "EU",
+      "themen": [
+        "Open Access",
+        "Forschungsdaten",
+        "Digital",
+        "Infrastruktur"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 8000000,
+      "dauerJahre": 4,
+      "frist": "2026-10-20",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders",
       "standDatum": "2026-08-03",
       "hinweis": "Open Science Cloud, Repositorien; internationale Konsortien; UB/HRZ."
     },
     {
-      "id": "loewe-verwaltung", "name": "LOEWE – Verwaltungs- und Serviceinnovation (Hessen)",
-      "kategorie": "Land", "themen": ["Verwaltung", "Service", "Digital", "Innovation"],
-      "karriere": ["verwaltung", "service", "IT"],
-      "rolle": ["lead", "partner"], "budget_min": 0, "budget_max": 800000,
-      "dauerJahre": 3, "frist": null, "rolling": false,
-      "status": "zu-pruefen", "quelle": "https://wissenschaft.hessen.de/forschung/loewe",
+      "id": "loewe-verwaltung",
+      "name": "LOEWE – Verwaltungs- und Serviceinnovation (Hessen)",
+      "kategorie": "Land",
+      "themen": [
+        "Verwaltung",
+        "Service",
+        "Digital",
+        "Innovation"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 0,
+      "budget_max": 800000,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://wissenschaft.hessen.de/forschung/loewe",
       "standDatum": "2026-08-03",
       "hinweis": "Verwaltungsinnovation, Service-Design; für zentrale Verwaltung/Service."
     },
     {
-      "id": "aif-verwaltung", "name": "AiF – Verwaltungs-IT (Digitalisierung Verwaltung)",
-      "kategorie": "Industrie", "themen": ["Digital", "Verwaltung", "IT-Infrastruktur", "Service"],
-      "karriere": ["verwaltung", "IT", "service"],
-      "rolle": ["lead", "partner"], "budget_min": 50000, "budget_max": 400000,
-      "dauerJahre": 2, "frist": null, "rolling": true,
-      "status": "laufend", "quelle": "https://www.aif.de",
+      "id": "aif-verwaltung",
+      "name": "AiF – Verwaltungs-IT (Digitalisierung Verwaltung)",
+      "kategorie": "Industrie",
+      "themen": [
+        "Digital",
+        "Verwaltung",
+        "IT-Infrastruktur",
+        "Service"
+      ],
+      "karriere": [
+        "verwaltung",
+        "IT",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 50000,
+      "budget_max": 400000,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.aif.de",
       "standDatum": "2026-08-03",
       "hinweis": "Rolling; angewandte IT-Projekte für Verwaltung; KMU/Institutionen."
     }
