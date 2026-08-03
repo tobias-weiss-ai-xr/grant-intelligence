@@ -85,7 +85,8 @@ class TestMatch:
         assert match_profile(PROGS, [], "postdoc") == []
 
     def test_unbekannte_karriere_kein_crash(self):
-        assert match_profile(PROGS, ["Biologie"], "student") == []
+        # Völlig unbekannte Karrierestufe -> harter Filter, kein Match, kein Crash
+        assert match_profile(PROGS, ["Biologie"], "abgelehnt") == []
 
     def test_top_limit(self):
         assert len(match_profile(PROGS, ["Biologie"], "postdoc", top=2)) == 2
@@ -113,9 +114,9 @@ class TestMatch:
         assert any(x["id"] == "erc-stg-2027" for x in r)
 
     def test_kein_fehler_bei_kein_match(self):
-        # Unbekannte Karrierestufe -> harter Filter, kein Match, kein Crash
-        assert match_profile(PROGS, ["Biologie"], "student") == []
-        assert next_deadline(PROGS, ["Biologie"], "student") == []
+        # Völlig unbekannte Karrierestufe -> harter Filter, kein Match, kein Crash
+        assert match_profile(PROGS, ["Biologie"], "abgelehnt") == []
+        assert next_deadline(PROGS, ["Biologie"], "abgelehnt") == []
 
 
 # ----------------------------------------------------------------------- Fristen
@@ -224,8 +225,8 @@ class TestServer:
         assert any(w.get("rolling") for w in warn)
 
     def test_brief_ohne_match_kein_crash(self):
-        # student: harter Karriere-Filter -> keine Treffer -> naechste_frist=None
-        b = server.brief(["Biologie"], "student")
+        # Völlig unbekannte Karrierestufe -> harter Filter, keine Treffer
+        b = server.brief(["Biologie"], "abgelehnt")
         assert b["top_matches"] == []
         assert b["naechste_frist"] is None
         assert b["warnungen"] == []
@@ -304,6 +305,8 @@ class TestAppHttp:
         r = client.post("/brief", data={"felder": "Biologie", "karriere": "student"})
         assert r.status_code == 200
         assert 'value="student"' not in r.text
+        # DAAD und Studienstiftung sind fuer student verfuegbar
+        assert "DAAD" in r.text or "Studienstiftung" in r.text
 
 
 # ------------------------------------------------------------------ Wochen-Brief
@@ -319,7 +322,7 @@ class TestBrief:
         assert "Top-Matches" in md  # kein Crash
 
     def test_generate_kein_match(self):
-        md = briefmod.generate(["Biologie"], "student")
+        md = briefmod.generate(["Biologie"], "abgelehnt")
         assert "Top-Matches" in md and "Frist-Warnungen" in md
 
     def test_komma_argument_wird_getrennt(self):
