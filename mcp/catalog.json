@@ -1,76 +1,153 @@
 {
-  "stand": "2026-08-02",
-  "quelleHinweis": "Beispielkatalog zu Demo-Zwecken, NICHT rechtlich verbindlich. Nur zu Entwicklungs-Demo; bitte für produktive Nutzung gegen offizielle Stellen prüfen.",
+  "stand": "2026-08-03",
+  "quelleHinweis": "Kuratierter Katalog. status = verifiziert (live geprueft am standDatum) | laufend (keine Frist, rolling) | zu-pruefen (bekanntes Programm, Frist vor Nutzung gegen Portal pruefen). Keine rechtliche Bindung; fuer produktive Nutzung gegen offizielle Stellen pruefen.",
   "programme": [
     {
-      "id": "dfg-einzel",
-      "name": "DFG – Sachbeihilfe n / Eigene Anträge",
-      "kategorie": "DFG",
-      "themen": ["Biologie", "Chemie", "Physik", "Lebewissenschaften", "Maschinelle Kompetenz"],
-      "karriere": ["postdoc", "junior", "prof"],
-      "rolle": ["lead", "partner"],
-      "budget_min": 30000,
-      "budget_max": 400000,
-      "frist": "2027-02-15",
-      "rolling": true,
-      "geolimit": "DE",
-      "quelle": "DFG-Website (Demo)",
-      "standDatum": "2026-08-02"
-    },
-    {
-      "id": "erc-stg",
-      "name": "ERC Starting Grant (StG)",
+      "id": "erc-stg-2027",
+      "name": "ERC Starting Grant (StG) 2027",
       "kategorie": "ERC",
-      "themen": ["frei"],
-      "karriere": ["postdoc", "junior"],
-      "rolle": ["lead"],
-      "budget_min": 50000,
-      "budget_max": 2000000,
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 0,
+      "budget_max": 1500000,
+      "dauerJahre": 5,
       "frist": "2026-10-14",
       "rolling": false,
-      "quelle": "ERC-Portal (Demo)",
-      "standDatum": "2026-08-02"
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/starting-grants",
+      "standDatum": "2026-08-03"
     },
     {
-      "id": "bmbf-suffizient",
-      "name": "BMBF – Kleine Forschungsverbunde (Demo)",
-      "kategorie": "BMBF",
-      "themen": ["Energie", "Digital", "Biologie", "Suffizienz"],
-      "karriere": ["postdoc", "junior", "prof"],
-      "rolle": ["lead", "partner"],
-      "budget_min": 80000,
-      "budget_max": 900000,
-      "frist": "2027-04-30",
+      "id": "erc-adg-2027",
+      "name": "ERC Advanced Grant (AdG) 2027",
+      "kategorie": "ERC",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 0,
+      "budget_max": 2500000,
+      "dauerJahre": 5,
+      "frist": "2026-08-27",
       "rolling": false,
-      "quelle": "BMBF-Förderportal (Demo)",
-      "standDatum": "2026-08-02"
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/advanced-grants",
+      "standDatum": "2026-08-03"
     },
     {
-      "id": "land-klein",
-      "name": "Land – regionale Kurzförderung",
-      "kategorie": "Land",
-      "themen": ["alle"],
-      "karriere": ["postdoc", "prof", "junior"],
-      "rolle": ["lead", "partner"],
-      "budget_min": 10000,
-      "budget_max": 120000,
-      "frist": "2026-12-01",
+      "id": "erc-syg-2027",
+      "name": "ERC Synergy Grant (SyG) 2027",
+      "kategorie": "ERC",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 0,
+      "budget_max": 10000000,
+      "dauerJahre": 6,
+      "frist": "2027-05-11",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/synergy-grants",
+      "standDatum": "2026-08-03"
+    },
+    {
+      "id": "dfg-sachbeihilfe",
+      "name": "DFG – Sachbeihilfe (Einzelprojekte)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 30000,
+      "budget_max": 400000,
+      "dauerJahre": 3,
+      "frist": null,
       "rolling": true,
-      "quelle": "Landes-Programm (Demo)",
-      "standDatum": "2026-08-02"
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung",
+      "standDatum": "2026-08-03"
     },
     {
-      "id": "stiftung-klein",
-      "name": "Regionale Stiftung – Nachwuchschance",
-      "kategorie": "Stiftung",
-      "themen": ["Biologie", "Nachhaltigkeit", "Medizin"],
-      "karriere": ["postdoc", "junior"],
-      "rolle": ["lead"],
-      "budget_max": 90000,
-      "frist": "2026-11-30",
+      "id": "dfg-emmy-noether",
+      "name": "DFG – Emmy Noether-Programm (Nachwuchsgruppenleitung)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 0,
+      "budget_max": 1500000,
+      "dauerJahre": 6,
+      "frist": "2026-10-01",
       "rolling": false,
-      "quelle": "Stiftungs-Info (Demo)",
-      "standDatum": "2026-08-02"
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung/emmy-noether",
+      "standDatum": "2026-08-03",
+      "hinweis": "Stichtage 1.2. / 1.10.; naechster Stichtag vor Portalbesuch bestaetigen."
+    },
+    {
+      "id": "loewe-hessen",
+      "name": "LOEWE – Exzellenzforschung (Hessen)",
+      "kategorie": "Land",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 0,
+      "budget_max": 1000000,
+      "dauerJahre": 4,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://wissenschaft.hessen.de/forschung/loewe",
+      "standDatum": "2026-08-03",
+      "hinweis": "Jaehrliche LOEWE-Runde mit Stichtag; aktueller Stichtag via Landesportal pruefen."
     }
   ]
 }

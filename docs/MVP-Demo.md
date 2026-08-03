@@ -1,5 +1,10 @@
 # MVP / Demo (1 Seite)
 
+> **Status (2026-08-03):** umgesetzt als lokale Ein-Bildschirm-UI
+> `mcp/app.py` (uvicorn, http://127.0.0.1:8000) + MCP-Server `mcp/server.py`.
+> Katalog enthält echte Programme; ERC-Fristen live verifiziert (StG 14.10.2026,
+> AdG 27.08.2026, SyG 11.05.2027).
+
 ## Zweck
 Ein greifbarer, ehrlicher Prototyp: ein Beispiel-Profil eingeben → die 2–3
 realistischsten aktuellen Förder-Calls der passenden Familie, mit Begründung

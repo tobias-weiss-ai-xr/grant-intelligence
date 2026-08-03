@@ -51,8 +51,8 @@ def main():
     prof = ["Biologie", "Nachhaltigkeit"]
     karr = "postdoc"
 
-    print("1) search(kategorie='BMBF')")
-    for p in search(kategorie="BMBF"):
+    print("1) search(kategorie='DFG')")
+    for p in search(kategorie="DFG"):
         print("   -", p.get("name"))
 
     print("2) match_best")
@@ -78,7 +78,8 @@ def main():
           f"({b['naechste_frist']['tageBisFrist']} Tage)")
     print(f"   Warnungen: {len(b['warnungen'])} Programme")
 
-    print("Fertig. Katalog/Daten: bewusst grob, Demo-Stand.")
+    print("Fertig. Katalog/Daten: offizielle Quellen (ERC verifiziert 2026-08-03), "
+          "DFG/LOEWE strukturell; Scores nur Orientierung.")
 
 
 if __name__ == "__main__":
