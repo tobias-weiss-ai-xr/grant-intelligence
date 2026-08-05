@@ -3,17 +3,25 @@
 Abdeckung: Katalog-Integrität, Matching (inkl. harter Karriere-Filter),
 Fristen, Persistenz, MCP-Tools, UI-Rendering, Wochen-Brief.
 """
+
 from __future__ import annotations
 
 from datetime import date, datetime
 
 import pytest
 
-from match import (CATALOG, load_catalog, save_catalog, match_profile,
-                   next_deadline, _frist_text, _begruendung)
-import server
 import app as appmod
 import brief as briefmod
+import server
+from match import (
+    CATALOG,
+    _begruendung,
+    _frist_text,
+    load_catalog,
+    match_profile,
+    next_deadline,
+    save_catalog,
+)
 
 PROGS = load_catalog()
 POSTDOC = ["Biologie", "Nachhaltigkeit"]
@@ -27,16 +35,26 @@ _REAL_CATALOG = CATALOG  # Original-Pfad vor jedem Monkeypatch
 def _katalog_schutz():
     """Prueft nach der ganzen Session: catalog.json unveraendert?"""
     yield
-    assert CATALOG.read_bytes() == _KATALOG_SNAPSHOT, \
+    assert CATALOG.read_bytes() == _KATALOG_SNAPSHOT, (
         "FEHLER: catalog.json wurde durch Tests veraendert!"
+    )
 
 
 # --------------------------------------------------------------- Katalog-Integrität
 class TestKatalog:
     def test_alle_pflichtfelder(self):
         for p in PROGS:
-            for k in ("id", "name", "kategorie", "themen", "karriere", "rolle",
-                      "quelle", "standDatum", "status"):
+            for k in (
+                "id",
+                "name",
+                "kategorie",
+                "themen",
+                "karriere",
+                "rolle",
+                "quelle",
+                "standDatum",
+                "status",
+            ):
                 assert k in p, f"{p.get('id')} fehlt: {k}"
 
     def test_ids_eindeutig(self):
@@ -146,7 +164,7 @@ class TestFristen:
 
     def test_begruendung_felder_und_karriere(self):
         p = next(p for p in PROGS if p["id"] == "erc-stg-2027")
-        b = _begruendung(p, {"felder": ["Biologie"], "karriere": 1}, 4)
+        b = _begruendung(p, {"felder": ["Biologie"], "karriere": 1})
         assert "Biologie" in b and "Karrierestufe passt" in b
 
 
@@ -161,6 +179,7 @@ class TestPersistenz:
 
     def test_save_setzt_stand_neu(self, tmp_path):
         import json
+
         path = tmp_path / "catalog.json"
         save_catalog(PROGS, path)
         doc = json.loads(path.read_text(encoding="utf-8"))
@@ -185,6 +204,7 @@ class TestServer:
     def _tmp_umgebung(self, tmp_path, monkeypatch):
         """Katalog nach tmp verlegen UND server-PROGRAMME daraus neu laden."""
         import match as matchmod
+
         kat = tmp_path / "catalog.json"
         save_catalog(PROGS, kat)
         monkeypatch.setattr(matchmod, "CATALOG", kat)
@@ -193,10 +213,19 @@ class TestServer:
 
     def test_ingest_persistiert(self, tmp_path, monkeypatch):
         kat = self._tmp_umgebung(tmp_path, monkeypatch)
-        neu = {"id": "test-prog", "name": "Test", "kategorie": "DFG",
-               "themen": ["frei"], "karriere": ["prof"], "rolle": ["lead"],
-               "frist": None, "rolling": True, "status": "zu-pruefen",
-               "quelle": "test", "standDatum": "2026-08-03"}
+        neu = {
+            "id": "test-prog",
+            "name": "Test",
+            "kategorie": "DFG",
+            "themen": ["frei"],
+            "karriere": ["prof"],
+            "rolle": ["lead"],
+            "frist": None,
+            "rolling": True,
+            "status": "zu-pruefen",
+            "quelle": "test",
+            "standDatum": "2026-08-03",
+        }
         res = server.ingest([neu])
         assert res["neu"] == 1
         assert any(x["id"] == "test-prog" for x in load_catalog(kat))
@@ -212,7 +241,9 @@ class TestServer:
         res = server.loeschen("dfg-emmy-noether")
         assert res["entfernt"] == 1
         assert not any(x["id"] == "dfg-emmy-noether" for x in load_catalog(kat))
-        assert any(x["id"] == "dfg-emmy-noether" for x in load_catalog(_REAL_CATALOG))  # echte Datei unberuehrt
+        assert any(
+            x["id"] == "dfg-emmy-noether" for x in load_catalog(_REAL_CATALOG)
+        )  # echte Datei unberuehrt
 
     def test_notify_warnfenster(self):
         warn = server.notify(POSTDOC, "postdoc", tage=60)
@@ -251,11 +282,11 @@ class TestApp:
 
     def test_leere_felder_hinweis(self):
         html = appmod.brief(felder="", karriere="postdoc")
-        assert "Keine Treffer" in html or "Felder" in html
+        assert "Keine Treffer" in html  # freundliche Meldung, kein Crash
 
     def test_html_escaping(self):
         # XSS-Schutz: Eingabe darf nicht roh in HTML landen
-        html = appmod.brief(felder='<script>alert(1)</script>', karriere="postdoc")
+        html = appmod.brief(felder="<script>alert(1)</script>", karriere="postdoc")
         assert "<script>alert(1)</script>" not in html
 
     def test_karriere_optionen(self):
@@ -274,6 +305,7 @@ class TestAppHttp:
     @pytest.fixture(scope="class")
     def client(self):
         from fastapi.testclient import TestClient
+
         return TestClient(appmod.app)
 
     def test_get_index(self, client):
@@ -282,7 +314,9 @@ class TestAppHttp:
         assert "Förder-Radar" in r.text
 
     def test_post_normal(self, client):
-        r = client.post("/brief", data={"felder": "Biologie, Nachhaltigkeit", "karriere": "postdoc"})
+        r = client.post(
+            "/brief", data={"felder": "Biologie, Nachhaltigkeit", "karriere": "postdoc"}
+        )
         assert r.status_code == 200
         assert "Emmy Noether" in r.text
 
@@ -331,7 +365,10 @@ class TestBrief:
 
     def test_cli_komma_split(self, monkeypatch, capsys):
         import sys
-        monkeypatch.setattr(sys, "argv", ["brief", "--felder", "Biologie, Nachhaltigkeit", "--karriere", "postdoc"])
+
+        monkeypatch.setattr(
+            sys, "argv", ["brief", "--felder", "Biologie, Nachhaltigkeit", "--karriere", "postdoc"]
+        )
         briefmod.main()
         out = capsys.readouterr().out
         assert "Top-Matches" in out and "| DFG – Emmy Noether" in out

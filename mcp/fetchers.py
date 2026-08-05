@@ -7,9 +7,11 @@ Usage:
     python mcp/fetchers.py --source all --check-deadlines
     python mcp/fetchers.py --source bmbf --rss
 """
+
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -19,6 +21,8 @@ from typing import Any
 
 import httpx
 import yaml
+
+from grant_types import parse_frist
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -38,6 +42,7 @@ class ProgrammeUpdate:
         fetched_at: Timestamp of fetch.
         suggestions: Manual update suggestions.
     """
+
     source: str
     programmes: list[dict[str, Any]]
     errors: list[str]
@@ -61,7 +66,6 @@ def load_catalog() -> list[dict[str, Any]]:
     Returns:
         List of programme dictionaries.
     """
-    import json
     with open(CATALOG_JSON, encoding="utf-8") as fh:
         return json.load(fh).get("programme", [])
 
@@ -81,18 +85,17 @@ def check_deadline(programme: dict[str, Any], today: date) -> str | None:
     frist_str = programme.get("frist")
     if not frist_str:
         return None
-    try:
-        frist = datetime.strptime(frist_str, "%Y-%m-%d").date()
-        days_left = (frist - today).days
-        if days_left < 0:
-            return f"ABGELAUFEN: {days_left} Tage alt"
-        elif days_left <= 14:
-            return f"BALD: {days_left} Tage bis Frist"
-        elif days_left <= 30:
-            return f"ACHTUNG: {days_left} Tage bis Frist"
-        return None
-    except ValueError:
+    frist = parse_frist(frist_str)
+    if frist is None:
         return f"UNGÜLTIGES DATUM: {frist_str}"
+    days_left = (frist - today).days
+    if days_left < 0:
+        return f"ABGELAUFEN: {days_left} Tage alt"
+    elif days_left <= 14:
+        return f"BALD: {days_left} Tage bis Frist"
+    elif days_left <= 30:
+        return f"ACHTUNG: {days_left} Tage bis Frist"
+    return None
 
 
 def fetch_cost() -> ProgrammeUpdate:
@@ -135,7 +138,9 @@ def fetch_eu_horizon() -> ProgrammeUpdate:
 
     try:
         # EU Horizon portal (301 redirect, no API)
-        resp = httpx.get("https://ec.europa.eu/info/funding-tenders", timeout=10, follow_redirects=False)
+        resp = httpx.get(
+            "https://ec.europa.eu/info/funding-tenders", timeout=10, follow_redirects=False
+        )
         log.info(f"{source}: Portal reachable (Status {resp.status_code})")
 
         suggestions.append(
@@ -147,6 +152,24 @@ def fetch_eu_horizon() -> ProgrammeUpdate:
         errors.append(str(e))
 
     return ProgrammeUpdate(source, programmes, errors, datetime.now().isoformat(), suggestions)
+
+
+def _slug_id(source: str, title: str) -> str:
+    """Deterministic programme id from source and title.
+
+    Re-fetching the same RSS item produces the same id (upsert-safe),
+    unlike timestamp-based ids which would duplicate entries.
+
+    Args:
+        source: Source identifier (e.g. "bmbf").
+        title: Item title.
+
+    Returns:
+        Slugified id like "bmbf-<slug>".
+    """
+    slug = "".join(c if c.isalnum() else "-" for c in title.lower()).strip("-")
+    slug = "-".join(part for part in slug.split("--") if part)[:60].rstrip("-")
+    return f"{source}-{slug}"
 
 
 def fetch_bmbf_rss() -> ProgrammeUpdate:
@@ -170,14 +193,16 @@ def fetch_bmbf_rss() -> ProgrammeUpdate:
             for item in root.findall(".//item"):
                 title = item.find("title")
                 link = item.find("link")
-                if title is not None:
-                    programmes.append({
-                        "id": f"{source}-{datetime.now().strftime('%Y%m%d%H%M%S')}",
-                        "name": title.text or "",
-                        "quelle": link.text if link is not None else rss_url,
-                        "standDatum": datetime.now().isoformat()[:10],
-                        "hinweis": "Automatically imported from RSS - manual verification required",
-                    })
+                if title is not None and title.text:
+                    programmes.append(
+                        {
+                            "id": _slug_id(source, title.text),
+                            "name": title.text,
+                            "quelle": link.text if link is not None else rss_url,
+                            "standDatum": datetime.now().isoformat()[:10],
+                            "hinweis": "Automatically imported from RSS - manual verification required",
+                        }
+                    )
             log.info(f"{source}: {len(programmes)} items in RSS feed")
         else:
             log.info(f"{source}: RSS not available (Status {resp.status_code})")
@@ -212,7 +237,9 @@ def check_catalog_deadlines(catalog: list[dict[str, Any]]) -> list[str]:
     return warnings
 
 
-def generate_update_suggestions(catalog: list[dict[str, Any]], sources: dict[str, Any]) -> list[str]:
+def generate_update_suggestions(
+    catalog: list[dict[str, Any]], sources: dict[str, Any]
+) -> list[str]:
     """Generate update suggestions based on source status.
 
     Args:
@@ -228,39 +255,34 @@ def generate_update_suggestions(catalog: list[dict[str, Any]], sources: dict[str
     # Check for old standDatum
     for p in catalog:
         stand = p.get("standDatum", "")
-        if stand:
-            try:
-                stand_date = datetime.strptime(stand, "%Y-%m-%d").date()
-                days_old = (today - stand_date).days
-                if days_old > 60 and p.get("status") == "verifiziert":
-                    suggestions.append(
-                        f"{p.get('id', 'unknown')}: standDatum older than 60 days ({days_old} days) - "
-                        f"portal check recommended"
-                    )
-            except ValueError:
-                pass
+        if not stand:
+            continue
+        stand_date = parse_frist(stand)
+        if stand_date is None:
+            continue
+        days_old = (today - stand_date).days
+        if days_old > 60 and p.get("status") == "verifiziert":
+            suggestions.append(
+                f"{p.get('id', 'unknown')}: standDatum older than 60 days ({days_old} days) - "
+                f"portal check recommended"
+            )
 
     # Source-specific hints
     for source_key, source_data in sources.items():
-        if isinstance(source_data, dict) and source_data.get("type") == "manual":
-            last_check = source_data.get("last_check", "")
-            if last_check:
-                try:
-                    check_date = datetime.strptime(last_check, "%Y-%m-%d").date()
-                    days_old = (today - check_date).days
-                    freq = source_data.get("update_frequency", "monthly")
-                    if freq == "weekly" and days_old > 7:
-                        suggestions.append(
-                            f"{source_key}: Last check {days_old} days ago "
-                            f"({freq} recommended) - portal check"
-                        )
-                    elif freq == "monthly" and days_old > 30:
-                        suggestions.append(
-                            f"{source_key}: Last check {days_old} days ago "
-                            f"({freq} recommended) - portal check"
-                        )
-                except (ValueError, TypeError):
-                    pass
+        if not isinstance(source_data, dict) or source_data.get("type") != "manual":
+            continue
+        last_check = source_data.get("last_check", "")
+        if not last_check:
+            continue
+        check_date = parse_frist(last_check)
+        if check_date is None:
+            continue
+        days_old = (today - check_date).days
+        freq = source_data.get("update_frequency", "monthly")
+        if (freq == "weekly" and days_old > 7) or (freq == "monthly" and days_old > 30):
+            suggestions.append(
+                f"{source_key}: Last check {days_old} days ago ({freq} recommended) - portal check"
+            )
 
     return suggestions
 
@@ -279,8 +301,9 @@ def fetch_all(check_deadlines: bool = False) -> list[ProgrammeUpdate]:
     sources = load_sources()
 
     log.info("=== Manual Sources (no automatic fetching) ===")
-    for source in ["erc", "dfg", "bmbf", "loewe", "stiftungen", "industrie"]:
-        log.info(f"  {source}: Manual maintenance")
+    for source in sources:
+        if isinstance(sources[source], dict) and sources[source].get("type") == "manual":
+            log.info(f"  {source}: Manual maintenance")
 
     log.info("\n=== Sources with potential automatic fetching ===")
     results.append(fetch_cost())
@@ -311,13 +334,9 @@ def main() -> None:
     """CLI entry point."""
     ap = argparse.ArgumentParser(description="Förder-Radar – Automatic Fetching")
     ap.add_argument(
-        "--source", choices=["cost", "eu", "bmbf", "all"], default="all",
-        help="Source to query"
+        "--source", choices=["cost", "eu", "bmbf", "all"], default="all", help="Source to query"
     )
-    ap.add_argument(
-        "--check-deadlines", action="store_true",
-        help="Check deadlines in catalog"
-    )
+    ap.add_argument("--check-deadlines", action="store_true", help="Check deadlines in catalog")
     args = ap.parse_args()
 
     if args.source == "all":
@@ -331,7 +350,9 @@ def main() -> None:
 
     log.info("\n=== Fetch Results ===")
     for r in results:
-        log.info(f"{r.source}: {len(r.programmes)} programmes, {len(r.errors)} errors, {len(r.suggestions)} suggestions")
+        log.info(
+            f"{r.source}: {len(r.programmes)} programmes, {len(r.errors)} errors, {len(r.suggestions)} suggestions"
+        )
         for e in r.errors:
             log.warning(f"  Error: {e}")
         for s in r.suggestions:

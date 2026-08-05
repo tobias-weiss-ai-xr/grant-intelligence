@@ -8,45 +8,32 @@ Usage:
 
 Writes Markdown to stdout or file. No email in MVP; brief is placed in shared folder.
 """
+
 from __future__ import annotations
 
 import argparse
 import sys
 from datetime import date
-from typing import Any
 
+from grant_types import MatchResult
 from match import load_catalog, match_profile, next_deadline
 
 
-def _zeile(r: dict[str, Any] | Any) -> str:
+def _zeile(r: MatchResult) -> str:
     """Generate a table row for a match result.
 
     Args:
-        r: Match result dictionary or object with get/__dict__ access.
+        r: Match result.
 
     Returns:
         Markdown table row string.
     """
-    # Handle both dict and object access
-    if hasattr(r, 'tage_bis_frist'):
-        # Object access
-        f = r.tage_bis_frist
-        rolling = r.rolling
-        name = r.name
-        kategorie = r.kategorie
-        score = r.score
-        begruendung = r.begruendung
-    else:
-        # Dict access
-        f = r.get("tageBisFrist")
-        rolling = r.get("rolling", False)
-        name = r.get("name", "")
-        kategorie = r.get("kategorie", "")
-        score = r.get("score", 0)
-        begruendung = r.get("begruendung", "")
-
-    frist = f"{f} Tage" if f is not None else ("Rolling" if rolling else "—")
-    return f"| {name} | {kategorie} | {score}/5 | {frist} | {begruendung} |"
+    frist = (
+        f"{r.tage_bis_frist} Tage"
+        if r.tage_bis_frist is not None
+        else ("Rolling" if r.rolling else "—")
+    )
+    return f"| {r.name} | {r.kategorie} | {r.score}/5 | {frist} | {r.begruendung} |"
 
 
 def generate(felder: list[str], karriere: str | None, top: int = 3, tage: int = 60) -> str:
@@ -66,16 +53,11 @@ def generate(felder: list[str], karriere: str | None, top: int = 3, tage: int = 
     fristen = next_deadline(programmes, felder, karriere, top=len(programmes))
 
     # Filter warnings (rolling or within tage days)
-    warn = []
-    for r in fristen:
-        if hasattr(r, 'tage_bis_frist'):
-            # Object access
-            if r.rolling or (r.tage_bis_frist is not None and r.tage_bis_frist <= tage):
-                warn.append(r)
-        else:
-            # Dict access
-            if r.get("rolling") or (r.get("tageBisFrist") is not None and r["tageBisFrist"] <= tage):
-                warn.append(r)
+    warn = [
+        r
+        for r in fristen
+        if r.rolling or (r.tage_bis_frist is not None and r.tage_bis_frist <= tage)
+    ]
 
     # Build markdown
     lines = [
@@ -130,13 +112,25 @@ def main() -> None:
     """CLI entry point."""
     ap = argparse.ArgumentParser(description="Förder-Radar Wochen-Brief")
     ap.add_argument(
-        "--felder", nargs="+", required=True,
-        help="Forschungsfelder (z.B. Biologie Nachhaltigkeit oder \"Biologie, Nachhaltigkeit\")"
+        "--felder",
+        nargs="+",
+        required=True,
+        help='Forschungsfelder (z.B. Biologie Nachhaltigkeit oder "Biologie, Nachhaltigkeit")',
     )
     ap.add_argument(
         "--karriere",
-        choices=["postdoc", "junior", "prof", "verwaltung", "service", "IT", "bibliothek", "student", "senior"],
-        default=None
+        choices=[
+            "postdoc",
+            "junior",
+            "prof",
+            "verwaltung",
+            "service",
+            "IT",
+            "bibliothek",
+            "student",
+            "senior",
+        ],
+        default=None,
     )
     ap.add_argument("--top", type=int, default=3)
     ap.add_argument("--tage", type=int, default=60, help="Warnfenster in Tagen")

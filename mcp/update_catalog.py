@@ -8,58 +8,38 @@ Beispiel:
     python mcp/update_catalog.py --fetch dfg,erc,bmbf --out mcp/catalog.json
     python mcp/update_catalog.py --check-expired  # tote Fristen melden
 """
+
 from __future__ import annotations
 
 import argparse
 import json
 import logging
 import sys
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
-from typing import Any
 
-import httpx
+import yaml
+
+from grant_types import Programm, parse_frist
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
 CATALOG = Path(__file__).with_name("catalog.json")
+SOURCES_YAML = Path(__file__).with_name("sources.yaml")
 
-# ------------------------------------------------------------------ Quellen-Definitionen
-SOURCES = {
-    "erc": {
-        "name": "ERC",
-        "url": "https://erc.europa.eu/funding",
-        "type": "manual",  # Kein RSS/API verfügbar, manuell pflegen
-        "hinweis": "ERC-Fristen per Portal-Check aktualisieren (StG, AdG, SyG)",
-    },
-    "dfg": {
-        "name": "DFG",
-        "url": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/",
-        "type": "manual",
-        "hinweis": "DFG-Stichtage (1.2./1.10.) strukturell bekannt, manuell prüfen",
-    },
-    "bmbf": {
-        "name": "BMBF",
-        "url": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
-        "type": "manual",
-        "hinweis": "BMBF-Bekanntmachungen per Portal-Check aktualisieren",
-    },
-    "eu": {
-        "name": "EU Horizon",
-        "url": "https://ec.europa.eu/info/funding-tenders",
-        "type": "manual",
-        "hinweis": "EU Horizon Calls per Portal-Check aktualisieren",
-    },
-    "cost": {
-        "name": "COST",
-        "url": "https://www.cost.eu/funding/",
-        "type": "manual",
-        "hinweis": "COST Actions per Portal-Check aktualisieren",
-    },
-}
 
 # ------------------------------------------------------------------ Hilfsfunktionen
+def load_sources() -> dict:
+    """Lade Quellen-Registrierung aus sources.yaml (Single Source of Truth).
+
+    Returns:
+        Quellen-Dictionary aus sources.yaml.
+    """
+    with open(SOURCES_YAML, encoding="utf-8") as fh:
+        return yaml.safe_load(fh)
+
+
 def load_catalog(path: Path = CATALOG) -> dict:
     with open(path, encoding="utf-8") as fh:
         return json.load(fh)
@@ -73,19 +53,28 @@ def save_catalog(doc: dict, path: Path = CATALOG) -> None:
 
 
 def validate_programme(p: dict) -> list[str]:
-    """Prüfe Programm auf Pflichtfelder und Format."""
+    """Prüfe Programm auf Pflichtfelder und Format.
+
+    Nutzt die type-safe Programm-Dataclass inkl. Status-Enum und
+    Frist-Format-Validierung.
+
+    Args:
+        p: Programm-Dictionary im Katalogformat (camelCase).
+
+    Returns:
+        Liste von Fehlermeldungen (leer wenn gültig).
+    """
     errors: list[str] = []
     required = ["id", "name", "kategorie", "themen", "karriere", "rolle", "quelle", "standDatum"]
     for k in required:
         if k not in p:
             errors.append(f"Fehlt: {k}")
-    if "frist" in p and p["frist"]:
-        try:
-            datetime.strptime(p["frist"], "%Y-%m-%d")
-        except ValueError:
-            errors.append(f"Ungültiges frist-Format: {p['frist']}")
-    if p.get("status") not in ("verifiziert", "laufend", "zu-pruefen"):
-        errors.append(f"Ungültiger status: {p.get('status')}")
+    try:
+        Programm.from_dict(p)
+    except (ValueError, TypeError) as e:
+        errors.append(str(e))
+    if "frist" in p and p["frist"] and parse_frist(p["frist"]) is None:
+        errors.append(f"Ungültiges frist-Format: {p['frist']}")
     return errors
 
 
@@ -98,17 +87,18 @@ def check_expired(programme: list[dict], today: date | None = None) -> list[dict
             continue
         if not p.get("frist"):
             continue
-        try:
-            frist = datetime.strptime(p["frist"], "%Y-%m-%d").date()
-            if frist < today:
-                expired.append({
+        frist = parse_frist(p["frist"])
+        if frist is None:
+            continue
+        if frist < today:
+            expired.append(
+                {
                     "id": p["id"],
                     "name": p["name"],
                     "frist": p["frist"],
                     "tage_abgelaufen": (today - frist).days,
-                })
-        except ValueError:
-            pass
+                }
+            )
     return expired
 
 
@@ -123,31 +113,48 @@ def update_stand_datum(programme: list[dict]) -> list[dict]:
 # ------------------------------------------------------------------ Update-Operationen
 def fetch_manual(source: str) -> list[dict] | None:
     """Manuelle Quellen-Prüfung (Platzhalter für Portal-Check)."""
-    if source not in SOURCES:
+    sources = load_sources()
+    src = sources.get(source)
+    if not isinstance(src, dict):
         log.warning(f"Unbekannte Quelle: {source}")
         return None
-    src = SOURCES[source]
-    log.info(f"Manuelle Prüfung: {src['name']} ({src['url']})")
-    log.info(f"  Hinweis: {src['hinweis']}")
+    log.info(f"Manuelle Prüfung: {src.get('name', source)} ({src.get('url', '?')})")
+    hinweis = src.get("hinweis")
+    if hinweis:
+        log.info(f"  Hinweis: {hinweis}")
     return None  # Keine automatischen Updates für manuelle Quellen
 
 
 def merge_programmes(new: list[dict], existing: list[dict]) -> tuple[list[dict], int, int]:
-    """Upsert: neue Programme hinzufügen/aktualisieren."""
-    ids = {p["id"] for p in existing}
+    """Upsert: neue Programme hinzufügen/aktualisieren.
+
+    Args:
+        new: Neue Programme (ohne id werden übersprungen).
+        existing: Bestehender Katalog (in-place erweitert).
+
+    Returns:
+        (Katalog, Anzahl neu, Anzahl aktualisiert).
+    """
+    ids = {p["id"] for p in existing if p.get("id")}
     added, updated = 0, 0
     for p in new:
-        if p["id"] in ids:
+        pid = p.get("id")
+        if not pid:
+            log.warning("Überspringe Programm ohne id")
+            continue
+        if pid in ids:
             # Update: alte Daten behalten, neue überschreiben
             for i, old in enumerate(existing):
-                if old["id"] == p["id"]:
+                if old.get("id") == pid:
                     existing[i] = p
+                    break
             updated += 1
-            log.info(f"Update: {p['id']}")
+            log.info(f"Update: {pid}")
         else:
             existing.append(p)
+            ids.add(pid)
             added += 1
-            log.info(f"Neu: {p['id']}")
+            log.info(f"Neu: {pid}")
     return existing, added, updated
 
 
@@ -170,8 +177,10 @@ def main() -> None:
         expired = check_expired(programme, today)
         if expired:
             log.warning(f"Abgelaufene Fristen ({len(expired)}):")
-            for e in expired:
-                log.warning(f"  {e['id']}: {e['name']} ({e['frist']}, {e['tage_abgelaufen']} Tage alt)")
+            for ex in expired:
+                log.warning(
+                    f"  {ex['id']}: {ex['name']} ({ex['frist']}, {ex['tage_abgelaufen']} Tage alt)"
+                )
         else:
             log.info("Keine abgelaufenen Fristen.")
 
@@ -202,8 +211,8 @@ def main() -> None:
                 errors.extend([f"{p['id']}: {e}" for e in errs])
         if errors:
             log.error(f"Validierungsfehler ({len(errors)}):")
-            for e in errors[:10]:
-                log.error(f"  {e}")
+            for err in errors[:10]:
+                log.error(f"  {err}")
             if len(errors) > 10:
                 log.error(f"  ... und {len(errors) - 10} weitere")
             sys.exit(1)

@@ -12,17 +12,18 @@ Features:
     - XSS protection via HTML escaping
     - Career level whitelist validation
 """
+
 from __future__ import annotations
 
 import html
 import logging
 from dataclasses import dataclass
-from datetime import date, datetime
-from typing import Any
+from datetime import date
 
 from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 
+from grant_types import parse_frist
 from match import load_catalog, match_profile
 
 logging.basicConfig(level=logging.INFO)
@@ -33,9 +34,15 @@ app = FastAPI(title="Förder-Radar (MVP)")
 # Load catalog at startup
 PROGRAMME = load_catalog()
 KARRIEREN = [
-    "postdoc", "junior", "prof", "senior",
+    "postdoc",
+    "junior",
+    "prof",
+    "senior",
     "student",
-    "verwaltung", "service", "IT", "bibliothek",
+    "verwaltung",
+    "service",
+    "IT",
+    "bibliothek",
 ]
 
 # =============================================================================
@@ -75,17 +82,18 @@ PAGE_TEMPLATE = """<!doctype html>
 Katalog: {katalog} Programme, Stand {stand}. Lokaler MVP – Daten bleiben lokal.</div>
 </body></html>"""
 
-CARD_TEMPLATE = """<div class="karte {kclass}">
-  <h3>{name} <span class="badge">{kategorie}</span></h3>
-  <div><span class="score">Score {score}/5</span> {status}</div>
-  <div>{begruendung}</div>
-  <div class="meta">Quelle: {quelle} · Stand: {stand}</div>
+CARD_TEMPLATE = """<div class="karte __KCLASS__">
+  <h3>__NAME__ <span class="badge">__KATEGORIE__</span></h3>
+  <div><span class="score">Score __SCORE__/5</span> __STATUS__</div>
+  <div>__BEGRUENDUNG__</div>
+  <div class="meta">Quelle: __QUELLE__ · Stand: __STAND__</div>
 </div>"""
 
 
 @dataclass
 class CardStatus:
     """Status information for a match card."""
+
     text: str
     urgent: bool = False
     rolling: bool = False
@@ -106,17 +114,18 @@ def _format_deadline(frist: str | None, rolling: bool) -> CardStatus:
     if not frist:
         return CardStatus("<span class='frist'>Frist offen – Portal prüfen</span>")
 
-    try:
-        deadline = datetime.strptime(frist, "%Y-%m-%d").date()
-        delta = (deadline - date.today()).days
-        if delta < 0:
-            return CardStatus(f"<span class='warn'>Abgelaufen ({-delta} Tage)</span>", urgent=True)
-        elif delta <= 60:
-            return CardStatus(f"<span class='warn'>⚠ noch {delta} Tage</span>", urgent=True)
-        else:
-            return CardStatus(f"<span class='frist'>{delta} Tage bis Frist</span>")
-    except ValueError:
-        return CardStatus(f"<span class='warn'>Frist: {frist} (prüfen)</span>")
+    deadline = parse_frist(frist)
+    if deadline is None:
+        # frist ist Katalog-Daten -> vor Einbettung in HTML escapen (XSS-Schutz)
+        return CardStatus(f"<span class='warn'>Frist: {html.escape(frist)} (prüfen)</span>")
+
+    delta = (deadline - date.today()).days
+    if delta < 0:
+        return CardStatus(f"<span class='warn'>Abgelaufen ({-delta} Tage)</span>", urgent=True)
+    elif delta <= 60:
+        return CardStatus(f"<span class='warn'>⚠ noch {delta} Tage</span>", urgent=True)
+    else:
+        return CardStatus(f"<span class='frist'>{delta} Tage bis Frist</span>")
 
 
 def _render(felder: str = "", karriere: str = "postdoc", inhalt: str = "") -> str:
@@ -137,8 +146,7 @@ def _render(felder: str = "", karriere: str = "postdoc", inhalt: str = "") -> st
 
     # Generate options
     options = "".join(
-        f'<option value="{k}"{" selected" if k == karriere else ""}>{k}</option>'
-        for k in KARRIEREN
+        f'<option value="{k}"{" selected" if k == karriere else ""}>{k}</option>' for k in KARRIEREN
     )
 
     return PAGE_TEMPLATE.format(
@@ -164,30 +172,47 @@ def _cards(felder: list[str], karriere: str) -> str:
     matches = match_profile(PROGRAMME, felder, karriere, top=3)
 
     if not matches:
-        return '<p>Keine Treffer – Felder oder Karrierestufe anpassen.</p>'
+        return "<p>Keine Treffer – Felder oder Karrierestufe anpassen.</p>"
 
     cards = []
     for m in matches:
         status = _format_deadline(m.frist, m.rolling)
         urgent_class = "dringend" if status.urgent else ""
 
-        # HTML escape all user-facing content
-        name = html.escape(m.name).replace("{", "&#123;").replace("}", "&#125;")
-        begr = html.escape(m.begruendung).replace("{", "&#123;").replace("}", "&#125;")
-        quelle = html.escape(m.quelle).replace("{", "&#123;").replace("}", "&#125;")
-
-        cards.append(CARD_TEMPLATE.format(
-            kclass=urgent_class,
-            name=name,
-            kategorie=html.escape(m.kategorie),
-            score=m.score,
-            status=status.text,
-            begruendung=begr,
-            quelle=quelle,
-            stand=html.escape(m.stand_datum),
-        ))
+        cards.append(
+            _render_card(
+                kclass=urgent_class,
+                name=html.escape(m.name),
+                kategorie=html.escape(m.kategorie),
+                score=str(m.score),
+                status=status.text,
+                begruendung=html.escape(m.begruendung),
+                quelle=html.escape(m.quelle),
+                stand=html.escape(m.stand_datum),
+            )
+        )
 
     return "".join(cards)
+
+
+def _render_card(**felder: str) -> str:
+    """Render a match card from pre-escaped field values.
+
+    Uses token replacement (__TOKEN__) instead of str.format so that
+    catalog data containing curly braces cannot break the template.
+    Callers must HTML-escape user-facing values before passing them;
+    ``status`` carries trusted internal markup and is passed as-is.
+
+    Args:
+        **felder: Field values keyed by template token.
+
+    Returns:
+        Rendered card HTML.
+    """
+    out = CARD_TEMPLATE
+    for key, wert in felder.items():
+        out = out.replace(f"__{key.upper()}__", wert)
+    return out
 
 
 @app.get("/", response_class=HTMLResponse)

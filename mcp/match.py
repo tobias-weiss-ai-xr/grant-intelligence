@@ -6,15 +6,16 @@ naechste Fristen.
 
 Type-safe, well-documented, and testable.
 """
+
 from __future__ import annotations
 
 import json
 import logging
-from datetime import date, datetime
+from datetime import date
 from pathlib import Path
 from typing import Any
 
-from grant_types import MatchResult
+from grant_types import MatchResult, budget_beschreibung, parse_frist
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -26,8 +27,10 @@ CATALOG = Path(__file__).with_name("catalog.json")
 # Data Layer
 # =============================================================================
 
+
 class CatalogError(Exception):
     """Raised when catalog operations fail."""
+
     pass
 
 
@@ -50,10 +53,10 @@ def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:
             return data.get("programme", [])
     except FileNotFoundError:
         log.error(f"Catalog file not found: {path}")
-        raise CatalogError(f"Catalog file not found: {path}")
+        raise CatalogError(f"Catalog file not found: {path}") from None
     except json.JSONDecodeError as e:
         log.error(f"Invalid JSON in catalog: {path} - {e}")
-        raise CatalogError(f"Invalid JSON in catalog: {e}")
+        raise CatalogError(f"Invalid JSON in catalog: {e}") from e
 
 
 def save_catalog(programme: list[dict[str, Any]], path: Path | None = None) -> None:
@@ -84,12 +87,13 @@ def save_catalog(programme: list[dict[str, Any]], path: Path | None = None) -> N
         log.info(f"Catalog saved: {path} ({len(programme)} programmes)")
     except OSError as e:
         log.error(f"Failed to write catalog: {path} - {e}")
-        raise CatalogError(f"Failed to write catalog: {e}")
+        raise CatalogError(f"Failed to write catalog: {e}") from e
 
 
 # =============================================================================
 # Matching Logic
 # =============================================================================
+
 
 def _fits(theme_defs: list[str], field: str) -> bool:
     """Check if a field matches the program's theme definitions.
@@ -105,8 +109,7 @@ def _fits(theme_defs: list[str], field: str) -> bool:
     """
     f = field.lower()
     return any(
-        t.lower() in ("alle", "frei") or t.lower() in f or f in t.lower()
-        for t in theme_defs
+        t.lower() in ("alle", "frei") or t.lower() in f or f in t.lower() for t in theme_defs
     )
 
 
@@ -160,23 +163,21 @@ def _frist_text(frist: str | None, rolling: bool) -> str:
         return "Rolling – jederzeit einreichbar, keine feste Frist"
     if not frist:
         return "Frist noch offen – vor Nutzung gegen Portal prüfen"
-    try:
-        d = datetime.strptime(frist, "%Y-%m-%d").date()
-        delta = (d - date.today()).days
-        if delta < 0:
-            return f"Frist {d.strftime('%d.%m.%Y')} – bereits abgelaufen ({-delta} Tage)"
-        return f"Frist {d.strftime('%d.%m.%Y')} – noch {delta} Tage"
-    except ValueError:
+    d = parse_frist(frist)
+    if d is None:
         return f"Frist {frist} (Format unklar, prüfen)"
+    delta = (d - date.today()).days
+    if delta < 0:
+        return f"Frist {d.strftime('%d.%m.%Y')} – bereits abgelaufen ({-delta} Tage)"
+    return f"Frist {d.strftime('%d.%m.%Y')} – noch {delta} Tage"
 
 
-def _begruendung(prog: dict[str, Any], parts: dict[str, Any], score: int) -> str:
+def _begruendung(prog: dict[str, Any], parts: dict[str, Any]) -> str:
     """Generate human-readable explanation for match score.
 
     Args:
         prog: Program dictionary.
         parts: Score breakdown from _score().
-        score: Total score.
 
     Returns:
         German explanation string.
@@ -203,10 +204,7 @@ def _begruendung(prog: dict[str, Any], parts: dict[str, Any], score: int) -> str
     # Budget
     budget = prog.get("budget_max")
     if budget:
-        bits.append(prog.get("budget_text") or (
-            f"bis ca. {budget/1e6:.1f} Mio. Euro" if budget >= 1e6
-            else f"bis ca. {budget/1000:.0f} Tausend Euro"
-        ))
+        bits.append(prog.get("budget_text") or budget_beschreibung(budget))
 
     # Status warning
     if prog.get("status") == "zu-pruefen":
@@ -219,12 +217,13 @@ def _begruendung(prog: dict[str, Any], parts: dict[str, Any], score: int) -> str
 # Query Layer
 # =============================================================================
 
+
 def match_profile(
     programme: list[dict[str, Any]],
     fields: list[str],
     karriere: str | None = None,
     rolle: str | None = None,
-    top: int = 3
+    top: int = 3,
 ) -> list[MatchResult]:
     """Find top matching programs for a profile.
 
@@ -262,7 +261,7 @@ def match_profile(
             continue
 
         # Build result
-        begruendung = _begruendung(p, parts, parts["gesamt"])
+        begruendung = _begruendung(p, parts)
         result = MatchResult(
             id=p.get("id", ""),
             name=p.get("name", ""),
@@ -288,7 +287,7 @@ def next_deadline(
     karriere: str | None = None,
     rolle: str | None = None,
     top: int = 2,
-    today: date | None = None
+    today: date | None = None,
 ) -> list[MatchResult]:
     """Find programs with upcoming deadlines.
 
@@ -312,22 +311,22 @@ def next_deadline(
     for r in results:
         delta = None
         if r.frist:
-            try:
-                d = datetime.strptime(r.frist, "%Y-%m-%d").date()
+            d = parse_frist(r.frist)
+            if d is not None:
                 delta = (d - today).days
-            except ValueError:
-                delta = None
-        out.append(MatchResult(
-            id=r.id,
-            name=r.name,
-            kategorie=r.kategorie,
-            score=r.score,
-            frist=r.frist,
-            rolling=r.rolling,
-            status=r.status,
-            quelle=r.quelle,
-            stand_datum=r.stand_datum,
-            begruendung=r.begruendung,
-            tage_bis_frist=delta,
-        ))
+        out.append(
+            MatchResult(
+                id=r.id,
+                name=r.name,
+                kategorie=r.kategorie,
+                score=r.score,
+                frist=r.frist,
+                rolling=r.rolling,
+                status=r.status,
+                quelle=r.quelle,
+                stand_datum=r.stand_datum,
+                begruendung=r.begruendung,
+                tage_bis_frist=delta,
+            )
+        )
     return out

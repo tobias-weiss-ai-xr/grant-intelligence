@@ -7,6 +7,7 @@ Usage:
     python mcp/export.py --format json --out docs/export.json
     python mcp/export.py --format markdown --out docs/export.md
 """
+
 from __future__ import annotations
 
 import argparse
@@ -108,7 +109,9 @@ def export_markdown(programme: list[dict[str, Any]], out: Path) -> None:
         frist = p.get("frist") or ("Rolling" if p.get("rolling") else "-")
         status = p.get("status", "")
 
-        lines.append(f"| {id_} | {name} | {kategorie} | {themen} | {karriere} | {frist} | {status} |")
+        lines.append(
+            f"| {id_} | {name} | {kategorie} | {themen} | {karriere} | {frist} | {status} |"
+        )
 
     lines.extend(["", "## Nach Kategorie", ""])
 
@@ -140,8 +143,7 @@ def main() -> None:
     """CLI entry point."""
     ap = argparse.ArgumentParser(description="Förder-Radar – Export")
     ap.add_argument(
-        "--format", choices=["csv", "json", "markdown"], required=True,
-        help="Export format"
+        "--format", choices=["csv", "json", "markdown"], required=True, help="Export format"
     )
     ap.add_argument("--out", type=Path, required=True, help="Output file path")
     args = ap.parse_args()

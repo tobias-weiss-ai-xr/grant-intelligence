@@ -1,0 +1,5 @@
+# Dev-Abhängigkeiten: Tests, Linting, Typprüfung
+# pip install -r requirements-dev.txt
+pytest>=8.0
+ruff>=0.15
+mypy>=1.10
