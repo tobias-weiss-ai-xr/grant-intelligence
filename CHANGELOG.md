@@ -9,7 +9,27 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
-- Type-safe dataclasses (Programm, MatchResult, BriefResult)
+- **3 neue Programme:** ERC Consolidator Grant (CoG), ERC Proof of Concept (PoC), DFG Walter Benjamin (Postdoc-Rückkehr/Neueinstieg). Katalog: 52 → 55.
+- **Postdoc-Bedeckung:** 23 → 26 Programme. ERC-Schema-Vollständigkeit (StG, CoG, AdG, SyG, PoC). DFG Postdoc-Trilogie (Sachbeihilfe, Emmy Noether, Walter Benjamin).
+- **7 neue DFG-Programme:** Reinhart Koselleck (High-risk/High-gain), Forschungsgruppen, Schwerpunktprogramme, Kolleg-Forschungsgruppen, Klinische Forschungsgruppen, Wissenschaftliche Netzwerke, Forschungsimpulse. DFG-Einzelfoerderung + Koordinierte-Programme nahezu komplett. Katalog: 55 → 62.
+- **4 neue EU-Programme:** MSCA Postdoctoral Fellowships (PF, Frist 9. Sep 2026), Horizon Europe Cluster 1 Health, Cluster 2 Kultur/Gesellschaft, Cluster 3 Zivile Sicherheit. EU-Coverage: 7 → 11. Katalog: 62 → 66.
+- **Brief top=3→5:** Mehr Ergebnisse bei wachsendem Katalog.
+- **4 neue Stiftungen/Land-Programme:** Humboldt Forschungsstipendium (rolling, Inbound/Outbound), Robert Bosch Stiftung (Gesundheit/Bildung), NRW MWK Wissenschaftsförderung, Hightech Agenda Bayern (5,5 Mrd EUR). Stiftung: 20 → 22, Land: 3 → 5. Katalog: 66 → 70.
+- **5 neue Internationale Programme:** NSF (US), NIH (US), UKRI (UK), DACH SNSF/FWF (CH/AT), Wellcome Trust (UK). Neue Kategorie `International`. Katalog: 70 → 75.
+- **Polish:** Kategorie Enum komplett (9 Werte + is_valid), 40 Budget-Einträge 0→null, 4 fehlende Hinweise ergänzt, Brief top=3→5, Docstrings korrigiert. Tests: 112 → 115.
+- **20 neue Programme:** 13 Student-Stipendien (Deutschlandstipendium, 11 Begabtenförderungswerke, DAAD Auslandsstipendium, Erasmus+), 7 PhD/Postdoc-Programme (DFG IRTG, DFG Graduate School, MSCA ITN/COFUND, Max Weber Bayern, Gerda Henkel, Fritz Thyssen). Katalog: 32 → 52.
+- **Fetch→Persist Pipeline:** `_enrich_programme()` und `apply_fetch_updates()` in `fetchers.py`; Fetcher erzeugen vollständige, validierte Programmeinträge; automatischer Merge in Katalog + Audit-Log.
+- **Deadline-Cron:** `cron_check_expired.sh` mit crontab- und systemd-Timer-Beispiel in `docs/SPEC-Update-Pipeline.md`.
+- **5 neue Quellgruppen** in `sources.yaml`: deutschlandstipendium, begabtenfoerderungswerke, erasmus, msc, gerda-henkel, fritz-thyssen.
+- **8 neue Tests** für Fetch→Persist Pipeline (enrich, apply, audit, rejection).
+
+### Changed
+- `Programm.__post_init__`: `themen`, `karriere`, `rolle` dürfen leer sein („offen für alle").
+- `update_catalog.py fetch_manual()`: nutzt Fetcher statt `None`; `--fetch bmbf` persistiert Ergebnisse.
+- `Datenquellen.md`: neue Stiftungen, Begabtenförderungswerke, EU-Programme dokumentiert.
+- `SPEC-Update-Pipeline.md`: Cron/systemd-Timer, Log-Rotation, aktualisierter Status.
+
+### Type-safe dataclasses (Programm, MatchResult, BriefResult)
 - Full type hints across all modules
 - Structured logging throughout
 - Custom exceptions (CatalogError)

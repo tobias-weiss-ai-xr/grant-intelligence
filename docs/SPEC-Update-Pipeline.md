@@ -351,19 +351,74 @@ git tag catalog-2026-08-03
 
 ---
 
-## 9. Status
+## 9. Deployment: Deadline-Cron
+
+### 9.1 Cron (Empfehlung)
+
+```crontab
+# Förder-Radar Deadline-Check – wöchentlich Sonntag 06:00
+0 6 * * 0 /opt/git/grant-intelligence/mcp/cron_check_expired.sh >> /var/log/grant-intelligence/deadline.log 2>&1
+```
+
+### 9.2 systemd-Timer (Alternative)
+
+```ini
+# /etc/systemd/system/grant-intelligence-deadline.service
+[Unit]
+Description=Foerder-Radar Deadline-Check
+
+[Service]
+Type=oneshot
+ExecStart=/opt/git/grant-intelligence/mcp/cron_check_expired.sh
+WorkingDirectory=/opt/git/grant-intelligence/mcp
+
+# /etc/systemd/system/grant-intelligence-deadline.timer
+[Unit]
+Description=Foerder-Radar wöchentlicher Deadline-Check
+
+[Timer]
+OnCalendar=Sun 06:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+```bash
+sudo systemctl enable --now grant-intelligence-deadline.timer
+sudo journalctl -u grant-intelligence-deadline.service -f
+```
+
+### 9.3 Log-Rotation
+
+```
+# /etc/logrotate.d/grant-intelligence
+/var/log/grant-intelligence/*.log {
+    weekly
+    rotate 12
+    compress
+    missingok
+    notifempty
+}
+```
+
+---
+
+## 10. Status
 
 | Item | Status |
 |------|--------|
 | Datenmodell | ✓ definiert |
-| Quellen-Registrierung | in Arbeit (`sources.yaml`) |
+| Quellen-Registrierung | ✓ (`sources.yaml`, 15 Quellgruppen) |
 | Update-Skript | ✓ (`update_catalog.py`) |
-| Validierung | ✓ |
-| Audit-Log | in Arbeit |
+| Fetch→Persist Pipeline | ✓ (`fetchers.py` `apply_fetch_updates`) |
+| Validierung | ✓ (`Programm.from_dict`) |
+| Audit-Log | ✓ (`docs/update_log.md`) |
+| Deadline-Cron | ✓ (`cron_check_expired.sh` + systemd-Timer) |
+| Katalog | ✓ 52 Programme (Student: 19, Junior: 29, Postdoc: 23, Prof: 23) |
 | CI/CD | optional |
-| Automatisches Fetching | teilweise (manuell > 80%) |
 
 ---
 
-**Letzte Aktualisierung:** 2026-08-03  
+**Letzte Aktualisierung:** 2026-08-12  
 **Operator:** Tobias Weiss

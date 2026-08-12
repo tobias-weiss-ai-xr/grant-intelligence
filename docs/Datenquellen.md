@@ -8,7 +8,7 @@ die Paywall liegt in kommoden Aggregator-DBs (PIVOT/Research-Professional), nich
 ## 1. Bundesrepublik Deutschland
 | Quelle | Portal | Verif. | Inhalt |
 |---|---|---|---|
-| DFG /> Förderung | `dfg.de/foerderung` | ✓ | Sachbeihilfe, Verbund-, Emmy Deverse, Fristen |
+| DFG /> Förderung | `dfg.de/foerderung` | ✓ | Sachbeihilfe, Emmy Noether, Walter Benjamin, Heisenberg, Reinhart Koselleck, Forschungsgruppen, Schwerpunktprogramme, Kolleg-FG, Klinische FG, Netzwerke, Forschungsimpulse, Graduiertenkollegs, SFB, FDM, UB-DigiServ, IT-Infra |
 | DFG GEPRIS | `gepris.dfg.de` | ✓ | bewilligte Förderprojekte (Metadaten/Referenz) |
 | BMBF | `bmbf.de` | ✓ | Bundes-/Programm-Calls |
 | Bundes-Förderportal (easy-Online) | `foerderdigital.bund.de` | ✓ | Zentrales Elektroflix, Fristen |
@@ -19,6 +19,8 @@ die Paywall liegt in kommoden Aggregator-DBs (PIVOT/Research-Professional), nich
 |---|---|---|
 | Wissenschaftliche Hessen (Förderung, LOEWE) | Teilweise | Landesprogramme inkl. LOEWE |
 | Fachhochschulen-/Regionalfonds Hessen | zu prüfen | je Pilot abzustimmen |
+| NRW MWK – Wissenschaft (mkw.nrw) | ✓ | Landesfoerderung NRW, Nachwuchs, Transfer |
+| Hightech Agenda Bayern (5,5 Mrd EUR) | ✓ | KI, Digital, Luftfahrt, Life Sciences |
 
 ## 3. Angewandte Forschung / Industrie
 | Quelle | Verifiz. | Inhalt |
@@ -30,10 +32,12 @@ die Paywall liegt in kommoden Aggregator-DBs (PIVOT/Research-Professional), nich
 | Inhalt | Portal | Verifiz. |
 |---|---|---|
 | EU Funding & Tenders | `ec.europa.eu/info/funding-tenders` | ✓ |
-| ERC | `erc.europa.eu` | ✓ |
+| ERC | `erc.europa.eu` | ✓ | StG, CoG, AdG, SyG, PoC |
 | EIT (Innovations-Communities) | `eit.europa.eu` | ✓ |
 | COST (Netzwerke/Mobilität) | `cost.eu` | ✓ |
 | Eurostars/EUREKA | `eurostars-eureka.eu` | (bot) |
+| **Marie Skłodowska-Curie Actions** (ITN, COFUND, PF) | `marie-sklodowska-curieactions.ec.europa.eu` | ✓ |
+| **Erasmus+** (Studienaustausch, BA/MA) | `ec.europa.eu/programmes/erasmus-plus` | ✓ |
 
 ## 5. Stiftungen (Deutschland)
 | Inhalt | Verifiz. |
@@ -41,21 +45,45 @@ die Paywall liegt in kommoden Aggregator-DBs (PIVOT/Research-Professional), nich
 | VolkswagenStiftung | ✓ |
 | Fritz-Thyssen-Stiftung | ✓ |
 | Carl-Zeiss-Stiftung | ✓ |
-| Alexander-von-Humboldt-Str. | ✓ (`humboldt-foundation.de`) |
+| Alexander-von-Humboldt-Stiftung | ✓ (`humboldt-foundation.de`) |
+| Gerda Henkel Stiftung (Geschichte, Kunst, Archäologie) | ✓ |
 | DBU (Umwelt) | ✓ |
 | Deutsche Krebshilfe (Med/Onko) | ✓ |
-| DAAD (Stipendium/Austausch) | ✓ |
+| DAAD (Stipendium/Austausch, Outgoing) | ✓ |
 | Studienstiftung d. dts. Volkes | ✓ |
+| **12 Begabtenförderungswerke** (siehe §5a) | ✓ |
+| Robert Bosch Stiftung (Gesundheit, Bildung, Gesellschaft) | ✓ (`bosch-stiftung.de`)
 
-## 6. International (nur wenn Scope-Ausland)
+### 5a. Begabtenförderungswerke
+| Werk | Ausrichtung | BA | MA | PhD |
+|---|---|---|---|---|
+| Studienstiftung des deutschen Volkes | Unabhängig | ✓ | ✓ | ✓ |
+| Cusanuswerk (Bischöfliche Studienstiftung) | Katholisch | ✓ | ✓ | ✓ |
+| Evangelisches Studienwerk Villigst | Evangelisch | ✓ | ✓ | ✓ |
+| Friedrich-Ebert-Stiftung | SPD-nah | ✓ | ✓ | ✓ |
+| Heinrich-Böll-Stiftung | Grüne-nah | ✓ | ✓ | ✓ |
+| Konrad-Adenauer-Stiftung | CDU-nah | ✓ | ✓ | ✓ |
+| Rosa-Luxemburg-Stiftung | Die Linke-nah | ✓ | ✓ | ✓ |
+| Hanns-Seidel-Stiftung | CSU-nah | ✓ | ✓ | ✓ |
+| Friedrich-Naumann-Stiftung | FDP-nah | ✓ | ✓ | ✓ |
+| Stiftung der Deutschen Wirtschaft | Wirtschaftsnah | ✓ | ✓ | ✓ |
+| Avicenna-Stiftung | Muslimisch | ✓ | ✓ | ✓ |
+
+## 5b. Bundesprogramme
 | Inhalt | Verifiz. |
 |---|---|
-| Grants.gov (US-Bund) | ✓ |
-| NIH | (bot/403) |
-| NSF | ✓ |
-| UKRI | ✓ |
-| SNSF (CH), FWF (AT) | ✓ main.tools |
-| Wellcome | 202 ✓ |
+| Deutschlandstipendium (300 EUR/Monat, über Hochschule) | ✓ |
+| Max Weber-Programm Bayern (Hochbegabtenförderung) | ✓ |
+
+## 6. International (Bilaterale Kooperation)
+| Inhalt | Verifiz. |
+|---|---|
+| NSF – US National Science Foundation | ✓ (`nsf.gov/funding`) |
+| NIH – US National Institutes of Health | ✓ (`grants.nih.gov`, 403/curl) |
+| UKRI – UK Research and Innovation | ✓ (`ukri.org/apply-for-funding/`) |
+| SNSF (CH) / FWF (AT) – DACH Kooperation | ✓ (`snf.ch`, `fwf.ac.at`) |
+| Wellcome Trust – Global Health | ✓ (`wellcome.org/research-funding`) |
+| Grants.gov (US-Bund, Referenz) | ✓ |
 
 ## 7. Unterstützende Identementschicht (keine Förderung)
 | Zweck | Quelle | Verifiz. |

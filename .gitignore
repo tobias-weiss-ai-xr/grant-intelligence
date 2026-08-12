@@ -14,3 +14,7 @@ secrets*
 
 # Dauerhaftes Daten, sofern sie nur lokal erzeugt werden
 data/local/*
+# Local agent state
+.pi/
+profiles.json
+.coverage

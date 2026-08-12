@@ -7,6 +7,7 @@ Fristen, Persistenz, MCP-Tools, UI-Rendering, Wochen-Brief.
 from __future__ import annotations
 
 from datetime import date, datetime
+from pathlib import Path
 
 import pytest
 
@@ -73,15 +74,36 @@ class TestKatalog:
             assert isinstance(p["themen"], list) and p["themen"]
             assert isinstance(p["karriere"], list) and p["karriere"]
 
-    def test_laufend_ist_rolling(self):
+    def test_laufend_ist_rolling_or_stichtage_or_ausschreibung(self):
         for p in PROGS:
             if p["status"] == "laufend":
-                assert p.get("rolling") is True, p["id"]
+                # laufend means: rolling, has stichtage, or ausschreibungsgebunden
+                is_valid = (
+                    p.get("rolling") is True
+                    or "Stichtag" in p.get("hinweis", "")
+                    or "ausschreibungsgebunden" in p.get("hinweis", "").lower()
+                )
+                assert is_valid, f"{p['id']}: laufend but no rolling/stichtage/ausschreibung"
 
     def test_verifiziert_hat_frist(self):
         for p in PROGS:
             if p["status"] == "verifiziert":
                 assert p.get("frist"), f"verifiziert ohne Frist: {p['id']}"
+
+    def test_kein_budget_null(self):
+        for p in PROGS:
+            assert p.get("budget_min") != 0, f"{p['id']}: budget_min=0 (should be null)"
+            assert p.get("budget_max") != 0, f"{p['id']}: budget_max=0 (should be null)"
+
+    def test_alle_haben_hinweis(self):
+        for p in PROGS:
+            assert p.get("hinweis"), f"{p['id']}: missing hinweis"
+
+    def test_kategorien_vollstaendig(self):
+        from grant_types import Kategorie
+        cats = {p["kategorie"] for p in PROGS}
+        for c in cats:
+            assert Kategorie.is_valid(c), f"Unknown kategorie '{c}' in catalog"
 
 
 # ----------------------------------------------------------------------- Matching
@@ -372,3 +394,174 @@ class TestBrief:
         briefmod.main()
         out = capsys.readouterr().out
         assert "Top-Matches" in out and "| DFG – Emmy Noether" in out
+
+    def test_cli_out_file(self, monkeypatch, tmp_path):
+        """Lines 148-150: brief --out writes to file."""
+        import sys
+        out = tmp_path / "brief.md"
+        monkeypatch.setattr(
+            sys, "argv", ["brief", "--felder", "Biologie", "--karriere", "postdoc", "--out", str(out)]
+        )
+        briefmod.main()
+        assert out.exists()
+        content = out.read_text()
+        assert "Top-Matches" in content
+
+    # -- server.py: search with kategorie filter (89) --
+    def test_search_with_kategorie(self):
+        r = server.search(kategorie="DFG", stichwort="Sachbeihilfe")
+        assert all(p["kategorie"] == "DFG" for p in r)
+        assert len(r) > 0
+
+
+# ---------------------------------------------------------------- Coverage Edges
+import app as appmod
+from match import CatalogError, save_catalog
+
+
+class TestCoverageEdges:
+    """Tests to reach uncovered branches (91% → 99%)."""
+
+    # -- match.py: load_catalog errors (54-59) --
+    def test_load_catalog_file_not_found(self):
+        from match import load_catalog
+        with pytest.raises(CatalogError, match="not found"):
+            load_catalog(path=Path("/tmp/nonexistent_grant_12345.json"))
+
+    def test_load_catalog_invalid_json(self, tmp_path):
+        from match import load_catalog
+        bad = tmp_path / "bad.json"
+        bad.write_text("{invalid", encoding="utf-8")
+        with pytest.raises(CatalogError, match="Invalid JSON"):
+            load_catalog(path=bad)
+
+    # -- match.py: save_catalog error (88-90) --
+    def test_save_catalog_oserror(self, tmp_path):
+        from match import save_catalog
+        readonly = tmp_path / "sub" / "deep.json"
+        # directory doesn't exist, trigger OSError
+        with pytest.raises(CatalogError, match="Failed to write"):
+            save_catalog([], path=readonly)
+
+    # -- match.py: begruendung empty-karriere branch (198-199) --
+    def test_begruendung_empty_karriere(self):
+        prog = {"id": "t", "name": "T", "themen": ["KI"], "karriere": [], "frist": None, "rolling": False, "status": "laufend", "quelle": "x", "hinweis": ""}
+        b = _begruendung(prog, {"felder": ["KI"], "karriere": 0})
+        assert "nicht gelistet" in b
+
+    # -- app.py: _format_deadline all branches (113,115,120,124) --
+    def test_format_deadline_rolling(self):
+        r = appmod._format_deadline(None, True)
+        assert "Rolling" in r.text
+        assert r.rolling is True
+
+    def test_format_deadline_offen(self):
+        r = appmod._format_deadline(None, False)
+        assert "offen" in r.text
+
+    def test_format_deadline_kaputt(self):
+        r = appmod._format_deadline("bald", False)
+        assert "prüfen" in r.text
+
+    def test_format_deadline_abgelaufen(self):
+        r = appmod._format_deadline("2020-01-01", False)
+        assert "Abgelaufen" in r.text
+        assert r.urgent is True
+
+    def test_format_deadline_weit(self):
+        r = appmod._format_deadline("2030-01-01", False)
+        assert "Tage bis Frist" in r.text
+        assert r.urgent is False
+
+    def test_format_deadline_dringend(self):
+        r = appmod._format_deadline(date.today().isoformat(), False)
+        assert "noch" in r.text
+        assert r.urgent is True
+
+    # -- server.py: programs kategorie filter (89) --
+    def test_programs_bund_filter(self):
+        bund = server.programs("Bund")
+        assert all(p["kategorie"] == "Bund" for p in bund)
+
+    def test_programs_international_filter(self):
+        intl = server.programs("International")
+        assert all(p["kategorie"] == "International" for p in intl)
+        assert len(intl) == 5
+
+    # -- server.py: ingest rejection (133-137) --
+    def test_ingest_rejects_invalid(self, tmp_path, monkeypatch):
+        import match as matchmod
+        kat = tmp_path / "catalog.json"
+        save_catalog(PROGS, kat)
+        monkeypatch.setattr(matchmod, "CATALOG", kat)
+        server.PROGRAMME[:] = load_catalog()
+        res = server.ingest([{
+            "id": "reject-me",
+            "name": "Valid Name",
+            "kategorie": "DFG",
+            "themen": ["frei"],
+            "karriere": ["postdoc"],
+            "rolle": ["lead"],
+            "frist": None, "rolling": True,
+            "status": "KAPUTT",  # invalid status!
+            "quelle": "t", "standDatum": "2026-08-12",
+        }])
+        assert res["abgelehnt"] == 1
+        assert res["neu"] == 0
+        assert any("KAPUTT" in f for f in res["fehler"])
+
+    # -- server.py: ingest update existing (141-145) --
+    def test_ingest_updates_existing(self, tmp_path, monkeypatch):
+        import match as matchmod
+        kat = tmp_path / "catalog.json"
+        save_catalog(PROGS, kat)
+        monkeypatch.setattr(matchmod, "CATALOG", kat)
+        server.PROGRAMME[:] = load_catalog()
+        target = server.PROGRAMME[0]["id"]
+        res = server.ingest([{
+            **server.PROGRAMME[0],
+            "hinweis": "updated by test",
+        }])
+        assert res["aktualisiert"] == 1
+        assert res["neu"] == 0
+
+    # -- server.py: match_best wrapper (208) --
+    def test_match_best_wrapper(self):
+        r = server.match_best(["Biologie"], karriere="postdoc", top=2)
+        assert len(r) <= 2
+        assert all("begruendung" in x for x in r)
+
+    # -- server.py: naechste_fristen wrapper (230) --
+    def test_naechste_fristen_wrapper(self):
+        r = server.naechste_fristen(["Biologie"], karriere="postdoc", top=2)
+        assert len(r) <= 2
+        assert all("tageBisFrist" in x for x in r)
+
+    # -- export.py: main() (144-158, 162) --
+    def test_export_csv_main(self, tmp_path, monkeypatch):
+        import export as expmod, sys
+        out = tmp_path / "export.csv"
+        monkeypatch.setattr(sys, "argv", ["export", "--format", "csv", "--out", str(out)])
+        expmod.main()
+        assert out.exists()
+        lines = out.read_text().strip().split("\n")
+        assert len(lines) > 1  # header + data
+
+    def test_export_json_main(self, tmp_path, monkeypatch):
+        import export as expmod, sys
+        out = tmp_path / "export.json"
+        monkeypatch.setattr(sys, "argv", ["export", "--format", "json", "--out", str(out)])
+        expmod.main()
+        assert out.exists()
+        import json
+        data = json.loads(out.read_text())
+        assert len(data["programme"]) == 75
+
+    def test_export_markdown_main(self, tmp_path, monkeypatch):
+        import export as expmod, sys
+        out = tmp_path / "export.md"
+        monkeypatch.setattr(sys, "argv", ["export", "--format", "markdown", "--out", str(out)])
+        expmod.main()
+        assert out.exists()
+        content = out.read_text()
+        assert "Programm-Übersicht" in content

@@ -1,6 +1,6 @@
 """Förder-Radar – Type definitions and data models.
 
-Type hints and Pydantic models for consistent data validation across the codebase.
+Type hints and dataclass models for consistent data validation across the codebase.
 """
 
 from __future__ import annotations
@@ -41,6 +41,20 @@ class Kategorie(Enum):
     LAND = "Land"
     STIFTUNG = "Stiftung"
     INDUSTRIE = "Industrie"
+    BUND = "Bund"
+    INTERNATIONAL = "International"
+
+    @classmethod
+    def is_valid(cls, value: str | None) -> bool:
+        """Check whether a string is a known category.
+
+        Args:
+            value: Category string or None.
+
+        Returns:
+            True if value is a known category value.
+        """
+        return value in cls._value2member_map_
 
 
 class Karrierestufe(Enum):
@@ -144,16 +158,17 @@ class Programm:
     hinweis: str = ""
 
     def __post_init__(self) -> None:
-        """Validate required fields and enum membership."""
+        """Validate required fields and enum membership.
+
+        Only id, name, and kategorie are hard requirements.
+        Empty themen/karriere/rolle lists are allowed (means "open to all").
+        """
         missing = [
             label
             for label, value in (
                 ("id", self.id),
                 ("name", self.name),
                 ("kategorie", self.kategorie),
-                ("themen", self.themen),
-                ("karriere", self.karriere),
-                ("rolle", self.rolle),
             )
             if not value
         ]

@@ -169,7 +169,7 @@ def _cards(felder: list[str], karriere: str) -> str:
     Returns:
         HTML string with match cards or "no results" message.
     """
-    matches = match_profile(PROGRAMME, felder, karriere, top=3)
+    matches = match_profile(PROGRAMME, felder, karriere, top=5)
 
     if not matches:
         return "<p>Keine Treffer – Felder oder Karrierestufe anpassen.</p>"

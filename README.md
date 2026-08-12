@@ -112,12 +112,15 @@ python3 mcp/export.py --format csv --out docs/export.csv
 
 ## Status
 
-- **Tests:** 52/52 bestanden
-- **Katalog:** Diverse Programme (ERC, DFG, BMBF, EU, Stiftungen, Land, Industrie)
+- **Tests:** 112/112 bestanden
+- **Katalog:** 75 Programme (ERC, DFG, BMBF, EU, Stiftungen, Land, Industrie, Bund, International)
 - **Karriere-Level:** postdoc, junior, prof, senior, student, verwaltung, service, IT, bibliothek
-- **Themen:** Medizin, Technik, Digital, KI, Energie, Umwelt, Onkologie, + themenoffen
+- **Student-Grants:** 19 Programme (Deutschlandstipendium, 11 Begabtenförderungswerke, DAAD, Erasmus+, Max Weber)
+- **PhD/Grad-Colleges:** DFG GK/IRTG/Graduate School, MSCA ITN/COFUND
+- **Postdoc-Grants:** DFG Walter Benjamin (Rueckkehr/Neueinstieg, rolling), ERC StG/CoG/AdG/SyG, DFG Emmy Noether/Heisenberg, DAAD, MSCA ITN/COFUND, Gerda Henkel, Fritz Thyssen
 - **Export:** CSV, JSON, Markdown
-- **Fetchers:** COST, EU Horizon, BMBF RSS (vorbereitet)
+- **Fetchers:** COST, EU Horizon, BMBF RSS (mit auto-Persist via `apply_fetch_updates`)
+- **Deadline-Cron:** `cron_check_expired.sh` (systemd-Timer/Crontab empfohlen)
 
 ## Verwandt
 

@@ -112,17 +112,51 @@ def update_stand_datum(programme: list[dict]) -> list[dict]:
 
 # ------------------------------------------------------------------ Update-Operationen
 def fetch_manual(source: str) -> list[dict] | None:
-    """Manuelle Quellen-Prüfung (Platzhalter für Portal-Check)."""
+    """Quellen-Prüfung via Fetcher (falls vorhanden) oder manuell.
+
+    Nutzt die Fetcher aus fetchers.py, falls eine Funktion fuer die Quelle
+    existiert. Liefert validierte Programme zurueck, die in den Katalog
+    gemergt werden koennen.
+
+    Args:
+        source: Quell-Bezeichner (erc, dfg, bmbf, eu, cost, …).
+
+    Returns:
+        Liste von Programm-Dicts oder None (fuer rein manuelle Quellen).
+    """
+    _FETCHER_MAP = {
+        "cost": lambda: __import__("fetchers", fromlist=["fetch_cost"]).fetch_cost(),
+        "eu": lambda: __import__("fetchers", fromlist=["fetch_eu_horizon"]).fetch_eu_horizon(),
+        "bmbf": lambda: __import__("fetchers", fromlist=["fetch_bmbf_rss"]).fetch_bmbf_rss(),
+    }
+
     sources = load_sources()
     src = sources.get(source)
     if not isinstance(src, dict):
         log.warning(f"Unbekannte Quelle: {source}")
         return None
+
+    # Try fetcher if available
+    fetcher_fn = _FETCHER_MAP.get(source)
+    if fetcher_fn:
+        log.info(f"Fetch via Fetcher: {src.get('name', source)}")
+        update = fetcher_fn()
+        if update.programmes:
+            log.info(f"  {len(update.programmes)} Programme von {source}")
+            for e in update.errors:
+                log.warning(f"  Fehler: {e}")
+            return update.programmes
+        if update.suggestions:
+            for s in update.suggestions:
+                log.info(f"  {s}")
+        return None
+
+    # Manual source: log hint
     log.info(f"Manuelle Prüfung: {src.get('name', source)} ({src.get('url', '?')})")
     hinweis = src.get("hinweis")
     if hinweis:
         log.info(f"  Hinweis: {hinweis}")
-    return None  # Keine automatischen Updates für manuelle Quellen
+    return None
 
 
 def merge_programmes(new: list[dict], existing: list[dict]) -> tuple[list[dict], int, int]:

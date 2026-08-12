@@ -287,7 +287,167 @@ def generate_update_suggestions(
     return suggestions
 
 
-def fetch_all(check_deadlines: bool = False) -> list[ProgrammeUpdate]:
+def _enrich_programme(partial: dict[str, Any], source: str) -> dict[str, Any] | None:
+    """Fill missing required fields for a fetched programme.
+
+    Fetched data is often incomplete (only id, name, quelle). This adds
+    sensible defaults so the programme passes Programm.from_dict() validation.
+    Returns None if essential fields are missing.
+
+    Args:
+        partial: Partial programme dict from a fetcher.
+        source: Source identifier (e.g. "bmbf", "cost").
+
+    Returns:
+        Complete programme dict, or None if unenrichable.
+    """
+    if not partial.get("id") or not partial.get("name"):
+        return None
+
+    _CATEGORY_MAP = {
+        "bmbf": "BMBF",
+        "cost": "EU",
+        "eu": "EU",
+        "erc": "ERC",
+        "dfg": "DFG",
+    }
+
+    return {
+        "id": partial["id"],
+        "name": partial["name"],
+        "kategorie": _CATEGORY_MAP.get(source, source),
+        "themen": partial.get("themen", ["thematisch-offen"]),
+        "karriere": partial.get("karriere", []),
+        "rolle": partial.get("rolle", ["lead"]),
+        "budget_min": partial.get("budget_min"),
+        "budget_max": partial.get("budget_max"),
+        "dauerJahre": partial.get("dauerJahre"),
+        "frist": partial.get("frist"),
+        "rolling": partial.get("rolling", False),
+        "status": "zu-pruefen",
+        "quelle": partial.get("quelle", ""),
+        "standDatum": partial.get("standDatum", date.today().isoformat()),
+        "hinweis": partial.get("hinweis", "Auto-importiert, manuelle Verifikation erforderlich"),
+    }
+
+
+def apply_fetch_updates(
+    updates: list[ProgrammeUpdate],
+    catalog_path: Path = CATALOG_JSON,
+    audit_path: Path | None = None,
+) -> dict[str, Any]:
+    """Validate fetched programmes, merge into catalog, write audit log.
+
+    Each programme in each update is validated via Programm.from_dict().
+    Invalid programmes are rejected and logged but do not block others.
+
+    Args:
+        updates: List of ProgrammeUpdate results from fetchers.
+        catalog_path: Path to catalog.json.
+        audit_path: Path to audit log. Defaults to docs/update_log.md.
+
+    Returns:
+        Summary dict with source, added, updated, rejected counts.
+    """
+    from grant_types import Programm
+
+    if audit_path is None:
+        audit_path = Path(__file__).parent.parent / "docs" / "update_log.md"
+
+    # Load catalog
+    try:
+        with open(catalog_path, encoding="utf-8") as fh:
+            doc = json.load(fh)
+        catalogue = doc.get("programme", [])
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        log.error(f"Cannot load catalog {catalog_path}: {e}")
+        return {"status": "error", "fehler": str(e)}
+
+    total_added, total_updated, total_rejected = 0, 0, 0
+    all_errors: list[str] = []
+    source_reports: list[str] = []
+
+    existing_ids = {p.get("id") for p in catalogue if p.get("id")}
+
+    for update in updates:
+        added, updated, rejected = 0, 0, 0
+        source_errors: list[str] = []
+
+        for partial in update.programmes:
+            enriched = _enrich_programme(partial, update.source)
+            if enriched is None:
+                rejected += 1
+                source_errors.append(f"Missing id/name: {partial.get('id', '?')}")
+                continue
+
+            # Validate
+            try:
+                Programm.from_dict(enriched)
+            except (ValueError, TypeError) as e:
+                rejected += 1
+                source_errors.append(f"{enriched['id']}: {e}")
+                log.warning(f"Rejected {enriched['id']}: {e}")
+                continue
+
+            # Upsert
+            pid = enriched["id"]
+            if pid in existing_ids:
+                for i, old in enumerate(catalogue):
+                    if old.get("id") == pid:
+                        catalogue[i] = enriched
+                        break
+                updated += 1
+                log.info(f"  Updated: {pid}")
+            else:
+                catalogue.append(enriched)
+                existing_ids.add(pid)
+                added += 1
+                log.info(f"  Added: {pid}")
+
+        total_added += added
+        total_updated += updated
+        total_rejected += rejected
+        all_errors.extend(source_errors)
+
+        if added or updated or rejected:
+            source_reports.append(
+                f"{update.source}: +{added} / ~{updated} / x{rejected}"
+            )
+
+    # Save catalog
+    if total_added or total_updated:
+        doc["stand"] = date.today().isoformat()
+        doc["programme"] = catalogue
+        with open(catalog_path, "w", encoding="utf-8") as fh:
+            json.dump(doc, fh, ensure_ascii=False, indent=2)
+            fh.write("\n")
+        log.info(f"Catalog saved: {catalog_path} ({len(catalogue)} programmes)")
+
+    # Audit log
+    if source_reports:
+        audit_entry = (
+            f"## {datetime.now().isoformat()} – Fetch Pipeline\n\n"
+            + "\n".join(f"- {r}" for r in source_reports)
+            + (f"\n\nErrors:\n" + "\n".join(f"- {e}" for e in all_errors) if all_errors else "")
+            + "\n"
+        )
+        try:
+            with open(audit_path, "a", encoding="utf-8") as fh:
+                fh.write(audit_entry)
+        except OSError as e:
+            log.warning(f"Cannot write audit log: {e}")
+
+    return {
+        "status": "ok",
+        "gesamt_neu": total_added,
+        "gesamt_aktualisiert": total_updated,
+        "gesamt_abgelehnt": total_rejected,
+        "fehler": all_errors,
+        "quellen": source_reports,
+    }
+
+
+def fetch_all(check_deadlines_flag: bool = False) -> list[ProgrammeUpdate]:
     """Query all sources.
 
     Args:
@@ -297,7 +457,7 @@ def fetch_all(check_deadlines: bool = False) -> list[ProgrammeUpdate]:
         List of ProgrammeUpdate results.
     """
     results = []
-    catalog = load_catalog() if check_deadlines else []
+    catalog = load_catalog() if check_deadlines_flag else []
     sources = load_sources()
 
     log.info("=== Manual Sources (no automatic fetching) ===")
@@ -309,8 +469,11 @@ def fetch_all(check_deadlines: bool = False) -> list[ProgrammeUpdate]:
     results.append(fetch_cost())
     results.append(fetch_eu_horizon())
 
+    # BMBF RSS (produces programme records)
+    results.append(fetch_bmbf_rss())
+
     # Deadline check
-    if check_deadlines:
+    if check_deadlines_flag:
         log.info("\n=== Deadline Check ===")
         warnings = check_catalog_deadlines(catalog)
         if warnings:
@@ -340,7 +503,7 @@ def main() -> None:
     args = ap.parse_args()
 
     if args.source == "all":
-        results = fetch_all(check_deadlines=args.check_deadlines)
+        results = fetch_all(check_deadlines_flag=args.check_deadlines)
     elif args.source == "cost":
         results = [fetch_cost()]
     elif args.source == "eu":
@@ -357,6 +520,16 @@ def main() -> None:
             log.warning(f"  Error: {e}")
         for s in r.suggestions:
             log.info(f"  Suggestion: {s}")
+
+    # Apply fetch updates if any programmes were fetched
+    programmes_fetched = [r for r in results if r.programmes]
+    if programmes_fetched:
+        log.info("\n=== Applying Fetch Updates ===")
+        summary = apply_fetch_updates(programmes_fetched)
+        log.info(f"  Result: +{summary.get('gesamt_neu', 0)} / ~{summary.get('gesamt_aktualisiert', 0)} / x{summary.get('gesamt_abgelehnt', 0)}")
+        if summary.get("fehler"):
+            for e in summary["fehler"]:
+                log.warning(f"  {e}")
 
 
 if __name__ == "__main__":

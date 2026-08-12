@@ -63,7 +63,7 @@ def programs(kategorie: str | None = None) -> list[dict[str, Any]]:
     """List curated grant programs, optionally filtered by category.
 
     Args:
-        kategorie: Optional category filter (DFG, ERC, BMBF, Land, Stiftung, Industrie, EU).
+        kategorie: Optional category filter (DFG, ERC, BMBF, Land, Stiftung, Industrie, EU, Bund, International).
 
     Returns:
         List of program dictionaries.

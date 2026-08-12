@@ -117,3 +117,19 @@ class TestProgramm:
     def test_budget_text_property(self):
         p = Programm.from_dict({**VOLL, "budget_max": 500_000})
         assert "Tausend" in p.budget_text
+
+    def test_days_until_deadline_kaputte_frist(self):
+        """Line 219: parse_frist returns None for invalid frist (bypass __post_init__)."""
+        p = Programm(id="t", name="T", kategorie="DFG", themen=[], karriere=[], rolle=[])
+        object.__setattr__(p, "frist", "bald")  # bypass __post_init__ validation
+        assert p.days_until_deadline is None
+        assert not p.is_expired
+        assert not p.is_urgent()
+
+    def test_kategorie_is_valid(self):
+        from grant_types import Kategorie
+        assert Kategorie.is_valid("International")
+        assert Kategorie.is_valid("Bund")
+        assert Kategorie.is_valid("DFG")
+        assert not Kategorie.is_valid("Foobar")
+        assert not Kategorie.is_valid(None)

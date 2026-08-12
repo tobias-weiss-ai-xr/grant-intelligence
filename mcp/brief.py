@@ -36,7 +36,7 @@ def _zeile(r: MatchResult) -> str:
     return f"| {r.name} | {r.kategorie} | {r.score}/5 | {frist} | {r.begruendung} |"
 
 
-def generate(felder: list[str], karriere: str | None, top: int = 3, tage: int = 60) -> str:
+def generate(felder: list[str], karriere: str | None, top: int = 5, tage: int = 60) -> str:
     """Generate a weekly brief in Markdown format.
 
     Args:
