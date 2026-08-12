@@ -85,7 +85,7 @@ die Paywall liegt in kommoden Aggregator-DBs (PIVOT/Research-Professional), nich
 | Wellcome Trust – Global Health | ✓ (`wellcome.org/research-funding`) |
 | Grants.gov (US-Bund, Referenz) | ✓ |
 
-## 7. Unterstützende Identementschicht (keine Förderung)
+## 7. Unterstützende Identitätsschicht (keine Förderung)
 | Zweck | Quelle | Verifiz. |
 |---|---|---|
 | Profil-/Publikationen | ORCID (Public API, frei) | ✓ |

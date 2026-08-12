@@ -1,4 +1,7 @@
-# Förder-Radar – Wochen-Brief
+# Förder-Radar – Wochen-Brief (Beispieloutput)
+
+> **Hinweis:** Automatisch erzeugter Beispiel-Brief. Bei Nutzung `python3 brief.py` mit
+> eigenen Feldern/Karriere ausführen.
 
 **Stand:** 2026-08-03 · Profil: Medizin, Onkologie · Karriere: postdoc
 

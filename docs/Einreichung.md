@@ -1,68 +1,10 @@
 # Grant-Agent (Förder-Radar) – FLASH-Einreichung (Business)
 
-Status: iterativ verbesserter Text. Ziel: < 300 Wörter im Online-Formular.
+Status: **V2 final** (≤300 Wörter, abgegeben 2026-08).
 
 ---
 
-## V0 (Roh)
-
-**„Grant-Agent" – der persönliche Förder-Radar**
-
-Forschende verlieren wöchentlich erhebliche Zeit damit, die richtige
-Förderung zu finden, Profil und Programm abzugleichen und Fristen zu
-überwachen. Viele Töpfe existieren – DFG, ERC, Bund, Land, Stiftungen –,
-aber es fehlt eine persönliche, offene Stelle, an der man in Minuten weiß:
-„Das passt zu mir, das läuft bald ab". Der Grant-Agent schließt diese Lücke.
-
-Der Grant-Agent ist ein kleiner, selbst bestellter Software-Assistent, der
-per Agenten-Ralle (Aufnahme -> Suche -> Meldung) aus offenen, offiziellen
-Quellen für ein Personenstehen: Top-Treffer nach Themefeld und Karriere,
-Begründung, Budget, und Frist-Warnungen, wenn ein Programm betreffend wird.
-Er nutzt den Model-Context-Protocol Standard, ist lokal setzbar und
-datenschutzkonform (DSGVO), und setzt auf frei lizenzierte Quellen statt auf
-teure Abo-Datenbanken wie PIVOT oder GrantForward.
-
-Der Mehrwert ist dreifach: Antworten in Minuten statt Stunden an Kommunität;
-eine klare, begründete eKurzliste statt Überangebot; und nächtliche Notizen
-statt verpasster Fristen. Für die Einführung genügt ein Pilot an einem
-Dienste/Verband (first customer = unsere), der in wenigen Wochen läuft und
-die Grundlage für ein debtbarertes Produkt bildet.
-
-Der Grant-Agent bringt (Wissenschafts-)Zeit mit offenen Daten zusammen –
-ein kleiner, souverärer Schritt zur Daten-Inteiligen einer Hochschule.
-
----
-
-## V1 (mittelfristig geschliffen)
-
-**„Grant-Agent" – „Profil + Frist", das den Drittmittel-Dschungel individuell sortiert**
-
-Forschende verlieren wöchentlich Zeit mit der Frage, welche Förderung wirklich
-passt und wann sie läuft. An Angeboten fehlt es nicht (DFG, ERC, Bund, Land,
-Stiftungen) – aber an einer offenen, persönlichen Stellen. Der Grant-Agent
-fremdet das: ein lokal gelässiger Assistent, der offene, offizielle Quellen in
-einer Ralle (Aufnahme, Suche, Meldung) zu einem Personenprofil verdichtet.
-
-Er liefert drei Antworten, die sonst fehlen: die Top-Matches nach Feldern und
-Karriere mit Begründung und Budget; eine einfache Kurzliste statt
-Überblick; und automatische Fristwarnung kurz vor Ablauf. Er baut auf dem
-Model-Code-Protocol (MCP) auf, läuft lokal, bleibt DSGVO-konform (keine
-Rechenschaft an Cloud), und arbeitet auf offenen Datenquellen statt auf
-teurer Abo-Datenbanken (PIVOT, GrantForward).
-
-Damit hat die Einrichtung einen konkreten, sofort bezifferbaren Nutzen:
-weniger Abstimmungs-Sonderungen, weniger verpasste Fristen, eine einfach
-verständliche Rail aus aller Fördertöpfen. Ein Pilot (ein Datenbereich
-anda) benötigt nur wenige Wochen und liefert die Basis für wiederkehrende
-(data-) & eine landbare spätere SaaS-AusfüllungSkaliert.
-
-Der Grant-Agent ist ein kleiner, souveräner, handhabbarer Schrittavicl la:
-er zeigt, wie eine Hochschule offene Daten und Agent-Technologie verbinden
-kann – unauffällig, verlässlich, mit ehrlichem Nutzen statt Überantbot.
-
----
-
-## V2 (final, ≤300)
+## Finalfassung (≤300 Wörter)
 
 **„Grant-Agent" – der persönliche Förder-Assistent für die Philipps-Universität**
 

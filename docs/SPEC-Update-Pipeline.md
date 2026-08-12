@@ -14,7 +14,7 @@ Jedes Programm im `catalog.json` hat folgende Felder:
 |------|-----|---------|--------------|
 | `id` | string | ✓ | Eindeutige ID (z.B. `erc-stg-2027`, `dfg-sachbeihilfe`) |
 | `name` | string | ✓ | Vollständiger Programmname |
-| `kategorie` | string | ✓ | DFG, ERC, BMBF, EU, Land, Stiftung, Industrie |
+| `kategorie` | string | ✓ | DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International |
 | `themen` | string[] | ✓ | Themenliste oder `["frei"]` für themenoffen |
 | `karriere` | string[] | ✓ | Zielkarrierestufen (postdoc, junior, prof, senior, student, verwaltung, service, IT, bibliothek) |
 | `rolle` | string[] | ✓ | Mögliche Rollen (lead, partner) |
@@ -415,7 +415,7 @@ sudo journalctl -u grant-intelligence-deadline.service -f
 | Validierung | ✓ (`Programm.from_dict`) |
 | Audit-Log | ✓ (`docs/update_log.md`) |
 | Deadline-Cron | ✓ (`cron_check_expired.sh` + systemd-Timer) |
-| Katalog | ✓ 52 Programme (Student: 19, Junior: 29, Postdoc: 23, Prof: 23) |
+| Katalog | ✓ 75 Programme (9 Kategorien: DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International) |
 | CI/CD | optional |
 
 ---

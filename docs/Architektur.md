@@ -2,47 +2,48 @@
 
 ## 1. Prinzip
 Kleine, offene Bausteine statt Monolith. Ein Beispiel-Profil erzeugt eine
-Bewertungsansicht „nächste Chance + Begründung + Frist". Erste Daten: 2–3
-Programmfamilien, keine Voll-Recherche.
+Bewertungsansicht „nächste Chance + Begründung + Frist".
 
 ## 2. Bausteine
 1. **Datenquellen / Förderkatalog**
-   - DFG (GePrIS/Antragsdaten), ERC (Nachwuchs-/Weiterlinien), BMBF-/Landeslinien,
-     eine regionale Stiftung.
+   - DFG, ERC, BMBF, EU, Bund, Land, Stiftungen, Industrie, International.
    - Format je Abbildung: Ausschreibungstext, Themen-Keywords, Karrierestufe,
-     Rolle, Budget, Frist, Rolling-Struktur, Quelle, Stand-Datum.
-2. **Profil-Adapter**
+   Rolle, Budget, Frist, Rolling-Struktur, Quelle, Stand-Datum.
+2. **Profile**
    - Eingabe ORCID / Publikationen / Stichworte (mit Einwilligung).
+   - Öffentlich per Merge Request (`profiles.json`) oder privat lokal
+   (`profiles.local`).
    - Themen-Vektor + Karrierestufe („Postdoc", „Junior-Prof").
 3. **Matching-Engine**
    - Gewichtete Punkte (Thema, Karriere, Rolle, Geo), Ausgabe Score +
-     kurze Begründung je Treffer.
-   - Verhindert mehrfache Einreichungen desselben Vorhabens.
+   kurze Begründung je Treffer.
 4. **Frist-Pipeline / Benachrichtigung**
    - Nächste Frist je Programm, Rolling-Fenster, Alarm (E-Mail/Kalender).
 5. **Oberfläche**
-   - Eine Seite: „Meine 2–3 Chancen + Begründung + Frist-Zähler".
-   - Zusätzlich aggregierte Dekanats-Ansicht (datenschutzfreundlich).
+   - Eine Seite: „Meine 5 Chancen + Begründung + Frist-Zähler".
+   - Zusätzlich MCP-Server für Agent-Integration.
 
 ## 3. Datenmodell (Kernentitäten)
 ```
 Programm {
-  id, name, themen[], kategorie(DFG|ERC|BMBF|Land|Stiftung),
+  id, name, themen[],
+  kategorie: DFG | ERC | BMBF | EU | Land | Stiftung | Industrie | Bund | International,
   frist: Date, rolling: boolean,
   budgetMin, budgetMax, rolle[lead|partner],
-  karriere[postdoc|junior|prof], quelle, standDatum
+  karriere[postdoc|junior|prof|senior|student|verwaltung|service|IT|bibliothek],
+  quelle, standDatum, status, hinweis
 }
 Profil {
-  id, themen[], karriere, orcid, publikationen, einwilligung, status
+  id, name, themen[], karriere, orcid, publikationen, einwilligung, status
 }
 Match { profilId, programmId, score, begruendung }
 FristAlert { profilId, programmId, frist, alarm }
 ```
 
-## 4. Technologie (Vorschlag)
-- Backend: Python (FastAPI) oder Node; Frontend: einfache HTML/JS; Daten: SQLite.
-- Katalog als kuratierte JSON für den Prototyp, gepflegt über Update-Skript.
-- Keine teuren Dienste; KI optional nur für die Begründung.
+## 4. Technologie
+- Backend: Python (FastAPI + FastMCP); Frontend: einfache HTML/JS.
+- Katalog + Profile als kuratierte JSON, gepflegt über Update-Skript.
+- Keine teuren Dienste; KI optional nur für die Begründung (SAIA-KI-API).
 
 ## 5. Offene Fragen
 - Zugriff auf ORCID/Uni-Daten (ORCID Public API ja; der Rest je Plattform).

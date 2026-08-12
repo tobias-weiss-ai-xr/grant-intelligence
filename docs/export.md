@@ -1,7 +1,10 @@
-# Förder-Radar – Programm-Übersicht
+# Förder-Radar – Programm-Übersicht (Beispieloutput)
+
+> **Hinweis:** Automatisch erzeugter Beispiel-Export. Bei Nutzung `python3 export.py --format markdown`
+> ausführen.
 
 **Exportiert:** 2026-08-03T22:33:27.741121
-**Gesamt:** 32 Programme
+**Gesamt:** 32 Programme (Beispielstand; aktuell 75 Programme)
 
 ## Alle Programme
 

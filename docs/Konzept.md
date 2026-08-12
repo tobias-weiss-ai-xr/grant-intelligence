@@ -25,14 +25,14 @@ größere Liste.
 
 ### 4.1 Enthalten (MVP)
 1. **Profil:** ORCID/Publikationen/Stichworte, DSGVO-geklärt, mit Einwilligung;
-   Karrierestufe (Postdoc/Junior/Prof).
-2. **Kuratierter Katalog:** DFG-Einzel- und Verbundverfahren, ERC (StG/CoG),
-   BMBF-/Landesförderung und eine regionale Stiftung – passend zur Fakultät.
+   Karrierestufe (Postdoc/Junior/Prof). Öffentliche oder private Pflege.
+2. **Kuratierter Katalog:** DFG, ERC, BMBF, EU, Bund, Land, Stiftungen,
+   Industrie, International – 75 Programme aus offiziellen Quellen.
 3. **Matching:** Themen-Überlappung, Karrierestufe, Rolle (Lead/Partner),
    Geografie.
 4. **Begründung:** „Warum passt diese Ausschreibung zu dir?" – kein Keyword-Dump.
 5. **Frist-Pipeline:** nächste Einreichung, Rolling-Fenster, Frist-Zähler.
-6. **Dashboard je Persona:** nächste 2–3 Chancen, Pipeline-Status.
+6. **Dashboard je Persona:** nächste 5 Chancen, Pipeline-Status.
 
 ### 4.2 Bewusst nicht
 - **Keine** Voll-Welt-Datenbank aller Stiftungen und Förderer.
@@ -41,7 +41,7 @@ größere Liste.
 - **Keine** Verwaltung bereits bewilligter Projekte (eigenes Feld).
 
 ## 5. Nutzen / „Warum jetzt"
-- Unis stehen unter Drittmittel-Druck: früher erkannte, passende Call erhöhen
+- Unis stehen unter Drittmittel-Druck: früher erkannte, passende Calls erhöhen
   die Qualität der Einreichungen.
 - Förder-Matching bleibt weitgehend ungelöst und ohne deutschsprachigen Standard;
   die Lücke zwischen großer Datenbank und dem einzelnen Standort ist offen.
@@ -56,7 +56,7 @@ Datenbank" gepitcht.
 ## 7. Risiken & Gegenmaßnahmen
 - **Datenqualität:** nur offizielle Quellen, jedes Datum mit Stand, Update-Prozess.
 - **DSGVO:** Profil nur mit Einwilligung, minimale Daten; Institution verantwortlich.
-- **Demo-Illusion:** Der Prototyp zeigt drei reale Programme an zwei Profilen, nicht „alles".
+- **Demo-Illusion:** Der Prototyp zeigt reale Programme an echten Profilen, nicht „alles".
 - **Erwartungsmanagement:** Matching gibt Orientierung, keine Zusage und keinen
   Rechtsanspruch.
 
@@ -64,8 +64,15 @@ Datenbank" gepitcht.
 - Anzahl früh erkannter passender Calls, weniger verpasste Fristen, weniger
   Stunden für den manuellen Abgleich.
 
-## 9. Nächste Schritte
-1. Eine Pilot-Fakultät und 2–3 reale Profile festlegen.
-2. Förderprogramme und offene Quellen sammeln (→ `Architektur.md`).
-3. Prototyp „eine Seite" umsetzen (→ `MVP-Demo.md`).
-4. Einreichungstext finalisieren (≤300 Wörter).
+## 9. Umsetzungsstand
+
+| Schritt | Status |
+|---------|--------|
+| Pilot-Fakultät festlegen | offen (deferred) |
+| 2–3 reale Profile | ⚠ 1 aktiv (pilot-01-tobias), weitere offen |
+| Förderprogramme sammeln | ✅ 75 Programme, 9 Kategorien |
+| Prototyp umsetzen | ✅ Agent-Schleife + UI + MCP-Server + Brief |
+| Einreichungstext finalisieren | ✅ V2, ≤300 Wörter |
+| Update-Pipeline | ✅ Fetchers + Cron + Audit-Log |
+| Open Source | ✅ MIT-Lizenz, GitHub |
+| Tests + Qualität | ✅ 138 Tests, 100% Coverage, mypy clean |
