@@ -450,3 +450,42 @@ wellcome:
   programs:
     - id: "wellcome-international"
       name: "Wellcome Trust – International"
+
+evita:
+  name: "EVITA HPC (EuroHPC Virtual Training Academy)"
+  url: "https://www.evitahpc.eu/public-calls/"
+  type: "manual"
+  update_frequency: "monthly"
+  last_check: "2026-08-12"
+  hinweis: "Cascade Funding: modulare HPC-Trainingsmaterialien + externe Reviewer."
+  programs:
+    - id: "evita-hpc-training-materials"
+      name: "EVITA HPC – Call for Modular Training Materials"
+      deadline: "2026-09-07"
+      status: "open"
+    - id: "evita-hpc-external-reviewers"
+      name: "EVITA HPC – Call for External Reviewers"
+
+eurohpc:
+  name: "EuroHPC JU"
+  url: "https://www.eurohpc-ju.europa.eu/"
+  type: "manual"
+  update_frequency: "monthly"
+  last_check: "2026-08-12"
+  hinweis: "Access Calls (Supercomputer/AI Factories) + Research & Innovation Calls."
+  programs:
+    - id: "eurohpc-access-calls"
+      name: "EuroHPC JU – Supercomputer & AI-Factory Access"
+    - id: "eurohpc-research-innovation"
+      name: "EuroHPC JU – Research & Innovation Calls"
+
+eosc:
+  name: "EOSC Association"
+  url: "https://eosc.eu/calls-grants/"
+  type: "manual"
+  update_frequency: "monthly"
+  last_check: "2026-08-12"
+  hinweis: "Horizon Europe INFRAEOSC: FAIR-Daten, EOSC-Nodes, Trainings."
+  programs:
+    - id: "eosc-infraeosc"
+      name: "Horizon Europe – INFRAEOSC (EOSC Ecosystem)"

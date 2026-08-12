@@ -1926,6 +1926,151 @@
       "quelle": "https://wellcome.org/research-funding",
       "standDatum": "2026-08-12",
       "hinweis": "Wellcome Trust (UK). Globale Gesundheitsforschung. Internationale Programme. Deutsche Forscher koennen fuehren. Ausschreibungsgebunden."
+    },
+    {
+      "id": "evita-hpc-training-materials",
+      "name": "EVITA HPC – Call for Modular Training Materials",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "IT-Infrastruktur",
+        "Training",
+        "Digital"
+      ],
+      "karriere": [
+        "prof",
+        "postdoc",
+        "service",
+        "IT"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": null,
+      "frist": "2026-09-07",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://www.evitahpc.eu/public-calls/",
+      "standDatum": "2026-08-12",
+      "hinweis": "EVITA (EuroHPC Virtual Training Academy): Cascade Funding fuer modulare HPC-Trainingsmaterialien. Publikation 16.06.2026, Deadline 07.09.2026, Ergebnisse Nov 2026. Funding pro Modul; Details im Call Document."
+    },
+    {
+      "id": "evita-hpc-external-reviewers",
+      "name": "EVITA HPC – Call for External Reviewers",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "Training",
+        "Evaluierung"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": null,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.evitahpc.eu/public-calls/",
+      "standDatum": "2026-08-12",
+      "hinweis": "EVITA sucht unabhaengige externe Gutachter:innen fuer die Evaluierung der Cascade-Funding-Antraege (Trainingsmaterialien). Publikation 16.06.2026; Fristen im Call Document pruefen."
+    },
+    {
+      "id": "eurohpc-access-calls",
+      "name": "EuroHPC JU – Supercomputer & AI-Factory Access",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "IT-Infrastruktur",
+        "Künstliche Intelligenz",
+        "Digital"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof",
+        "IT"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": null,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.eurohpc-ju.europa.eu/supercomputers/supercomputers-access-calls_en",
+      "standDatum": "2026-08-12",
+      "hinweis": "Zugang zu EuroHPC-Supercomputern und AI Factories fuer Forschung/Industrie. Wiederkehrende Access Calls (Benchmark-/Regular-/Extreme-Scale-Access); Fristen im Portal pruefen. Kein Geldtransfer, sondern Rechenzeit."
+    },
+    {
+      "id": "eurohpc-research-innovation",
+      "name": "EuroHPC JU – Research & Innovation Calls",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "IT-Infrastruktur",
+        "Künstliche Intelligenz",
+        "Quantentechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.eurohpc-ju.europa.eu/research-innovation/research-innovation-calls_en",
+      "standDatum": "2026-08-12",
+      "hinweis": "EuroHPC-Forschungs- und Innovationsausschreibungen (inkl. Quantencomputing). Fristen im Portal pruefen; internationale Konsortien ueblich."
+    },
+    {
+      "id": "eosc-infraeosc",
+      "name": "Horizon Europe – INFRAEOSC (EOSC Ecosystem)",
+      "kategorie": "EU",
+      "themen": [
+        "Forschungsdaten",
+        "Open Access",
+        "Digital",
+        "IT-Infrastruktur"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof",
+        "verwaltung",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://eosc.eu/calls-grants/",
+      "standDatum": "2026-08-12",
+      "hinweis": "Destination 'Enabling an operational, open and FAIR EOSC ecosystem' im Horizon-Europe-Arbeitsprogramm Research Infrastructures. Calls fuer FAIR-Daten, EOSC-Nodes, Trainings; Fristen im EU Funding & Tenders Portal pruefen."
     }
   ]
 }

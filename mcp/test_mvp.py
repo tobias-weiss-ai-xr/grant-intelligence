@@ -554,8 +554,10 @@ class TestCoverageEdges:
         expmod.main()
         assert out.exists()
         import json
+        from match import load_catalog
         data = json.loads(out.read_text())
-        assert len(data["programme"]) == 75
+        katalog = load_catalog()
+        assert len(data["programme"]) == len(katalog)
 
     def test_export_markdown_main(self, tmp_path, monkeypatch):
         import export as expmod, sys

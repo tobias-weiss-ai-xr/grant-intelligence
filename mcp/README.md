@@ -14,7 +14,7 @@ fristen -> notify) als MCP-Tools bereit.
 
 | Datei | Zweck |
 |-------|-------|
-| `catalog.json` | Kuratierte Förderprogramme (75 Programme, Stand 2026-08) |
+| `catalog.json` | Kuratierte Förderprogramme (80 Programme, Stand 2026-08) |
 | `profiles.json` | Öffentliche Pilot- und Nutzer-Profile (im Repo) |
 | `profiles.local.example` | Template für private Profile |
 | `profiles.local` | Private Profile (gitignored, nicht im Repo) |

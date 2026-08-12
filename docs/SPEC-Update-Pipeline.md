@@ -415,7 +415,7 @@ sudo journalctl -u grant-intelligence-deadline.service -f
 | Validierung | ✓ (`Programm.from_dict`) |
 | Audit-Log | ✓ (`docs/update_log.md`) |
 | Deadline-Cron | ✓ (`cron_check_expired.sh` + systemd-Timer) |
-| Katalog | ✓ 75 Programme (9 Kategorien: DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International) |
+| Katalog | ✓ 80 Programme (9 Kategorien: DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International) |
 | CI/CD | optional |
 
 ---

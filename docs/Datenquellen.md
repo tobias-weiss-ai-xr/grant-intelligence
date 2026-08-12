@@ -39,6 +39,16 @@ die Paywall liegt in kommoden Aggregator-DBs (PIVOT/Research-Professional), nich
 | **Marie Skłodowska-Curie Actions** (ITN, COFUND, PF) | `marie-sklodowska-curieactions.ec.europa.eu` | ✓ |
 | **Erasmus+** (Studienaustausch, BA/MA) | `ec.europa.eu/programmes/erasmus-plus` | ✓ |
 
+## 4a. HPC / Forschungsinfrastruktur (EU)
+| Inhalt | Portal | Verifiz. |
+|---|---|---|
+| **EVITA HPC** (Cascade Funding: Trainingsmaterialien + Reviewer) | `evitahpc.eu/public-calls` | ✓ | Deadline Training-Materials 07.09.2026 |
+| **EuroHPC JU** – Supercomputer-/AI-Factory-Access | `eurohpc-ju.europa.eu` | ✓ | wiederkehrende Access Calls (Rechenzeit, kein Geldtransfer) |
+| **EuroHPC JU** – Research & Innovation Calls | `eurohpc-ju.europa.eu/research-innovation` | ✓ | inkl. Quantencomputing |
+| **EOSC** (INFRAEOSC, Horizon Europe) | `eosc.eu/calls-grants` | ✓ | FAIR-Daten, EOSC-Nodes, Trainings |
+| NHR (Nationales HPC) | `nhr-verein.de` | ✓ | Rechenzugang für DE-Forschende (Dienst, kein Förderprogramm) |
+| PRACE | `prace-ri.eu` | (bot/403) | HPC-Zugang inzwischen über EuroHPC JU |
+
 ## 5. Stiftungen (Deutschland)
 | Inhalt | Verifiz. |
 |---|---|

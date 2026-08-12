@@ -465,3 +465,54 @@ Errors:
 
 Errors:
 - Missing id/name: ?
+## 2026-08-12T13:15:21.148192 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T13:15:21.149185 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T13:15:21.149958 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-12T13:15:38.687794 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T13:15:38.688677 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T13:15:38.689370 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+
+## Update 2026-08-12 (HPC/RIs)
+
+**Operator:** Tobias Weiss  
+**Quellen:** evita, eurohpc, eosc (URL-Verifikation per Web-Check)  
+**Methode:** Manuelle Portal-Prüfung + `Programm.from_dict`-Validierung
+
+### Änderungen
+
+**Neu (5 Programme):**
+- EVITA HPC – Call for Modular Training Materials (Deadline 07.09.2026, verifiziert)
+- EVITA HPC – Call for External Reviewers
+- EuroHPC JU – Supercomputer & AI-Factory Access
+- EuroHPC JU – Research & Innovation Calls
+- Horizon Europe – INFRAEOSC (EOSC Ecosystem)
+
+**Update:**
+- Test `test_export_json_main`: Programmanzahl dynamisch aus Katalog statt hartkodiert (75 → beliebig)
+
+**Gelöscht:**
+- Keine
+
+### Validierung
+
+- **Programme:** 80
+- **Fehler:** 0
+- **Tests:** 138/138 grün, mypy clean
