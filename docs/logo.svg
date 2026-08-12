@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Hintergrund -->
+  <rect width="400" height="400" rx="48" fill="#0F4C5C"/>
+  <!-- Radar-Ringe -->
+  <circle cx="200" cy="190" r="130" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="3"/>
+  <circle cx="200" cy="190" r="90" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="3"/>
+  <circle cx="200" cy="190" r="50" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="3"/>
+  <!-- Radar-Kreuz -->
+  <line x1="70" y1="190" x2="330" y2="190" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="2"/>
+  <line x1="200" y1="60" x2="200" y2="320" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="2"/>
+  <!-- Sweep (Orange) -->
+  <path d="M200 190 L200 60 A130 130 0 0 1 312.5 125 Z" fill="#E36414" fill-opacity="0.85"/>
+  <!-- Treffer-Punkte -->
+  <circle cx="275" cy="120" r="10" fill="#FFFFFF"/>
+  <circle cx="140" cy="255" r="7" fill="#FFFFFF" fill-opacity="0.7"/>
+  <circle cx="285" cy="260" r="6" fill="#FFFFFF" fill-opacity="0.5"/>
+  <!-- Frist-Zähler -->
+  <text x="200" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#FFFFFF">42 TAGE</text>
+  <text x="200" y="398" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#FFFFFF" fill-opacity="0.75">FÖRDER-RADAR</text>
+</svg>
