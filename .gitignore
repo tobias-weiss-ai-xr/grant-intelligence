@@ -11,6 +11,7 @@ Thumbs.db
 *.env
 credentials*
 secrets*
+*.local
 
 # Dauerhaftes Daten, sofern sie nur lokal erzeugt werden
 data/local/*
