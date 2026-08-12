@@ -16,5 +16,6 @@ secrets*
 data/local/*
 # Local agent state
 .pi/
-profiles.json
+
+# Coverage data
 .coverage
