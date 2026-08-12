@@ -115,6 +115,7 @@ flowchart TD
 | `docs/Datenquellen.md` | Verifizierte Quellen + Aktualisierungsregeln |
 | `docs/Einreichung.md` | FLASH-Einreichungstext |
 | `docs/Promo.md` | PR-/Promo-Material (Pitch, Posts, Poster, Demo-Skript) |
+| `docs/Promo-EN.md` | Promo-Material auf Englisch (Pitch, One-Pager, Posts) |
 | `docs/Roadmap.md` | Vision: Nah / Mitte / Fern |
 | `docs/SPEC-Update-Pipeline.md` | Update-Pipeline-Spezifikation |
 | `docs/update_log.md` | Audit-Trail aller Katalog-Updates |
