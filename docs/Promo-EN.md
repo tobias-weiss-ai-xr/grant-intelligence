@@ -57,7 +57,7 @@ the next deadline in days, timely warnings.
 | **Privacy-friendly** | Runs locally, no cloud requirement, DSGVO-ready consent for profiles |
 | **Standards-based** | Model Context Protocol (MCP) — pluggable into any AI assistant |
 | **Honest** | Official sources only, every deadline with a "as of" date, scores as orientation |
-| **Fact-based** | 80 programmes, 9 categories, 138 tests, 100 % test coverage |
+| **Fact-based** | 80 programmes, 9 categories, 143 tests, 100 % test coverage |
 
 **The value**
 - Less searching and coordinating
@@ -143,7 +143,7 @@ joining the first pilot.
 **Why us** 💡
 - Open source (MIT) · local · privacy-friendly
 - MCP standard → pluggable into any AI
-- 80 programmes · 9 categories · 138 tests
+- 80 programmes · 9 categories · 143 tests
 
 ### Footer
 > **Live demo:** 3 profiles · 1 screen · 2 minutes

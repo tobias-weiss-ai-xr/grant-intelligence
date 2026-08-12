@@ -567,3 +567,74 @@ class TestCoverageEdges:
         assert out.exists()
         content = out.read_text()
         assert "Programm-Übersicht" in content
+
+    # -- saia.py: optionale SAIA-KI-Anbindung --
+    def test_saia_inaktiv_ohne_config(self, monkeypatch):
+        """Ohne SAIA_API_URL/KEY: keine Anfrage, kein Effekt."""
+        monkeypatch.delenv("SAIA_API_URL", raising=False)
+        monkeypatch.delenv("SAIA_API_KEY", raising=False)
+        from saia import saia_konfiguriert, erweiterte_begruendung
+        assert not saia_konfiguriert()
+        assert erweiterte_begruendung({"name": "X"}, ["Biologie"], "postdoc") is None
+
+    def test_saia_fail_open_bei_http_fehler(self, monkeypatch):
+        """Konfiguriert, aber Endpoint nicht erreichbar: None (Fail-open)."""
+        monkeypatch.setenv("SAIA_API_URL", "http://127.0.0.1:1/nope")
+        monkeypatch.setenv("SAIA_API_KEY", "test-key")
+        from saia import saia_konfiguriert, erweiterte_begruendung
+        assert saia_konfiguriert()
+        assert erweiterte_begruendung({"name": "X"}, ["Biologie"], "postdoc") is None
+
+    def test_brief_generate_mit_saia_flag_ohne_config(self, monkeypatch):
+        """--saia ohne Config: Brief unveraendert (kein Crash, keine KI-Sektion)."""
+        monkeypatch.delenv("SAIA_API_URL", raising=False)
+        monkeypatch.delenv("SAIA_API_KEY", raising=False)
+        import brief
+        text = brief.generate(["Biologie"], "postdoc", saia=True)
+        assert "KI-Begruendungen" not in text
+        assert "Top-Matches" in text
+
+    def test_saia_erfolg_mit_mock(self, monkeypatch):
+        """Konfiguriert + Mock-Response: KI-Begruendung kommt an."""
+        monkeypatch.setenv("SAIA_API_URL", "https://llm.example/v1/chat/completions")
+        monkeypatch.setenv("SAIA_API_KEY", "test-key")
+        import saia
+
+        class FakeResp:
+            def raise_for_status(self):
+                pass
+            def json(self):
+                return {"choices": [{"message": {"content": "Passt wegen KI-Expertise."}}]}
+
+        calls = {}
+        def fake_post(url, headers=None, json=None, timeout=None):
+            calls["url"] = url
+            calls["json"] = json
+            return FakeResp()
+
+        monkeypatch.setattr(saia.httpx, "post", fake_post)
+        out = saia.erweiterte_begruendung(
+            {"name": "DFG Sachbeihilfe", "kategorie": "DFG"},
+            ["Künstliche Intelligenz"], "postdoc",
+        )
+        assert out == "Passt wegen KI-Expertise."
+        assert calls["url"] == "https://llm.example/v1/chat/completions"
+        assert calls["json"]["messages"][0]["role"] == "user"
+
+    def test_brief_mit_saia_mock(self, monkeypatch):
+        """--saia mit Mock: KI-Sektion erscheint im Brief."""
+        monkeypatch.setenv("SAIA_API_URL", "https://llm.example/v1/chat/completions")
+        monkeypatch.setenv("SAIA_API_KEY", "test-key")
+        import saia
+
+        class FakeResp:
+            def raise_for_status(self):
+                pass
+            def json(self):
+                return {"choices": [{"message": {"content": "Starke Themenueberlappung."}}]}
+
+        monkeypatch.setattr(saia.httpx, "post", lambda *a, **k: FakeResp())
+        import brief
+        text = brief.generate(["Biologie"], "postdoc", top=3, saia=True)
+        assert "## KI-Begruendungen (SAIA)" in text
+        assert "Starke Themenueberlappung." in text

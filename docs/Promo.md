@@ -63,7 +63,7 @@ Warnungen rechtzeitig.
 | **Datenschutzfreundlich** | Läuft lokal, keine Cloud-Pflicht, DSGVO-fähige Einwilligung für Profile |
 | **Standardbasiert** | Model Context Protocol (MCP) – anbindbar an beliebige KI-Assistenten |
 | **Ehrlich** | Nur offizielle Quellen, jede Frist mit Stand-Datum, Scores als Orientierung |
-| **Faktenbasiert** | 80 Programme, 9 Kategorien, 138 Tests, 100 % Testabdeckung |
+| **Faktenbasiert** | 80 Programme, 9 Kategorien, 143 Tests, 100 % Testabdeckung |
 
 **Der Nutzen**
 - Weniger Such- und Abstimmungsaufwand
@@ -148,7 +148,7 @@ Matching-Regeln, beim ersten gemeinsamen Pilot.
 **Warum wir** 💡
 - Open Source (MIT) · lokal · DSGVO-freundlich
 - MCP-Standard → anbindbar an jede KI
-- 80 Programme · 9 Kategorien · 138 Tests
+- 80 Programme · 9 Kategorien · 143 Tests
 
 ### Fußzeile
 > **Live-Demo:** 3 Profile · 1 Bildschirm · 2 Minuten

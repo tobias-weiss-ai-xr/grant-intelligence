@@ -1,7 +1,7 @@
 # Förder-Radar – Grant Intelligence
 
 > **Status:** Produktionsreif (lokaler MVP). FLASH-Einreichung abgegeben (2026-08).
-> Open Source (MIT). 80 Programme, 138 Tests, 100% Coverage.
+> Open Source (MIT). 80 Programme, 143 Tests, 100% Coverage.
 
 **Kern-These:** Es fehlt nicht an Förderangeboten (DFG, ERC, …), sondern an der
 Übertragung auf *dein* Profil – und an der einzigen Zahl, die zählt: **deine Fristen**.

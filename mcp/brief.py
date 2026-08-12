@@ -17,6 +17,7 @@ from datetime import date
 
 from grant_types import MatchResult
 from match import load_catalog, match_profile, next_deadline
+from saia import erweiterte_begruendung
 
 
 def _zeile(r: MatchResult) -> str:
@@ -36,7 +37,7 @@ def _zeile(r: MatchResult) -> str:
     return f"| {r.name} | {r.kategorie} | {r.score}/5 | {frist} | {r.begruendung} |"
 
 
-def generate(felder: list[str], karriere: str | None, top: int = 5, tage: int = 60) -> str:
+def generate(felder: list[str], karriere: str | None, top: int = 5, tage: int = 60, saia: bool = False) -> str:
     """Generate a weekly brief in Markdown format.
 
     Args:
@@ -44,6 +45,7 @@ def generate(felder: list[str], karriere: str | None, top: int = 5, tage: int = 
         karriere: Career level.
         top: Number of top matches to show.
         tage: Warning window in days.
+        saia: Optional: KI-Begruendungen via SAIA (nur wenn konfiguriert).
 
     Returns:
         Markdown string with brief content.
@@ -78,6 +80,19 @@ def generate(felder: list[str], karriere: str | None, top: int = 5, tage: int = 
         "|---|---|---|---|---|",
     ]
     lines += [_zeile(r) for r in matches] + [""]
+
+    # Optional: SAIA-KI-Begruendungen (nur wenn konfiguriert und gewuenscht)
+    if saia:
+        zusatz_zeilen: list[str] = []
+        for r in matches:
+            prog = next((p for p in programmes if p["id"] == r.id), None)
+            if prog is None:
+                continue  # pragma: no cover – Matches stammen immer aus dem Katalog
+            zusatz = erweiterte_begruendung(prog, felder, karriere)
+            if zusatz:
+                zusatz_zeilen.append(f"- **{r.name}:** {zusatz}")
+        if zusatz_zeilen:
+            lines += ["## KI-Begruendungen (SAIA)", ""] + zusatz_zeilen + [""]
 
     # Warnings section
     if warn:
@@ -132,8 +147,13 @@ def main() -> None:
         ],
         default=None,
     )
-    ap.add_argument("--top", type=int, default=3)
+    ap.add_argument("--top", type=int, default=5)
     ap.add_argument("--tage", type=int, default=60, help="Warnfenster in Tagen")
+    ap.add_argument(
+        "--saia",
+        action="store_true",
+        help="Optional: KI-Begruendungen via SAIA-KI-API (benoetigt SAIA_API_URL + SAIA_API_KEY)",
+    )
     ap.add_argument("--out", default=None, help="Zieldatei (sonst stdout)")
     args = ap.parse_args()
 
@@ -142,7 +162,7 @@ def main() -> None:
     for token in args.felder:
         felder.extend(f.strip() for f in token.split(",") if f.strip())
 
-    text = generate(felder, args.karriere, top=args.top, tage=args.tage)
+    text = generate(felder, args.karriere, top=args.top, tage=args.tage, saia=args.saia)
 
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:

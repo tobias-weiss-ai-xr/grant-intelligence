@@ -75,4 +75,4 @@ Datenbank" gepitcht.
 | Einreichungstext finalisieren | ✅ V2, ≤300 Wörter |
 | Update-Pipeline | ✅ Fetchers + Cron + Audit-Log |
 | Open Source | ✅ MIT-Lizenz, GitHub |
-| Tests + Qualität | ✅ 138 Tests, 100% Coverage, mypy clean |
+| Tests + Qualität | ✅ 143 Tests, 100% Coverage, mypy clean |

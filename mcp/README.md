@@ -25,6 +25,7 @@ fristen -> notify) als MCP-Tools bereit.
 | `brief.py` | Automatisierbarer Wochen-Brief (Cron-fähig, Markdown) |
 | `export.py` | Export nach CSV, JSON, Markdown |
 | `fetchers.py` | Auto-Fetching für RSS/API-Quellen |
+| `saia.py` | Optionale KI-Begründungen via SAIA-KI-API (GWDG), nur bei Config aktiv |
 | `update_catalog.py` | Validierung, Frist-Check, Audit-Log |
 | `demo.py` | Ausführbare Demo der Agent-Schleife |
 | `sources.yaml` | Quellen-Registrierung mit URLs und Update-Frequenz |
@@ -92,6 +93,24 @@ programs(kategorie="ERC")
 ```cron
 0 6 * * 1  cd /opt/git/grant-intelligence/mcp && .venv/bin/python brief.py --felder Biologie Nachhaltigkeit --karriere postdoc --out ../docs/brief.md
 ```
+
+## Optionale KI-Begründungen (SAIA, GWDG)
+
+Die SAIA-KI-API der GWDG kann optional KI-Begründungen in den Wochen-Brief
+integrieren. **Standardmäßig inaktiv** – nur mit expliziter Konfiguration
+werden Daten übertragen (DSGVO):
+
+```bash
+# Konfiguration (z. B. in ~/.bashrc oder systemd-Environment)
+export SAIA_API_URL="https://llm.gwdg.de/v1/chat/completions"
+export SAIA_API_KEY="<beantragtes Token>"
+
+# Brief mit KI-Begründungen erzeugen
+python3 brief.py --felder Biologie --karriere postdoc --saia
+```
+
+Ohne Konfiguration verhält sich der Brief exakt wie bisher (Fail-open: ein
+SAIA-Ausfall bricht den Brief nicht).
 
 ## Weiteres
 
