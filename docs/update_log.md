@@ -672,3 +672,103 @@ Errors:
 
 Errors:
 - Missing id/name: ?
+## 2026-08-12T14:08:53.986272 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T14:08:53.987147 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T14:08:53.987871 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-12T14:08:58.090325 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T14:08:58.091813 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T14:08:58.093036 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-12T14:09:19.785097 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T14:09:19.787838 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T14:09:19.788736 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-12T14:09:24.368083 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T14:09:24.369848 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T14:09:24.371380 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-12T14:09:46.362640 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T14:09:46.363550 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T14:09:46.364318 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-12T14:09:50.926850 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-12T14:09:50.928274 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-12T14:09:50.929514 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+
+## Update 2026-08-12 (Cutting-edge Tests)
+
+**Operator:** Tobias Weiss
+**Methode:** Property-based (Hypothesis), Fuzz, Roundtrip, Performance-Gate
+
+### Änderungen
+
+**Neu:** `test_cutting_edge.py` (38 Tests) – moderne Testparadigmen:
+- Property-based (Hypothesis): Score-Invarianten, Filter-Semantik, Begründung
+- Fuzz: beliebige/kaputte Eingaben crashen nicht
+- Roundtrip: save→load, to_dict→from_dict, Kategorie-Enum
+- Determinismus: gleiche Eingabe ⇒ gleiche Ausgabe
+- Grenzwerte: top=0/negativ/über Kataloggröße
+- Performance-Gate: 10×80 Programme < 500 ms
+- Governance/DSGVO: öffentliche Profile haben einwilligung=true
+- Katalog-Invarianten als parametrisierte Properties
+
+**Bugs durch neue Tests gefunden und gefixt:**
+- `_fits` mit leerem String matchte alle Programme (`"" in x` == True)
+- `match_profile` mit negativem `top` gab „alle außer letzte N" statt leer
+- `load_catalog` crashte bei valider JSON-Wurzel ohne Dict (AttributeError)
+  statt CatalogError – jetzt sauberer Strukturfehler
+
+### Validierung
+- **Tests:** 181/181 grün (vorher 143)
+- **Coverage:** 100 % (7 Module)
+- **mypy:** clean

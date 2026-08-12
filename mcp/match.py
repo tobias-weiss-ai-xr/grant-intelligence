@@ -50,6 +50,10 @@ def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:
     try:
         with open(path, encoding="utf-8") as fh:
             data = json.load(fh)
+            if not isinstance(data, dict):
+                raise CatalogError(
+                    f"Invalid catalog structure: expected object, got {type(data).__name__}"
+                )
             return data.get("programme", [])
     except FileNotFoundError:
         log.error(f"Catalog file not found: {path}")
@@ -108,6 +112,8 @@ def _fits(theme_defs: list[str], field: str) -> bool:
         True if field matches any theme definition.
     """
     f = field.lower()
+    if not f:
+        return False
     return any(
         t.lower() in ("alle", "frei") or t.lower() in f or f in t.lower() for t in theme_defs
     )
@@ -242,6 +248,10 @@ def match_profile(
     """
     if not fields:
         log.debug("Empty fields, returning no matches")
+        return []
+
+    if top <= 0:
+        log.debug(f"top <= 0 ({top}), returning no matches")
         return []
 
     scored: list[MatchResult] = []
