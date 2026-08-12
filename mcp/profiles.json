@@ -1,0 +1,18 @@
+{
+  "stand": "2026-08-12",
+  "quelleHinweis": "Pilot- und Nutzer-Profile. DSGVO: nur Profile mit einwilligung=true werden in Matching einbezogen. Weitere Profile koennen als profiles.local hinzugefuegt werden (wird nicht ins Repo aufgenommen).",
+  "profile": [
+    {
+      "id": "pilot-01-tobias",
+      "name": "Tobias Weiss",
+      "karriere": "postdoc",
+      "themen": ["Künstliche Intelligenz", "Maschinelles Lernen", "Graphen", "GraphRAG", "AI Literacy", "AI Adoption"],
+      "orcid": "0009-0007-1417-8044",
+      "publikationen": [],
+      "einwilligung": true,
+      "status": "aktiv",
+      "standDatum": "2026-08-12",
+      "hinweis": "Pilot-Profil (Postdoc AI Researcher). ORCID oeffentlich verfuegbar, Einwilligung erteilt."
+    }
+  ]
+}

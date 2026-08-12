@@ -1,5 +1,5 @@
 {
   "stand": "2026-01-01",
-  "quelleHinweis": "Pilot-Profile. DSGVO: nur mit einwilligung=true fuer Matching freigegeben. Keine Cloud-Uebertragung ohne Einwilligung.",
+  "quelleHinweis": "Pilot- und Nutzer-Profile. DSGVO: nur Profile mit einwilligung=true werden in Matching einbezogen. Weitere Profile koennen als profiles.local hinzugefuegt werden (wird nicht ins Repo aufgenommen).",
   "profile": []
 }
