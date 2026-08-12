@@ -1,6 +1,6 @@
 {
   "stand": "2026-08-12",
-  "quelleHinweis": "Pilot- und Nutzer-Profile. DSGVO: nur Profile mit einwilligung=true werden in Matching einbezogen. Weitere Profile koennen als profiles.local hinzugefuegt werden (wird nicht ins Repo aufgenommen).",
+  "quelleHinweis": "Pilot- und Nutzer-Profile (oeffentlich geteilt). Einwilligung erteilt = Profil wird im Matching verwendet. Weitere Profile koennen hier per Merge Request hinzugefuegt oder lokal als profiles.local gepflegt werden (nicht oeffentlich).",
   "profile": [
     {
       "id": "pilot-01-tobias",
