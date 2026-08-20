@@ -772,3 +772,171 @@ Errors:
 - **Tests:** 181/181 grün (vorher 143)
 - **Coverage:** 100 % (7 Module)
 - **mypy:** clean
+## 2026-08-20T01:51:55.802984 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T01:51:55.816145 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T01:51:55.825945 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T01:52:46.117268 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T01:52:46.130750 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T01:52:46.141643 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T01:54:31.585010 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T01:54:31.596417 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T01:54:31.605690 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T01:55:15.988839 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T01:55:15.999167 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T01:55:16.008260 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T01:56:12.889594 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T01:56:12.901934 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T01:56:12.912176 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:30:14.437898 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:30:14.453592 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:30:14.463278 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:32:29.468692 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:32:29.477367 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:32:29.484848 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:33:09.583632 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:33:09.594821 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:33:09.604717 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:33:47.680696 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:33:47.692099 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:33:47.701380 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:34:26.146426 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:34:26.153007 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:34:26.159021 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:52:38.636221 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:52:38.644517 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:52:38.651767 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:53:15.447478 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:53:15.456224 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:53:15.465093 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:57:00.038323 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:57:00.062651 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:57:00.078884 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-20T02:58:24.537605 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-20T02:58:24.555892 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-20T02:58:24.572000 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?

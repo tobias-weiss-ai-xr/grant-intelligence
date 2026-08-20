@@ -52,7 +52,7 @@ Jedes Programm im `catalog.json` hat folgende Felder:
 
 ### 2.2 Quellen-Registrierung
 
-Jede Quelle wird in `mcp/sources.yaml` registriert:
+Jede Quelle wird in `mcp/sources.json` registriert:
 
 ```yaml
 erc:
@@ -298,7 +298,7 @@ python mcp/update_catalog.py --validate || exit 1
 
 1. Portal besuchen: `https://erc.europa.eu/funding`
 2. Neue Calls notieren (Name, Deadline, Budget)
-3. `mcp/sources.yaml` aktualisieren
+3. `mcp/sources.json` aktualisieren
 4. `mcp/catalog.json` aktualisieren:
    ```json
    {
@@ -409,7 +409,7 @@ sudo journalctl -u grant-intelligence-deadline.service -f
 | Item | Status |
 |------|--------|
 | Datenmodell | ✓ definiert |
-| Quellen-Registrierung | ✓ (`sources.yaml`, 15 Quellgruppen) |
+| Quellen-Registrierung | ✓ (`sources.json`, 15 Quellgruppen) |
 | Update-Skript | ✓ (`update_catalog.py`) |
 | Fetch→Persist Pipeline | ✓ (`fetchers.py` `apply_fetch_updates`) |
 | Validierung | ✓ (`Programm.from_dict`) |

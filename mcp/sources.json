@@ -1,0 +1,711 @@
+{
+  "erc": {
+    "name": "ERC",
+    "url": "https://erc.europa.eu/funding",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-03",
+    "hinweis": "ERC-Fristen per Portal-Check aktualisieren (StG, AdG, SyG)",
+    "calls": [
+      {
+        "id": "erc-stg-2027",
+        "name": "ERC Starting Grant 2027",
+        "deadline": "2026-10-14",
+        "status": "open",
+        "verified": true
+      },
+      {
+        "id": "erc-adg-2027",
+        "name": "ERC Advanced Grant 2027",
+        "deadline": "2026-08-27",
+        "status": "open",
+        "verified": true
+      },
+      {
+        "id": "erc-syg-2027",
+        "name": "ERC Synergy Grant 2027",
+        "deadline": "2027-05-11",
+        "status": "open",
+        "verified": true
+      },
+      {
+        "id": "erc-cog-2027",
+        "name": "ERC Consolidator Grant 2027",
+        "status": "open",
+        "verified": true
+      },
+      {
+        "id": "erc-poc",
+        "name": "ERC Proof of Concept",
+        "rolling": true,
+        "status": "open",
+        "verified": true
+      }
+    ]
+  },
+  "dfg": {
+    "name": "DFG",
+    "url": "https://www.dfg.de/foerderung",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-03",
+    "hinweis": "DFG-Stichtage (1.2./1.10.) strukturell bekannt",
+    "programs": [
+      {
+        "id": "dfg-sachbeihilfe",
+        "name": "DFG Sachbeihilfe",
+        "rolling": true
+      },
+      {
+        "id": "dfg-emmy-noether",
+        "name": "DFG Emmy Noether",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-walter-benjamin",
+        "name": "DFG Walter Benjamin",
+        "rolling": true
+      },
+      {
+        "id": "dfg-heisenberg",
+        "name": "DFG Heisenberg-Programm",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-graduiertenkolleg",
+        "name": "DFG Graduiertenkollegs",
+        "stichtage": [
+          "09-15"
+        ]
+      },
+      {
+        "id": "dfg-sfb",
+        "name": "DFG Sonderforschungsbereich",
+        "stichtage": [
+          "11-01"
+        ]
+      },
+      {
+        "id": "dfg-fdm",
+        "name": "DFG Forschungsdaten-Management",
+        "rolling": true
+      },
+      {
+        "id": "dfg-ub-digiserv",
+        "name": "DFG Bibliotheks- und Informationsdienste",
+        "stichtage": [
+          "10-15"
+        ]
+      },
+      {
+        "id": "dfz-it-infra",
+        "name": "DFG IT-Infrastruktur für Forschung",
+        "stichtage": [
+          "11-01"
+        ]
+      },
+      {
+        "id": "dfg-reinhart-koselleck",
+        "name": "DFG Reinhart-Koselleck-Projekte",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-forschungsgruppen",
+        "name": "DFG Forschungsgruppen",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-schwerpunktprogramme",
+        "name": "DFG Schwerpunktprogramme",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-kolleg-forschungsgruppen",
+        "name": "DFG Kolleg-Forschungsgruppen",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-klinische-forschungsgruppen",
+        "name": "DFG Klinische Forschungsgruppen",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-wissenschaftliche-netzwerke",
+        "name": "DFG Wissenschaftliche Netzwerke",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      },
+      {
+        "id": "dfg-forschungsimpulse",
+        "name": "DFG Forschungsimpulse",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      }
+    ]
+  },
+  "bmbf": {
+    "name": "BMBF",
+    "url": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+    "type": "manual",
+    "update_frequency": "weekly",
+    "last_check": "2026-08-03",
+    "hinweis": "BMBF-Bekanntmachungen per Portal-Check",
+    "programs": [
+      {
+        "id": "bmbf-digital-ai",
+        "name": "BMBF KI-Forschungsverbünde",
+        "deadline": "2026-12-15"
+      },
+      {
+        "id": "bmbf-energie-nachhaltigkeit",
+        "name": "BMBF Energieforschung",
+        "deadline": "2027-02-28"
+      },
+      {
+        "id": "bmbf-gesundheit-medizin",
+        "name": "BMBF Gesundheitsforschung",
+        "deadline": "2026-11-30"
+      },
+      {
+        "id": "bmbf-forschungsdaten",
+        "name": "BMBF Forschungsdaten-Infrastruktur",
+        "deadline": "2026-11-30"
+      },
+      {
+        "id": "bmbf-digiserv",
+        "name": "BMBF Digitale Dienstleistungen",
+        "deadline": "2027-01-15"
+      }
+    ]
+  },
+  "eu": {
+    "name": "EU Horizon",
+    "url": "https://ec.europa.eu/info/funding-tenders",
+    "type": "manual",
+    "update_frequency": "weekly",
+    "last_check": "2026-08-03",
+    "hinweis": "EU Horizon Calls per Portal-Check",
+    "calls": [
+      {
+        "id": "eu-horizon-climate",
+        "name": "EU Horizon Europe – Klima/Energie (Cluster 5)",
+        "deadline": "2026-10-20"
+      },
+      {
+        "id": "eu-horizon-digital",
+        "name": "EU Horizon Europe – Digital/Industrie (Cluster 4)",
+        "deadline": "2026-11-08"
+      },
+      {
+        "id": "eu-open-science",
+        "name": "EU Horizon – Open Science Infrastructure",
+        "deadline": "2026-10-20"
+      }
+    ]
+  },
+  "cost": {
+    "name": "COST",
+    "url": "https://www.cost.eu/funding/",
+    "type": "manual",
+    "update_frequency": "weekly",
+    "last_check": "2026-08-03",
+    "hinweis": "COST Actions per Portal-Check",
+    "calls": [
+      {
+        "id": "cost-netzwerk",
+        "name": "COST – European Cooperation in Science",
+        "deadline": "2026-09-10"
+      }
+    ]
+  },
+  "loewe": {
+    "name": "LOEWE (Hessen)",
+    "url": "https://wissenschaft.hessen.de/forschung/loewe",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-03",
+    "hinweis": "Jaehrliche LOEWE-Runde mit Stichtag; aktueller Stichtag via Landesportal pruefen",
+    "programs": [
+      {
+        "id": "loewe-hessen",
+        "name": "LOEWE – Exzellenzforschung",
+        "rolling": false
+      },
+      {
+        "id": "loewe-verwaltung",
+        "name": "LOEWE – Verwaltungs- und Serviceinnovation",
+        "rolling": false
+      }
+    ]
+  },
+  "nrw-mwk": {
+    "name": "NRW MWK (Kultur und Wissenschaft)",
+    "url": "https://www.mkw.nrw/wissenschaft",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Nordrhein-Westfalen Landesfoerderung. Forschung, Nachwuchs, Transfer.",
+    "programs": [
+      {
+        "id": "nrw-mwk-wissenschaft",
+        "name": "NRW – MWK Wissenschaftsförderung"
+      }
+    ]
+  },
+  "hightech-agenda-bayern": {
+    "name": "Deutsche Stiftungen",
+    "url": "https://www.stmwk.bayern.de/wissenschaftler/hightech-agenda-bayern.html",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-03",
+    "hinweis": "Stiftungen per Portal-Check aktualisieren",
+    "programs": [
+      {
+        "id": "hightech-agenda-bayern",
+        "name": "Hightech Agenda Bayern (HTA)"
+      }
+    ],
+    "sources": [
+      {
+        "id": "volkswagen-stiftung",
+        "name": "VolkswagenStiftung – Explorationsfonds",
+        "url": "https://www.volkswagenstiftung.de/foerdern/unsere-programme",
+        "stichtage": [
+          "10-15",
+          "04-15"
+        ]
+      },
+      {
+        "id": "dbu-umwelt",
+        "name": "DBU – Umweltforschung",
+        "url": "https://www.dbu.de/foerderung",
+        "deadline": "2026-12-01"
+      },
+      {
+        "id": "krebshilfe-onkologie",
+        "name": "Deutsche Krebshilfe – Forschungsprojekte",
+        "url": "https://www.krebshilfe.de/forschung",
+        "stichtage": [
+          "10-01",
+          "02-01",
+          "05-01",
+          "08-01"
+        ]
+      },
+      {
+        "id": "carl-zeiss-technik",
+        "name": "Carl-Zeiss-Stiftung – Technik/Ingenieurwissenschaften",
+        "url": "https://www.carl-zeiss-stiftung.de",
+        "deadline": "2026-11-15"
+      },
+      {
+        "id": "humboldt-prof",
+        "name": "Alexander-von-Humboldt-Stiftung – Humboldt-Professur",
+        "url": "https://www.humboldt-foundation.de",
+        "rolling": true
+      },
+      {
+        "id": "daad-stipendium",
+        "name": "DAAD – Forschungsstipendium",
+        "url": "https://www.daad.de",
+        "deadline": "2026-12-31"
+      },
+      {
+        "id": "studienstiftung-promotion",
+        "name": "Studienstiftung – Promotionsstipendium",
+        "url": "https://www.studienstiftung.de",
+        "rolling": true
+      }
+    ]
+  },
+  "deutschlandstipendium": {
+    "name": "Deutschlandstipendium",
+    "url": "https://www.deutschlandstipendium.de",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Bundesprogramm, Bewerbung ueber die Hochschule. 300 EUR/Monat, Leistung + gesellschaftl. Engagement.",
+    "programs": [
+      {
+        "id": "deutschlandstipendium",
+        "name": "Deutschlandstipendium",
+        "rolling": true
+      }
+    ]
+  },
+  "begabtenfoerderungswerke": {
+    "name": "Begabtenfoerderungswerke (12 Werke)",
+    "url": "https://www.begabtenfoerderungswerke.de/",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "12 staatlich anerkannte Begabtenfoerderungswerke. Auswahlverfahren, Bewerbung direkt oder ueber Hochschule.",
+    "sources": [
+      {
+        "id": "bfw-studienstiftung",
+        "name": "Studienstiftung des deutschen Volkes",
+        "url": "https://www.studienstiftung.de",
+        "rolling": true,
+        "hinweis": "Aeltestes/groesstes Werk, unpolitisch/konfessionslos. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-cusanuswerk",
+        "name": "Cusanuswerk – Bischöfliche Studienstiftung",
+        "url": "https://www.cusanuswerk.de",
+        "rolling": true,
+        "hinweis": "Katholisch. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-ev-studienwerk",
+        "name": "Evangelisches Studienwerk Villigst",
+        "url": "https://www.ev-studienwerk.de",
+        "rolling": true,
+        "hinweis": "Evangelisch. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-fes",
+        "name": "Friedrich-Ebert-Stiftung",
+        "url": "https://www.fes.de/studienfoerderung",
+        "rolling": true,
+        "hinweis": "SPD-nah. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-hbs",
+        "name": "Heinrich-Böll-Stiftung",
+        "url": "https://www.boell.de/stipendien",
+        "rolling": true,
+        "hinweis": "Gruene-nah. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-kas",
+        "name": "Konrad-Adenauer-Stiftung",
+        "url": "https://www.kas.de/studienfoerderung",
+        "rolling": true,
+        "hinweis": "CDU-nah. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-rls",
+        "name": "Rosa-Luxemburg-Stiftung",
+        "url": "https://www.rosalux.de/stipendien",
+        "rolling": true,
+        "hinweis": "Die Linke-nah. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-hss",
+        "name": "Hanns-Seidel-Stiftung",
+        "url": "https://www.hss.de/studienfoerderung",
+        "rolling": true,
+        "hinweis": "CSU-nah. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-fns",
+        "name": "Friedrich-Naumann-Stiftung",
+        "url": "https://www.freiheit.org/studienfoerderung",
+        "rolling": true,
+        "hinweis": "FDP-nah. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-sdw",
+        "name": "Stiftung der Deutschen Wirtschaft",
+        "url": "https://www.sdw.org/studienfoerderung",
+        "rolling": true,
+        "hinweis": "Wirtschaftsnah. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-avicenna",
+        "name": "Avicenna-Stiftung",
+        "url": "https://www.avicenna-stiftung.de",
+        "rolling": true,
+        "hinweis": "Muslimisch. BA + MA + PhD."
+      },
+      {
+        "id": "bfw-klaus-murmann",
+        "name": "Klaus Murmann Stiftung (SDW-Stipendium)",
+        "url": "https://www.sdw.org",
+        "rolling": true,
+        "hinweis": "Wirtschaftsnah (SDW). Berufsausbildung + Studium."
+      }
+    ]
+  },
+  "erasmus": {
+    "name": "Erasmus+",
+    "url": "https://ec.europa.eu/programmes/erasmus-plus",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "EU-Mobilitaetsprogramm. Fristen je Hochschule, nicht individuell.",
+    "programs": [
+      {
+        "id": "erasmus-plus",
+        "name": "Erasmus+ Studienaustausch",
+        "rolling": true
+      }
+    ]
+  },
+  "msc": {
+    "name": "Marie Sklodowska-Curie Actions (MSCA)",
+    "url": "https://marie-sklodowska-curieactions.ec.europa.eu",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "EU-Doktoranden- und Postdoc-Foerderung. ITN (doctoral networks), COFUND (co-funded programmes).",
+    "calls": [
+      {
+        "id": "msc-itn",
+        "name": "MSCA Innovative Training Networks (ITN)",
+        "deadline": "2027-01-12"
+      },
+      {
+        "id": "msc-cofund",
+        "name": "MSCA COFUND",
+        "deadline": "2027-03-20"
+      },
+      {
+        "id": "msca-pf",
+        "name": "MSCA Postdoctoral Fellowships (PF)",
+        "deadline": "2026-09-09",
+        "status": "open",
+        "verified": true
+      }
+    ]
+  },
+  "gerda-henkel": {
+    "name": "Gerda Henkel Stiftung",
+    "url": "https://www.gerda-henkel-stiftung.de",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Geschichte, Archaeologie, Kunstgeschichte, Islamische Studien.",
+    "programs": [
+      {
+        "id": "gerda-henkel",
+        "name": "Gerda Henkel Stiftung – Forschungsstipendien",
+        "stichtage": [
+          "03-01",
+          "09-01"
+        ]
+      }
+    ]
+  },
+  "fritz-thyssen": {
+    "name": "Fritz Thyssen Stiftung",
+    "url": "https://www.fritz-thyssen-stiftung.de",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Interdisziplinaer, alle Fachrichtungen.",
+    "programs": [
+      {
+        "id": "fritz-thyssen",
+        "name": "Fritz Thyssen Stiftung – Forschungsfoerderung",
+        "stichtage": [
+          "02-01",
+          "10-01"
+        ]
+      }
+    ]
+  },
+  "humboldt-forschungsstipendium": {
+    "name": "Humboldt Forschungsstipendium",
+    "url": "https://www.humboldt-foundation.de/bewerben/foerderprogramme/humboldt-forschungsstipendium",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Internationales Forschungsstipendium fuer exzellente Forscher. Rolling Bewerbung.",
+    "programs": [
+      {
+        "id": "humboldt-forschungsstipendium",
+        "name": "Humboldt – Forschungsstipendium",
+        "rolling": true
+      }
+    ]
+  },
+  "robert-bosch-stiftung": {
+    "name": "Robert Bosch Stiftung",
+    "url": "https://bosch-stiftung.de/foerderung",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Gesundheit, Bildung, Gesellschaft, Globale Fragen. Ausschreibungsgebunden.",
+    "programs": [
+      {
+        "id": "robert-bosch-stiftung",
+        "name": "Robert Bosch Stiftung – Forschungsförderung"
+      }
+    ]
+  },
+  "industrie": {
+    "name": "Industrieförderung",
+    "type": "manual",
+    "update_frequency": "weekly",
+    "last_check": "2026-08-03",
+    "hinweis": "AiF/ZIM per Portal-Check aktualisieren",
+    "programs": [
+      {
+        "id": "aif-industrie",
+        "name": "AiF – Industrielle Gemeinschaftsforschung",
+        "url": "https://www.aif.de",
+        "rolling": true
+      },
+      {
+        "id": "zim-kmu",
+        "name": "ZIM – Zentrum für Innovation und Mittelstand",
+        "url": "https://www.zim.de",
+        "rolling": true
+      },
+      {
+        "id": "aif-verwaltung",
+        "name": "AiF – Verwaltungs-IT",
+        "url": "https://www.aif.de",
+        "rolling": true
+      }
+    ]
+  },
+  "nsf": {
+    "name": "NSF (US – National Science Foundation)",
+    "url": "https://www.nsf.gov/funding",
+    "type": "manual",
+    "update_frequency": "quarterly",
+    "last_check": "2026-08-12",
+    "hinweis": "US Basic Research. Deutsche Forscher als internationale Kooperationspartner.",
+    "programs": [
+      {
+        "id": "nsf-international",
+        "name": "NSF – International Collaboration"
+      }
+    ]
+  },
+  "nih": {
+    "name": "NIH (US – National Institutes of Health)",
+    "url": "https://grants.nih.gov",
+    "type": "manual",
+    "update_frequency": "quarterly",
+    "last_check": "2026-08-12",
+    "hinweis": "US Biomedizin. Deutsche Kooperationspartner bei R01 u.a.",
+    "programs": [
+      {
+        "id": "nih-international",
+        "name": "NIH – International Collaboration"
+      }
+    ]
+  },
+  "ukri": {
+    "name": "UKRI (UK – Research and Innovation)",
+    "url": "https://www.ukri.org/apply-for-funding/",
+    "type": "manual",
+    "update_frequency": "quarterly",
+    "last_check": "2026-08-12",
+    "hinweis": "UK Forschungsfoerderung. Post-Brexit bilaterale Abkommen DE-UK.",
+    "programs": [
+      {
+        "id": "ukri-international",
+        "name": "UKRI – UK-German Bilateral"
+      }
+    ]
+  },
+  "dach-snsf-fwf": {
+    "name": "DACH – SNSF (CH) / FWF (AT)",
+    "url": "https://www.snf.ch/de/foerderung",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Schweiz (SNSF) und Oesterreich (FWF). DACH-Kooperation.",
+    "programs": [
+      {
+        "id": "dach-snsf-fwf",
+        "name": "DACH – SNSF/FWF Bilateral"
+      }
+    ]
+  },
+  "wellcome": {
+    "name": "Wellcome Trust (UK)",
+    "url": "https://wellcome.org/research-funding",
+    "type": "manual",
+    "update_frequency": "quarterly",
+    "last_check": "2026-08-12",
+    "hinweis": "Global Health Research Foundation. Internationale Programme.",
+    "programs": [
+      {
+        "id": "wellcome-international",
+        "name": "Wellcome Trust – International"
+      }
+    ]
+  },
+  "evita": {
+    "name": "EVITA HPC (EuroHPC Virtual Training Academy)",
+    "url": "https://www.evitahpc.eu/public-calls/",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Cascade Funding: modulare HPC-Trainingsmaterialien + externe Reviewer.",
+    "programs": [
+      {
+        "id": "evita-hpc-training-materials",
+        "name": "EVITA HPC – Call for Modular Training Materials",
+        "deadline": "2026-09-07",
+        "status": "open"
+      },
+      {
+        "id": "evita-hpc-external-reviewers",
+        "name": "EVITA HPC – Call for External Reviewers"
+      }
+    ]
+  },
+  "eurohpc": {
+    "name": "EuroHPC JU",
+    "url": "https://www.eurohpc-ju.europa.eu/",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Access Calls (Supercomputer/AI Factories) + Research & Innovation Calls.",
+    "programs": [
+      {
+        "id": "eurohpc-access-calls",
+        "name": "EuroHPC JU – Supercomputer & AI-Factory Access"
+      },
+      {
+        "id": "eurohpc-research-innovation",
+        "name": "EuroHPC JU – Research & Innovation Calls"
+      }
+    ]
+  },
+  "eosc": {
+    "name": "EOSC Association",
+    "url": "https://eosc.eu/calls-grants/",
+    "type": "manual",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-12",
+    "hinweis": "Horizon Europe INFRAEOSC: FAIR-Daten, EOSC-Nodes, Trainings.",
+    "programs": [
+      {
+        "id": "eosc-infraeosc",
+        "name": "Horizon Europe – INFRAEOSC (EOSC Ecosystem)"
+      }
+    ]
+  }
+}

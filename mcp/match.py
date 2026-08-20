@@ -22,10 +22,18 @@ log = logging.getLogger(__name__)
 
 CATALOG = Path(__file__).with_name("catalog.json")
 
+# Performance: pfad-basierter in-memory Cache für Catalog-Loads
+_CATALOG_CACHE: dict[str, list[dict[str, Any]]] = {}
 
-# =============================================================================
-# Data Layer
-# =============================================================================
+
+def _clear_catalog_cache(path: Path | None = None) -> None:
+    """Cache leeren (für Pfad oder komplett)."""
+    global _CATALOG_CACHE
+    if path is not None:
+        key = str(path.resolve())
+        _CATALOG_CACHE.pop(key, None)
+    else:
+        _CATALOG_CACHE.clear()
 
 
 class CatalogError(Exception):
@@ -46,7 +54,12 @@ def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:
     Raises:
         CatalogError: If file cannot be read or parsed.
     """
+    global _CATALOG_CACHE
     path = path or CATALOG
+    # Cache-Hit
+    key = str(path.resolve())
+    if key in _CATALOG_CACHE:
+        return _CATALOG_CACHE[key]
     try:
         with open(path, encoding="utf-8") as fh:
             data = json.load(fh)
@@ -54,7 +67,9 @@ def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:
                 raise CatalogError(
                     f"Invalid catalog structure: expected object, got {type(data).__name__}"
                 )
-            return data.get("programme", [])
+            result = data.get("programme", [])
+            _CATALOG_CACHE[key] = result
+            return result
     except FileNotFoundError:
         log.error(f"Catalog file not found: {path}")
         raise CatalogError(f"Catalog file not found: {path}") from None
@@ -89,6 +104,8 @@ def save_catalog(programme: list[dict[str, Any]], path: Path | None = None) -> N
     try:
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         log.info(f"Catalog saved: {path} ({len(programme)} programmes)")
+        # Cache invalidieren
+        _clear_catalog_cache(path)
     except OSError as e:
         log.error(f"Failed to write catalog: {path} - {e}")
         raise CatalogError(f"Failed to write catalog: {e}") from e
@@ -111,7 +128,7 @@ def _fits(theme_defs: list[str], field: str) -> bool:
     Returns:
         True if field matches any theme definition.
     """
-    f = field.lower()
+    f = field.lower().strip()
     if not f:
         return False
     return any(
@@ -246,8 +263,8 @@ def match_profile(
     Returns:
         List of MatchResult objects, sorted by score and deadline.
     """
-    if not fields:
-        log.debug("Empty fields, returning no matches")
+    if not fields or not any(f.strip() for f in fields):
+        log.debug("Empty or whitespace-only fields, returning no matches")
         return []
 
     if top <= 0:

@@ -135,6 +135,7 @@ class TestEnrichProgramme:
             "karriere": ["postdoc"],
         }
         result = fetchers._enrich_programme(partial, "bmbf")
+        assert result is not None
         assert result["themen"] == ["KI", "Digital"]
         assert result["karriere"] == ["postdoc"]
 
@@ -168,6 +169,7 @@ class TestApplyFetchUpdates:
             {"id": "new-from-fetch", "name": "New Programme", "quelle": "https://test.de"},
             "bmbf",
         )
+        assert new_prog is not None
         update = fetchers.ProgrammeUpdate(
             source="bmbf", programmes=[new_prog], errors=[],
             fetched_at="2026-08-12", suggestions=[],
@@ -231,6 +233,7 @@ class TestApplyFetchUpdates:
             {"id": "audit-test", "name": "Audit Test", "quelle": "https://test.de"},
             "bmbf",
         )
+        assert new_prog is not None
         update = fetchers.ProgrammeUpdate(
             source="bmbf", programmes=[new_prog], errors=[],
             fetched_at="2026-08-12", suggestions=[],

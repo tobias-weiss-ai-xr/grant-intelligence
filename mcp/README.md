@@ -28,8 +28,8 @@ fristen -> notify) als MCP-Tools bereit.
 | `saia.py` | Optionale KI-Begründungen via SAIA-KI-API (GWDG), nur bei Config aktiv |
 | `update_catalog.py` | Validierung, Frist-Check, Audit-Log |
 | `demo.py` | Ausführbare Demo der Agent-Schleife |
-| `sources.yaml` | Quellen-Registrierung mit URLs und Update-Frequenz |
-| `requirements.txt` | `mcp`, `fastapi`, `uvicorn`, `bs4`, `httpx`, `pyyaml` |
+| `sources.json` | Quellen-Registrierung mit URLs und Update-Frequenz |
+| `requirements.txt` | `mcp`, `fastapi`, `uvicorn`, `bs4`, `httpx`, `` |
 
 ## Profile
 

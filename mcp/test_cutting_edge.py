@@ -71,11 +71,11 @@ class TestMatchProperties:
     def test_leere_felder_keine_treffer(self, felder):
         """Leere/Whitespace-Felder geben keine Treffer (Guard-Bedingung).
 
-        Nur Listen aus leeren Strings: nicht-leere Strings matchen
+        Nur Listen aus leeren/Whitespace-Strings: nicht-leere Strings matchen
         themenoffene Programme ("frei") korrekt.
         """
-        if any(f.strip() for f in felder):
-            return  # nur leere Felder testen
+        if not all(f.strip() == "" for f in felder):
+            return  # nur semantisch leere Felder testen
         katalog = load_catalog()
         assert match_profile(katalog, felder, "postdoc", top=5) == []
 
@@ -94,12 +94,12 @@ class TestMatchProperties:
 class TestFitsProperties:
     """Eigenschaften der Themen-Match-Funktion _fits."""
 
-    @given(st.text(min_size=1, max_size=30))
+    @given(st.text(min_size=1, max_size=30).filter(lambda s: s.strip()))
     def test_frei_matcht_alles(self, feld):
         assert _fits(["frei"], feld)
         assert _fits(["alle"], feld)
 
-    @given(st.text(min_size=1, max_size=20))
+    @given(st.text(min_size=1, max_size=20).filter(lambda s: s.strip()))
     def test_exakte_uebereinstimmung(self, feld):
         """Gleicher String matcht (Symmetrie bei identischen Einträgen)."""
         assert _fits([feld], feld)

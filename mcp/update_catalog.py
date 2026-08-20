@@ -18,7 +18,6 @@ import sys
 from datetime import date
 from pathlib import Path
 
-import yaml
 
 from grant_types import Programm, parse_frist
 
@@ -26,18 +25,18 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(mes
 log = logging.getLogger(__name__)
 
 CATALOG = Path(__file__).with_name("catalog.json")
-SOURCES_YAML = Path(__file__).with_name("sources.yaml")
+SOURCES_JSON = Path(__file__).with_name("sources.json")
 
 
 # ------------------------------------------------------------------ Hilfsfunktionen
 def load_sources() -> dict:
-    """Lade Quellen-Registrierung aus sources.yaml (Single Source of Truth).
+    """Lade Quellen-Registrierung aus sources.json (Single Source of Truth).
 
     Returns:
-        Quellen-Dictionary aus sources.yaml.
+        Quellen-Dictionary aus sources.json.
     """
-    with open(SOURCES_YAML, encoding="utf-8") as fh:
-        return yaml.safe_load(fh)
+    with open(SOURCES_JSON, encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def load_catalog(path: Path = CATALOG) -> dict:

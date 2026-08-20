@@ -1,7 +1,7 @@
 """Förder-Radar – Automatisches Fetching von Quellen.
 
 Implements HTTP clients for sources with RSS/API support.
-Checks current deadlines against sources.yaml and generates update suggestions.
+Checks current deadlines against sources.json and generates update suggestions.
 
 Usage:
     python mcp/fetchers.py --source all --check-deadlines
@@ -20,14 +20,13 @@ from pathlib import Path
 from typing import Any
 
 import httpx
-import yaml
 
 from grant_types import parse_frist
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
-SOURCES_YAML = Path(__file__).parent / "sources.yaml"
+SOURCES_JSON = Path(__file__).parent / "sources.json"
 CATALOG_JSON = Path(__file__).parent / "catalog.json"
 
 
@@ -51,13 +50,13 @@ class ProgrammeUpdate:
 
 
 def load_sources() -> dict[str, Any]:
-    """Load source definitions from sources.yaml.
+    """Load source definitions from sources.json.
 
     Returns:
         Dictionary of source configurations.
     """
-    with open(SOURCES_YAML, encoding="utf-8") as fh:
-        return yaml.safe_load(fh)
+    with open(SOURCES_JSON, encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def load_catalog() -> list[dict[str, Any]]:
@@ -244,7 +243,7 @@ def generate_update_suggestions(
 
     Args:
         catalog: List of programme dictionaries.
-        sources: Source configurations from sources.yaml.
+        sources: Source configurations from sources.json.
 
     Returns:
         List of suggestion strings.
