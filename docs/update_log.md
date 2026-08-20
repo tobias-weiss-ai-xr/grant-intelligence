@@ -940,3 +940,26 @@ Errors:
 
 Errors:
 - Missing id/name: ?
+
+## Update 2026-08-12 (Minimal Stoic Unix)
+
+**Operator:** Tobias Weiss
+**Methode:** Unix-Philosophie: eine Datenquelle, weniger Abhängigkeiten, Performance-Cache
+
+### Änderungen
+
+- **sources.yaml → sources.json**: `pyyaml`-Abhängigkeit entfernt (eine Datenquelle, JSON-Standard)
+- **Catalog-Cache** in `match.py`: pfad-basierter in-memory Cache, 20x Speedup (4.5ms → 0.2ms)
+- **Whitespace-Bug-Fix**: `_fits()` und `match_profile()` behandeln `'\r'`, `' '`, `'\t'` als leere Felder
+  (zuvor matchten Whitespace-only Felder alle Programme mit `themen=['frei']`)
+- **conftest.py**: autouse-Fixture für Test-Isolation (Cache + `server.PROGRAMME` reset)
+- **requirements-dev.txt**: `hypothesis`, `pytest-cov`, `pytest-asyncio`, `pytest-mock` dokumentiert
+
+### Performance
+- `load_catalog()`: 4.5ms (cold) → 0.2ms (cached) = **20x Speedup**
+- `match_profile()`: unverändert ~1.3ms (80 Programme) — bereits performant
+
+### Validierung
+- **Tests:** 181/181 grün
+- **Coverage:** 100% auf Kernmodulen (match, grant_types, app, server, brief, export, saia)
+- **mypy:** clean (14 Dateien)
