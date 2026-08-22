@@ -6,7 +6,7 @@ zero runtime dependencies beyond two CDN-loaded scripts (Alpine.js, Chart.js).
 Enables researchers, FLASH jury members, and collaborators to browse 97
 programmes, 26 source groups, and deadline status without installing Python.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Static Dashboard Without Build Step
 
