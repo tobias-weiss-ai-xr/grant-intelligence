@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Förder-Radar – Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js (70KB, CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <!-- Alpine.js (15KB, CDN, deferred) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body x-data="dashboard()" x-init="init()">
+  <noscript>
+    <div class="noscript">
+      <h1>Förder-Radar – Dashboard</h1>
+      <p>JavaScript ist deaktiviert. Die Rohdaten sind unter
+        <a href="data/catalog.json">data/catalog.json</a> verfügbar.</p>
+    </div>
+  </noscript>
+
+  <header>
+    <h1>Förder-Radar <small>Katalog & Quellen-Explorer</small></h1>
+    <p class="stand" x-show="!loading && !error">
+      Stand: <span x-text="stand"></span> ·
+      <span x-text="catalog.length"></span> Programme ·
+      <span x-text="Object.keys(sources).length"></span> Quellen
+    </p>
+  </header>
+
+  <!-- Loading / Error -->
+  <div class="loading" x-show="loading">
+    <p>📊 Daten werden geladen…</p>
+  </div>
+  <div class="error" x-show="error">
+    <p>⚠️ <span x-text="error"></span></p>
+    <p><a href="data/catalog.json">Direkter Zugriff auf Katalogdaten</a></p>
+  </div>
+
+  <!-- Main content -->
+  <main x-show="!loading && !error">
+
+    <!-- Overview Cards -->
+    <section class="cards">
+      <div class="card">
+        <span class="card-number" x-text="catalog.length"></span>
+        <span class="card-label">Programme</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="categories.length"></span>
+        <span class="card-label">Kategorien</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="Object.keys(sources).length"></span>
+        <span class="card-label">Quellgruppen</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="upcomingDeadlines.length"></span>
+        <span class="card-label">Fristen ≤ 90 Tage</span>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="charts">
+      <div class="chart-container">
+        <h2>Nach Kategorie</h2>
+        <canvas id="catChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h2>Nach Status</h2>
+        <canvas id="statusChart"></canvas>
+      </div>
+      <div class="chart-container chart-wide">
+        <h2>Fristen-Timeline (nächste 90 Tage)</h2>
+        <canvas id="deadlineChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Profile Matcher -->
+    <section class="profile-matcher">
+      <h2>Profil-Matcher</h2>
+      <div class="profile-controls">
+        <select x-model="profilId" @change="selectProfile(profilId)">
+          <option value="">– Profil wählen –</option>
+          <template x-for="p in profiles" :key="p.id">
+            <option :value="p.id" x-text="p.name + ' (' + p.karriere + ')'"></option>
+          </template>
+        </select>
+        <span class="hint" x-show="profilId">
+          Score: themen ∩ + karriere + rolle + rolling + status → 0-5
+        </span>
+      </div>
+      <div class="profile-results" x-show="profilId && matchedProgrammes.length > 0">
+        <table>
+          <thead>
+            <tr>
+              <th>Score</th>
+              <th>Programm</th>
+              <th>Kategorie</th>
+              <th>Frist</th>
+              <th>Begründung</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template x-for="m in matchedProgrammes" :key="m.id">
+              <tr>
+                <td><span class="score-badge" x-text="m.score + '/5'"></span></td>
+                <td x-text="m.name"></td>
+                <td><span class="badge" x-text="m.kategorie"></span></td>
+                <td x-text="m.frist || (m.rolling ? 'Rolling' : '—')"></td>
+                <td class="begruendung" x-text="m.reason"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint" x-show="!profilId">
+        Wähle ein Profil, um passgenaue Programme mit Score zu sehen.
+      </p>
+      <p class="hint" x-show="profilId && matchedProgrammes.length === 0">
+        Keine passenden Programme für dieses Profil.
+      </p>
+    </section>
+
+    <!-- Source Browser -->
+    <section class="source-browser">
+      <h2>Quellen <span class="count" x-text="'(' + Object.keys(sources).length + ')'"></span></h2>
+      <table class="source-table">
+        <thead>
+          <tr>
+            <th @click="toggleSortSrc('name')" class="sortable">Quelle ↕</th>
+            <th>URL</th>
+            <th>Typ</th>
+            <th>Frequenz</th>
+            <th>Letzter Check</th>
+            <th>Calls</th>
+            <th>Programme</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="src in sortedSources" :key="src.key">
+            <tr>
+              <td x-text="src.name"></td>
+              <td><a :href="src.url" target="_blank" rel="noopener" x-text="src.url.replace('https://','')"></a></td>
+              <td>
+                <span class="badge" :class="src.type === 'manual' ? 'badge-manual' : 'badge-auto'"
+                      x-text="src.type === 'manual' ? 'Manuell' : 'Automatisiert'"></span>
+              </td>
+              <td x-text="src.update_frequency || '—'"></td>
+              <td x-text="src.last_check || '—'"></td>
+              <td x-text="(src.calls || []).length"></td>
+              <td x-text="(src.programs || []).length"></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Programme Explorer -->
+    <section class="programme-explorer">
+      <h2>Programme <span class="count" x-text="'(' + catalog.length + ')'"></span></h2>
+      <div class="filters">
+        <input type="text" x-model="search" placeholder="Suche (Name, Themen)…">
+        <select x-model="kategorie">
+          <option value="">Alle Kategorien</option>
+          <template x-for="cat in categories" :key="cat">
+            <option :value="cat" x-text="cat"></option>
+          </template>
+        </select>
+        <select x-model="status">
+          <option value="">Alle Status</option>
+          <option value="verifiziert">Verifiziert</option>
+          <option value="laufend">Laufend</option>
+          <option value="zu-pruefen">Zu prüfen</option>
+        </select>
+        <select x-model="karriere">
+          <option value="">Alle Karrierestufen</option>
+          <option value="postdoc">Postdoc</option>
+          <option value="junior">Junior</option>
+          <option value="prof">Prof</option>
+          <option value="senior">Senior</option>
+          <option value="student">Student</option>
+          <option value="verwaltung">Verwaltung</option>
+          <option value="service">Service</option>
+          <option value="IT">IT</option>
+          <option value="bibliothek">Bibliothek</option>
+        </select>
+        <span class="filter-count" x-text="filtered.length + ' / ' + catalog.length"></span>
+      </div>
+      <table class="programme-table">
+        <thead>
+          <tr>
+            <th @click="toggleSort('name')" class="sortable">Name ↕</th>
+            <th @click="toggleSort('kategorie')" class="sortable">Kategorie ↕</th>
+            <th @click="toggleSort('status')" class="sortable">Status ↕</th>
+            <th>Karriere</th>
+            <th @click="toggleSort('frist')" class="sortable">Frist ↕</th>
+            <th>Rolling</th>
+            <th @click="toggleSort('budget_max')" class="sortable">Budget ↕</th>
+            <th>Quelle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="p in filtered" :key="p.id">
+            <tr>
+              <td x-text="p.name"></td>
+              <td><span class="badge" x-text="p.kategorie"></span></td>
+              <td>
+                <span class="badge" :class="'status-' + p.status" x-text="p.status"></span>
+              </td>
+              <td x-text="(p.karriere || []).join(', ')"></td>
+              <td x-text="formatFrist(p)"></td>
+              <td x-text="p.rolling ? '✓' : '—'"></td>
+              <td x-text="formatBudget(p)"></td>
+              <td><a :href="p.quelle" target="_blank" rel="noopener" x-text="formatSource(p.quelle)"></a></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </section>
+
+    <footer>
+      <p>
+        Förder-Radar · 97 Programme · 9 Kategorien · 26 Quellen ·
+        <a href="https://github.com/tobias-weiss-ai-xr/grant-intelligence">GitHub</a>
+      </p>
+      <p class="disclaimer">
+        Scores sind Orientierung, keine Zusage. Quellen und Stand-Datum sind je Programm sichtbar.
+        Automatisch erzeugt – vor Nutzung gegen offizielle Stellen prüfen.
+      </p>
+    </footer>
+  </main>
+</body>
+</html>

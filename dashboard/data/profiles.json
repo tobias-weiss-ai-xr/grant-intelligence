@@ -1,0 +1,25 @@
+{
+  "stand": "2026-08-20",
+  "quelleHinweis": "Pilot- und Nutzer-Profile (Philipps-Universität Marburg, Fachbereich Mathematik). Einwilligung erteilt = Profil wird im Matching verwendet. Weitere Profile koennen hier per Merge Request hinzugefuegt oder lokal als profiles.local gepflegt werden (nicht oeffentlich).",
+  "profile": [
+    {
+      "id": "pilot-01-tobias",
+      "name": "Tobias Weiss",
+      "karriere": "postdoc",
+      "themen": [
+        "Künstliche Intelligenz",
+        "Maschinelles Lernen",
+        "Graphen",
+        "GraphRAG",
+        "AI Literacy",
+        "AI Adoption"
+      ],
+      "orcid": "0009-0007-1417-8044",
+      "publikationen": [],
+      "einwilligung": true,
+      "status": "aktiv",
+      "standDatum": "2026-08-12",
+      "hinweis": "Pilot-Profil (Postdoc AI Researcher). ORCID oeffentlich verfuegbar, Einwilligung erteilt."
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+name: Deploy Dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'dashboard/**'
+      - 'mcp/catalog.json'
+      - 'mcp/sources.json'
+      - 'mcp/profiles.json'
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync data
+        run: bash dashboard/sync-data.sh
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dashboard
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

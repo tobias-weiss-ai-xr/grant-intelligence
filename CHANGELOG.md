@@ -9,6 +9,8 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **Statisches GitHub-Pages-Dashboard:** `dashboard/` mit Alpine.js (15KB CDN) + Chart.js (70KB CDN). Kein Build-Step, kein Server. Katalog-Explorer (97 Programme, filterbar/sortierbar), Quellen-Browser (26 Quellen), Kategorie/Status/Deadline-Charts, Profil-Matcher (client-seitig, DSGVO-gefiltert). GitHub Action deployt auf Push zu `main`.
+- **`dashboard/sync-data.sh`:** Synchronisiert `mcp/*.json` → `dashboard/data/`; DSGVO-Filter (nur `einwilligung=true` + `status=aktiv`).
 - **Forscherprofil-Modell (`mcp/profile.py`):** `Profile`-Dataclass mit `id`, `name`, `karriere`, `themen`, `orcid`, `publikationen`, `einwilligung`, `status`, `standDatum`, `hinweis`. `from_dict`/`to_dict` mit camelCase-Mapping. `load_profiles()`/`save_profiles()` für Persistenz in `profiles.json`.
 - **ORCID-Public-API-Adapter:** `fetch_orcid()` ruft ORCID-Werke ab (httpx, 10s Timeout, fail-open). `derive_themen()` leitet Forschungsfelder aus Publikationstiteln ab (Wort-Grenzen-Matching, 16 Felder). Einwilligungs-Gate: ohne `einwilligung=True` keine ORCID-Abruf.
 - **Profil-basiertes Matching:** `match_profile()` und `next_deadline()` akzeptieren optionales `profil: Profile`-Argument. Profil-Themen/Karriere als Default; explizite `felder`/`karriere` haben Vorrang. Einwilligungs-Gate: ohne Consent → leere Ergebnisse.

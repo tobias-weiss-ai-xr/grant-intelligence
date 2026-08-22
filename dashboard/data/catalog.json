@@ -1,0 +1,2514 @@
+{
+  "stand": "2026-08-20",
+  "quelleHinweis": "Kuratierter Katalog. status = verifiziert (live geprueft am standDatum) | laufend (keine Frist, rolling) | zu-pruefen (bekanntes Programm, Frist vor Nutzung gegen Portal pruefen). Keine rechtliche Bindung; fuer produktive Nutzung gegen offizielle Stellen pruefen.",
+  "programme": [
+    {
+      "id": "erc-stg-2027",
+      "name": "ERC Starting Grant (StG) 2027",
+      "kategorie": "ERC",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 1500000,
+      "dauerJahre": 5,
+      "frist": "2026-10-14",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/starting-grants",
+      "standDatum": "2026-08-03",
+      "hinweis": "ERC Starting Grant. Bottom-up, exzellente Forschung. Alle Disziplinen. Rolling."
+    },
+    {
+      "id": "erc-adg-2027",
+      "name": "ERC Advanced Grant (AdG) 2027",
+      "kategorie": "ERC",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 2500000,
+      "dauerJahre": 5,
+      "frist": "2026-08-27",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/advanced-grants",
+      "standDatum": "2026-08-03",
+      "hinweis": "ERC Advanced Grant. Etablierte Forscherpersoenlichkeiten. Alle Disziplinen. Rolling."
+    },
+    {
+      "id": "erc-syg-2027",
+      "name": "ERC Synergy Grant (SyG) 2027",
+      "kategorie": "ERC",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 10000000,
+      "dauerJahre": 6,
+      "frist": "2027-05-11",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/synergy-grants",
+      "standDatum": "2026-08-03",
+      "hinweis": "ERC Synergy Grant. 2-4 PIs, transdisziplinaere Grossprojekte. Rolling."
+    },
+    {
+      "id": "dfg-sachbeihilfe",
+      "name": "DFG – Sachbeihilfe (Einzelprojekte)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 30000,
+      "budget_max": 400000,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung",
+      "standDatum": "2026-08-03",
+      "hinweis": "DFG Einzelprojektfoerderung. Alle Disziplinen, Bottom-up. Rolling."
+    },
+    {
+      "id": "dfg-emmy-noether",
+      "name": "DFG – Emmy Noether-Programm (Nachwuchsgruppenleitung)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 1500000,
+      "dauerJahre": 6,
+      "frist": "2026-10-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung/emmy-noether",
+      "standDatum": "2026-08-03",
+      "hinweis": "Stichtage 1.2. / 1.10.; naechster Stichtag vor Portalbesuch bestaetigen."
+    },
+    {
+      "id": "dfg-heisenberg",
+      "name": "DFG – Heisenberg-Programm (Etablierte Forschende)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 1200000,
+      "dauerJahre": 5,
+      "frist": "2026-10-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/personenfoerderung/heisenberg",
+      "standDatum": "2026-08-03",
+      "hinweis": "Stichtage 1.2. / 1.10.; fuer etablierte PostDocs/Professoren."
+    },
+    {
+      "id": "dfg-graduiertenkolleg",
+      "name": "DFG – Graduiertenkolleg (Graduiertenkollegs)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "student",
+        "junior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 3000000,
+      "dauerJahre": 8,
+      "frist": "2026-09-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/graduiertenkollegs",
+      "standDatum": "2026-08-03",
+      "hinweis": "Forschungsausbildung in thematisch fokussierten Kollegs; Stichtag je Runde."
+    },
+    {
+      "id": "dfg-sfb",
+      "name": "DFG – Sonderforschungsbereich (SFB/Transregio)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 10000000,
+      "dauerJahre": 8,
+      "frist": "2026-11-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/sonderforschungsbereiche",
+      "standDatum": "2026-08-03",
+      "hinweis": "Großverbünde; mehrere Antragsrunden; thematisch fokussiert."
+    },
+    {
+      "id": "bmbf-digital-ai",
+      "name": "BMBF – KI-Forschungsverbünde (Digital/KI)",
+      "kategorie": "BMBF",
+      "themen": [
+        "Digital",
+        "KI",
+        "Informatik",
+        "Maschinelles Lernen"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 500000,
+      "budget_max": 5000000,
+      "dauerJahre": 4,
+      "frist": "2026-12-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+      "standDatum": "2026-08-03",
+      "hinweis": "Bundesförderung KI-Verbünde; thematisch fokussiert auf Digital/KI."
+    },
+    {
+      "id": "bmbf-energie-nachhaltigkeit",
+      "name": "BMBF – Energieforschung (Nachhaltigkeit/Energie)",
+      "kategorie": "BMBF",
+      "themen": [
+        "Energie",
+        "Nachhaltigkeit",
+        "Klimawandel",
+        "Erneuerbare"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 300000,
+      "budget_max": 4000000,
+      "dauerJahre": 5,
+      "frist": "2027-02-28",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+      "standDatum": "2026-08-03",
+      "hinweis": "Bundesprogramm Energieforschung; thematisch fokussiert."
+    },
+    {
+      "id": "bmbf-gesundheit-medizin",
+      "name": "BMBF – Gesundheitsforschung (Medizin/Public Health)",
+      "kategorie": "BMBF",
+      "themen": [
+        "Medizin",
+        "Gesundheit",
+        "Public Health",
+        "Pflege"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 200000,
+      "budget_max": 3000000,
+      "dauerJahre": 4,
+      "frist": "2026-11-30",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+      "standDatum": "2026-08-03",
+      "hinweis": "Bundesprogramm Gesundheitsforschung; thematisch fokussiert."
+    },
+    {
+      "id": "loewe-hessen",
+      "name": "LOEWE – Exzellenzforschung (Hessen)",
+      "kategorie": "Land",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 1000000,
+      "dauerJahre": 4,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://wissenschaft.hessen.de/forschung/loewe",
+      "standDatum": "2026-08-03",
+      "hinweis": "Jaehrliche LOEWE-Runde mit Stichtag; aktueller Stichtag via Landesportal pruefen."
+    },
+    {
+      "id": "volkswagen-stiftung",
+      "name": "VolkswagenStiftung – Explorationsfonds",
+      "kategorie": "Stiftung",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 250000,
+      "dauerJahre": 2,
+      "frist": "2026-10-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.volkswagenstiftung.de/foerdern/unsere-programme",
+      "standDatum": "2026-08-03",
+      "hinweis": "Zweimal jährl. Antragsrunden; themenoffen; explorative Forschung."
+    },
+    {
+      "id": "dbu-umwelt",
+      "name": "DBU – Umweltforschung (Ökologie/Nachhaltigkeit)",
+      "kategorie": "Stiftung",
+      "themen": [
+        "Umwelt",
+        "Ökologie",
+        "Nachhaltigkeit",
+        "Klimawandel"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 300000,
+      "dauerJahre": 3,
+      "frist": "2026-12-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dbu.de/foerderung",
+      "standDatum": "2026-08-03",
+      "hinweis": "Deutsche Bundesstiftung Umwelt; thematisch fokussiert auf Umwelt."
+    },
+    {
+      "id": "krebshilfe-onkologie",
+      "name": "Deutsche Krebshilfe – Forschungsprojekte (Onkologie)",
+      "kategorie": "Stiftung",
+      "themen": [
+        "Medizin",
+        "Onkologie",
+        "Krebsforschung",
+        "Gesundheit"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 500000,
+      "dauerJahre": 3,
+      "frist": "2026-10-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.krebshilfe.de/forschung",
+      "standDatum": "2026-08-03",
+      "hinweis": "Festfristen: 1.10., 1.2., 1.5., 1.8.; thematisch Onkologie."
+    },
+    {
+      "id": "carl-zeiss-technik",
+      "name": "Carl-Zeiss-Stiftung – Technik/Ingenieurwissenschaften",
+      "kategorie": "Stiftung",
+      "themen": [
+        "Technik",
+        "Ingenieurwissenschaften",
+        "Optik",
+        "Digital"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 400000,
+      "dauerJahre": 3,
+      "frist": "2026-11-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.carl-zeiss-stiftung.de",
+      "standDatum": "2026-08-03",
+      "hinweis": "Thematisch fokussiert auf Technik/Ingenieurwissenschaften."
+    },
+    {
+      "id": "humboldt-prof",
+      "name": "Alexander-von-Humboldt-Stiftung – Humboldt-Professur",
+      "kategorie": "Stiftung",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 5000000,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.humboldt-foundation.de",
+      "standDatum": "2026-08-03",
+      "hinweis": "Rolling; für international herausragende Professor*innen; themenoffen."
+    },
+    {
+      "id": "aif-industrie",
+      "name": "AiF – Industrielle Gemeinschaftsforschung (Anwendung)",
+      "kategorie": "Industrie",
+      "themen": [
+        "Technik",
+        "Digital",
+        "Innovation",
+        "Anwendung"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 100000,
+      "budget_max": 800000,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.aif.de",
+      "standDatum": "2026-08-03",
+      "hinweis": "Rolling; angewandte Forschung mit Industrie; thematisch Technik/Digital."
+    },
+    {
+      "id": "zim-kmu",
+      "name": "ZIM – Zentrum für Innovation und Mittelstand (KMU-Partnerschaft)",
+      "kategorie": "Industrie",
+      "themen": [
+        "Digital",
+        "Technik",
+        "Innovation",
+        "Nachhaltigkeit"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 50000,
+      "budget_max": 450000,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.zim.de",
+      "standDatum": "2026-08-03",
+      "hinweis": "Rolling; KMU-Partnerschaften; thematisch Digital/Technik/Nachhaltigkeit."
+    },
+    {
+      "id": "cost-netzwerk",
+      "name": "COST – European Cooperation in Science (Netzwerke)",
+      "kategorie": "EU",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 500000,
+      "dauerJahre": 4,
+      "frist": "2026-09-10",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.cost.eu",
+      "standDatum": "2026-08-03",
+      "hinweis": "Netzwerk-Förderung; zwei Antragsrunden; themenoffen."
+    },
+    {
+      "id": "eu-horizon-climate",
+      "name": "EU Horizon Europe – Klima/Energie (Cluster 5)",
+      "kategorie": "EU",
+      "themen": [
+        "Klimawandel",
+        "Energie",
+        "Nachhaltigkeit",
+        "Umwelt"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 15000000,
+      "dauerJahre": 4,
+      "frist": "2026-10-20",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders",
+      "standDatum": "2026-08-03",
+      "hinweis": "Horizon Europe Cluster 5 (Klima/Energie); internationale Konsortien."
+    },
+    {
+      "id": "eu-horizon-digital",
+      "name": "EU Horizon Europe – Digital/Industrie (Cluster 4)",
+      "kategorie": "EU",
+      "themen": [
+        "Digital",
+        "KI",
+        "Informatik",
+        "Technik"
+      ],
+      "karriere": [
+        "prof",
+        "senior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 20000000,
+      "dauerJahre": 4,
+      "frist": "2026-11-08",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders",
+      "standDatum": "2026-08-03",
+      "hinweis": "Horizon Europe Cluster 4 (Digital); internationale Konsortien."
+    },
+    {
+      "id": "daad-stipendium",
+      "name": "DAAD – Forschungsstipendium (Promovierende/PostDocs)",
+      "kategorie": "Stiftung",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "student",
+        "junior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 60000,
+      "dauerJahre": 2,
+      "frist": "2026-12-31",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.daad.de",
+      "standDatum": "2026-08-03",
+      "hinweis": "Forschungsaufenthalte im Ausland; themenoffen; für Promovierende/PostDocs."
+    },
+    {
+      "id": "studienstiftung-promotion",
+      "name": "Studienstiftung – Promotionsstipendium (Studenten)",
+      "kategorie": "Stiftung",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "student"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 30000,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.studienstiftung.de",
+      "standDatum": "2026-08-03",
+      "hinweis": "Rolling; für herausragende Studierende; themenoffen."
+    },
+    {
+      "id": "bmbf-forschungsdaten",
+      "name": "BMBF – Forschungsdaten-Infrastruktur (UB/HRZ)",
+      "kategorie": "BMBF",
+      "themen": [
+        "Forschungsdaten",
+        "Digital",
+        "Infrastruktur",
+        "Open Access"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 200000,
+      "budget_max": 2000000,
+      "dauerJahre": 4,
+      "frist": "2026-11-30",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+      "standDatum": "2026-08-03",
+      "hinweis": "Forschungsdaten-Management für Bibliotheken/HRZ; thematisch fokussiert."
+    },
+    {
+      "id": "bmbf-digiserv",
+      "name": "BMBF – Digitale Dienstleistungen (UB/HRZ/Admin)",
+      "kategorie": "BMBF",
+      "themen": [
+        "Digital",
+        "IT-Infrastruktur",
+        "Service",
+        "Verwaltung"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 100000,
+      "budget_max": 1500000,
+      "dauerJahre": 3,
+      "frist": "2027-01-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+      "standDatum": "2026-08-03",
+      "hinweis": "Digitale Service-Infrastruktur; für Bibliotheken, HRZ, Verwaltung."
+    },
+    {
+      "id": "dfg-fdm",
+      "name": "DFG – Forschungsdaten-Management (FDM)",
+      "kategorie": "DFG",
+      "themen": [
+        "Forschungsdaten",
+        "Open Access",
+        "Digital"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 500000,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/forschungsdaten",
+      "standDatum": "2026-08-03",
+      "hinweis": "Rolling; FDM-Infrastruktur und Services für Bibliotheken/HRZ."
+    },
+    {
+      "id": "dfg-ub-digiserv",
+      "name": "DFG – Bibliotheks- und Informationsdienste (UB)",
+      "kategorie": "DFG",
+      "themen": [
+        "Bibliothek",
+        "Open Access",
+        "Digital",
+        "Service"
+      ],
+      "karriere": [
+        "bibliothek",
+        "verwaltung",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 300000,
+      "dauerJahre": 3,
+      "frist": "2026-10-15",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung/bibliothek",
+      "standDatum": "2026-08-03",
+      "hinweis": "FDM, Open Access, digitale Dienste; für Universitätsbibliotheken."
+    },
+    {
+      "id": "hrz-it-infra",
+      "name": "DFG – IT-Infrastruktur für Forschung (HRZ)",
+      "kategorie": "DFG",
+      "themen": [
+        "IT-Infrastruktur",
+        "Digital",
+        "HPC",
+        "Service"
+      ],
+      "karriere": [
+        "IT",
+        "verwaltung",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 800000,
+      "dauerJahre": 4,
+      "frist": "2026-11-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/it",
+      "standDatum": "2026-08-03",
+      "hinweis": "IT-Infrastruktur, HPC, Cloud-Services; für HRZ und zentrale IT."
+    },
+    {
+      "id": "eu-open-science",
+      "name": "EU Horizon – Open Science Infrastructure (UB/HRZ)",
+      "kategorie": "EU",
+      "themen": [
+        "Open Access",
+        "Forschungsdaten",
+        "Digital",
+        "Infrastruktur"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT",
+        "bibliothek",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 8000000,
+      "dauerJahre": 4,
+      "frist": "2026-10-20",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders",
+      "standDatum": "2026-08-03",
+      "hinweis": "Open Science Cloud, Repositorien; internationale Konsortien; UB/HRZ."
+    },
+    {
+      "id": "loewe-verwaltung",
+      "name": "LOEWE – Verwaltungs- und Serviceinnovation (Hessen)",
+      "kategorie": "Land",
+      "themen": [
+        "Verwaltung",
+        "Service",
+        "Digital",
+        "Innovation"
+      ],
+      "karriere": [
+        "verwaltung",
+        "service",
+        "IT"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 800000,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://wissenschaft.hessen.de/forschung/loewe",
+      "standDatum": "2026-08-03",
+      "hinweis": "Verwaltungsinnovation, Service-Design; für zentrale Verwaltung/Service."
+    },
+    {
+      "id": "aif-verwaltung",
+      "name": "AiF – Verwaltungs-IT (Digitalisierung Verwaltung)",
+      "kategorie": "Industrie",
+      "themen": [
+        "Digital",
+        "Verwaltung",
+        "IT-Infrastruktur",
+        "Service"
+      ],
+      "karriere": [
+        "verwaltung",
+        "IT",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 50000,
+      "budget_max": 400000,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.aif.de",
+      "standDatum": "2026-08-03",
+      "hinweis": "Rolling; angewandte IT-Projekte für Verwaltung; KMU/Institutionen."
+    },
+    {
+      "id": "deutschlandstipendium",
+      "name": "Deutschlandstipendium",
+      "kategorie": "Bund",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 300,
+      "budget_max": 3600,
+      "dauerJahre": 1,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.deutschlandstipendium.de",
+      "standDatum": "2026-08-12",
+      "hinweis": "Bundesprogramm, 300 EUR/Monat. Bewerbung ueber die Hochschule, nicht direkt."
+    },
+    {
+      "id": "bfw-cusanuswerk",
+      "name": "Cusanuswerk – Bischöfliche Studienstiftung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.cusanuswerk.de",
+      "standDatum": "2026-08-12",
+      "hinweis": "Katholisch. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr zzgl. Studiengebuehren."
+    },
+    {
+      "id": "bfw-ev-studienwerk",
+      "name": "Evangelisches Studienwerk Villigst",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.ev-studienwerk.de",
+      "standDatum": "2026-08-12",
+      "hinweis": "Evangelisch. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-fes",
+      "name": "Friedrich-Ebert-Stiftung – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.fes.de/studienfoerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "SPD-nah. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-hbs",
+      "name": "Heinrich-Böll-Stiftung – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.boell.de/stipendien",
+      "standDatum": "2026-08-12",
+      "hinweis": "Gruene-nah. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-kas",
+      "name": "Konrad-Adenauer-Stiftung – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.kas.de/studienfoerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "CDU-nah. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-rls",
+      "name": "Rosa-Luxemburg-Stiftung – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.rosalux.de/stipendien",
+      "standDatum": "2026-08-12",
+      "hinweis": "Die Linke-nah. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-hss",
+      "name": "Hanns-Seidel-Stiftung – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.hss.de/studienfoerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "CSU-nah. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-fns",
+      "name": "Friedrich-Naumann-Stiftung – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.freiheit.org/studienfoerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "FDP-nah. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-sdw",
+      "name": "Stiftung der Deutschen Wirtschaft – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.sdw.org/studienfoerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "Wirtschaftsnah. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "bfw-avicenna",
+      "name": "Avicenna-Stiftung – Studienförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": 744,
+      "budget_max": 8928,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.avicenna-stiftung.de",
+      "standDatum": "2026-08-12",
+      "hinweis": "Muslimisch. BA + MA + PhD. Grundstipendium 744-8928 EUR/Jahr."
+    },
+    {
+      "id": "daad-auslandsstipendium",
+      "name": "DAAD – Auslandsstipendium (Outgoing)",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.daad.de/de/studieren-und-forschen-in-deutschland/foerdermoeglichkeiten/stipendien-datenbank/",
+      "standDatum": "2026-08-12",
+      "hinweis": "DAAD-Stipendien fuer Auslandssemester/-studium."
+    },
+    {
+      "id": "erasmus-plus",
+      "name": "Erasmus+ Studienaustausch",
+      "kategorie": "EU",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://ec.europa.eu/programmes/erasmus-plus",
+      "standDatum": "2026-08-12",
+      "hinweis": "EU-Mobilitaetsprogramm. Fristen ueber die Heimat-Hochschule."
+    },
+    {
+      "id": "dfg-irtg",
+      "name": "DFG – International Research Training Group (IRTG)",
+      "kategorie": "DFG",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/programme/einzelfoerderung/international_research_training_groups",
+      "standDatum": "2026-08-12",
+      "hinweis": "Bilaterale Doktorandenprogramme. Stichtage: standortspezifisch."
+    },
+    {
+      "id": "dfg-graduate-school",
+      "name": "DFG – Graduate School",
+      "kategorie": "DFG",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/foerderung/programme/einzelfoerderung/graduiertenkollegs",
+      "standDatum": "2026-08-12",
+      "hinweis": "Strukturierte Promotionsprogramme. Stichtage: standortspezifisch."
+    },
+    {
+      "id": "msc-itn",
+      "name": "Marie Sklodowska-Curie – Innovative Training Networks (ITN)",
+      "kategorie": "EU",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "junior"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "frist": "2027-01-12",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://marie-sklodowska-curieactions.ec.europa.eu",
+      "standDatum": "2026-08-12",
+      "hinweis": "EU-Doktoranden-Netzwerke. 3 Jahre, internationale Mobilitaet verpflichtend."
+    },
+    {
+      "id": "msc-cofund",
+      "name": "Marie Sklodowska-Curie – COFUND",
+      "kategorie": "EU",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "junior",
+        "postdoc"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "frist": "2027-03-20",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://marie-sklodowska-curieactions.ec.europa.eu",
+      "standDatum": "2026-08-12",
+      "hinweis": "EU-kofinanzierte Programme. PhD + Postdoc."
+    },
+    {
+      "id": "max-weber-bayern",
+      "name": "Max Weber-Programm Bayern",
+      "kategorie": "Land",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "student",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.studienstiftung.de/foerderung/max-weber-programm",
+      "standDatum": "2026-08-12",
+      "hinweis": "Bayern: Hochbegabtenfoerderung, verwaltet durch Studienstiftung."
+    },
+    {
+      "id": "gerda-henkel",
+      "name": "Gerda Henkel Stiftung – Forschungsstipendien",
+      "kategorie": "Stiftung",
+      "themen": [
+        "Geschichte",
+        "Archäologie",
+        "Kunstgeschichte",
+        "Islamische Studien",
+        "Rechtsgeschichte"
+      ],
+      "karriere": [
+        "junior",
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "frist": "2026-09-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.gerda-henkel-stiftung.de/foerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "Stichtage: 01.03. und 01.09."
+    },
+    {
+      "id": "fritz-thyssen",
+      "name": "Fritz Thyssen Stiftung – Forschungsfoerderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "frist": "2027-02-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.fritz-thyssen-stiftung.de/foerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "Interdisziplinaer. Stichtage: 01.02. und 01.10."
+    },
+    {
+      "id": "erc-cog-2027",
+      "name": "ERC Consolidator Grant (CoG) 2027",
+      "kategorie": "ERC",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 2000000,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://erc.europa.eu/apply-grant/consolidator-grant",
+      "standDatum": "2026-08-12",
+      "hinweis": "7-12 Jahre nach Promotion. Naechste Frist am Portal pruefen."
+    },
+    {
+      "id": "erc-poc",
+      "name": "ERC Proof of Concept (PoC)",
+      "kategorie": "ERC",
+      "themen": [
+        "Innovation",
+        "Transfer"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 150000,
+      "dauerJahre": 1,
+      "frist": null,
+      "rolling": true,
+      "status": "zu-pruefen",
+      "quelle": "https://erc.europa.eu/apply-grant/proof-concept",
+      "standDatum": "2026-08-12",
+      "hinweis": "Nur fuer aktive ERC-Geförderte. Rolling Calls jaehrlich."
+    },
+    {
+      "id": "dfg-walter-benjamin",
+      "name": "DFG – Walter Benjamin-Programm (Postdoc-Stipendium)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/walter-benjamin",
+      "standDatum": "2026-08-12",
+      "hinweis": "DFG-Forschungsstipendium fuer Postdocs, Rueckkehr/Neueinstieg. Rolling-Bewerbung via elan-Portal."
+    },
+    {
+      "id": "dfg-reinhart-koselleck",
+      "name": "DFG – Reinhart-Koselleck-Projekte",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 1250000,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/reinhart-koselleck-projekte",
+      "standDatum": "2026-08-12",
+      "hinweis": "High-risk/High-gain fuer erfahrene Forscher. Bis 1,25 Mio EUR, 5 Jahre. Stichtage: 1.2./1.10."
+    },
+    {
+      "id": "dfg-forschungsgruppen",
+      "name": "DFG – Forschungsgruppen",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/forschungsgruppen",
+      "standDatum": "2026-08-12",
+      "hinweis": "Kooperative Forschungsgruppen, bis 6 Mitglieder, 5 Jahre. Stichtage: 1.2./1.10."
+    },
+    {
+      "id": "dfg-schwerpunktprogramme",
+      "name": "DFG – Schwerpunktprogramme (SPP)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "student",
+        "junior",
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "member"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 6,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/schwerpunktprogramme",
+      "standDatum": "2026-08-12",
+      "hinweis": "Thematische Prioritaetsprogramme. Ausschreibungsgebunden. Alle Karrierestufen. Stichtage: 1.2./1.10."
+    },
+    {
+      "id": "dfg-kolleg-forschungsgruppen",
+      "name": "DFG – Kolleg-Forschungsgruppen (KFG)",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "member"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 4,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/kolleg-forschungsgruppen",
+      "standDatum": "2026-08-12",
+      "hinweis": "Interdisziplinaere Gruppen mit Nachwuchsfokus, 4 Jahre. Stichtage: 1.2./1.10."
+    },
+    {
+      "id": "dfg-klinische-forschungsgruppen",
+      "name": "DFG – Klinische Forschungsgruppen",
+      "kategorie": "DFG",
+      "themen": [
+        "Medizin",
+        "Klinische Forschung"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 4,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/klinische-forschungsgruppen",
+      "standDatum": "2026-08-12",
+      "hinweis": "Klinische Forschung, translationale Projekte, 4 Jahre. Stichtage: 1.2./1.10."
+    },
+    {
+      "id": "dfg-wissenschaftliche-netzwerke",
+      "name": "DFG – Wissenschaftliche Netzwerke",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/wissenschaftliche-netzwerke",
+      "standDatum": "2026-08-12",
+      "hinweis": "Wissenschaftlicher Ideenaustausch via Netzwerke, 3 Jahre. Stichtage: 1.2./1.10."
+    },
+    {
+      "id": "dfg-forschungsimpulse",
+      "name": "DFG – Forschungsimpulse",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/forschungsimpulse",
+      "standDatum": "2026-08-12",
+      "hinweis": "Schnelle Reaktion auf neue/emergierende Themen, 3 Jahre. Stichtage: 1.2./1.10."
+    },
+    {
+      "id": "msca-pf",
+      "name": "MSCA – Postdoctoral Fellowships (PF)",
+      "kategorie": "EU",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": "2026-09-09",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships",
+      "standDatum": "2026-08-12",
+      "hinweis": "European + Global Postdoc-Fellowships. Max 8 Jahre nach Promotion. Alle Disziplinen. Frist: 9. Sep 2026."
+    },
+    {
+      "id": "eu-horizon-health",
+      "name": "EU Horizon Europe – Gesundheit (Cluster 1)",
+      "kategorie": "EU",
+      "themen": [
+        "Medizin",
+        "Gesundheit",
+        "Life Sciences",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 15000000,
+      "dauerJahre": 4,
+      "frist": "2026-10-20",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders",
+      "standDatum": "2026-08-12",
+      "hinweis": "Horizon Europe Cluster 1 (Gesundheit). Internationale Konsortien."
+    },
+    {
+      "id": "eu-horizon-culture",
+      "name": "EU Horizon Europe – Kultur/Gesellschaft (Cluster 2)",
+      "kategorie": "EU",
+      "themen": [
+        "Kultur",
+        "Kreativwirtschaft",
+        "Sozialwissenschaften",
+        "Demokratie",
+        "Medien"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 10000000,
+      "dauerJahre": 4,
+      "frist": "2026-10-20",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders",
+      "standDatum": "2026-08-12",
+      "hinweis": "Horizon Europe Cluster 2 (Kultur, Kreativitaet, Inklusive Gesellschaft). Internationale Konsortien."
+    },
+    {
+      "id": "eu-horizon-security",
+      "name": "EU Horizon Europe – Zivile Sicherheit (Cluster 3)",
+      "kategorie": "EU",
+      "themen": [
+        "Cybersicherheit",
+        "Krisenmanagement",
+        "Katastrophenschutz",
+        "Sicherheit"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 10000000,
+      "dauerJahre": 4,
+      "frist": "2026-10-20",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders",
+      "standDatum": "2026-08-12",
+      "hinweis": "Horizon Europe Cluster 3 (Zivile Sicherheit fuer Gesellschaft). Internationale Konsortien."
+    },
+    {
+      "id": "humboldt-forschungsstipendium",
+      "name": "Humboldt – Forschungsstipendium",
+      "kategorie": "Stiftung",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.humboldt-foundation.de/bewerben/foerderprogramme/humboldt-forschungsstipendium",
+      "standDatum": "2026-08-12",
+      "hinweis": "Internationales Forschungsstipendium (Inbound/Outbound). 6-24 Monate. Alle Disziplinen. Rolling Bewerbung."
+    },
+    {
+      "id": "robert-bosch-stiftung",
+      "name": "Robert Bosch Stiftung – Forschungsförderung",
+      "kategorie": "Stiftung",
+      "themen": [
+        "Gesundheit",
+        "Bildung",
+        "Gesellschaft",
+        "Globale Fragen"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://bosch-stiftung.de/foerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "Gesundheit, Bildung, Gesellschaft, Globale Fragen. Ausschreibungsgebunden."
+    },
+    {
+      "id": "nrw-mwk-wissenschaft",
+      "name": "NRW – MWK Wissenschaftsförderung",
+      "kategorie": "Land",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.mkw.nrw/wissenschaft",
+      "standDatum": "2026-08-12",
+      "hinweis": "Landesfoerderung NRW. Forschungsinfrastruktur, Nachwuchs, Transfer. Ausschreibungsgebunden."
+    },
+    {
+      "id": "hightech-agenda-bayern",
+      "name": "Hightech Agenda Bayern (HTA)",
+      "kategorie": "Land",
+      "themen": [
+        "KI",
+        "Digital",
+        "Life Sciences",
+        "Cleantech",
+        "Luft- und Raumfahrt"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.stmwk.bayern.de/wissenschaftler/hightech-agenda-bayern.html",
+      "standDatum": "2026-08-12",
+      "hinweis": "5,5 Mrd EUR Staatsinvestition in KI, Digital, Luftfahrt, Life Sciences. Professuren, Forschungszentren. Ausschreibungsgebunden."
+    },
+    {
+      "id": "nsf-international",
+      "name": "NSF – International Collaboration (US)",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.nsf.gov/funding",
+      "standDatum": "2026-08-12",
+      "hinweis": "US National Science Foundation. Deutsche Forscher als internationale Kooperationspartner. Alle Disziplinen. Ausschreibungsgebunden."
+    },
+    {
+      "id": "nih-international",
+      "name": "NIH – International Collaboration (US)",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Biotechnologie",
+        "Gesundheit",
+        "Life Sciences"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://grants.nih.gov",
+      "standDatum": "2026-08-12",
+      "hinweis": "US National Institutes of Health. Weltgroesste biomedizinische Foerderung. Deutsche Kooperationspartner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "ukri-international",
+      "name": "UKRI – UK-German Bilateral (UK)",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.ukri.org/apply-for-funding/",
+      "standDatum": "2026-08-12",
+      "hinweis": "UK Research and Innovation. Post-Brexit bilaterale Abkommen DE-UK. Lead und Partner moeglich. Ausschreibungsgebunden."
+    },
+    {
+      "id": "dach-snsf-fwf",
+      "name": "DACH – SNSF/FWF Bilateral (CH/AT)",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://www.snf.ch/de/foerderung",
+      "standDatum": "2026-08-12",
+      "hinweis": "DACH-Kooperation Schweiz (SNSF) und Oesterreich (FWF). Strukturelle Anbindung an DFG. Lead und Partner moeglich. Ausschreibungsgebunden."
+    },
+    {
+      "id": "wellcome-international",
+      "name": "Wellcome Trust – International (UK)",
+      "kategorie": "International",
+      "themen": [
+        "Gesundheit",
+        "Global Health",
+        "Medizin",
+        "Life Sciences"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "laufend",
+      "quelle": "https://wellcome.org/research-funding",
+      "standDatum": "2026-08-12",
+      "hinweis": "Wellcome Trust (UK). Globale Gesundheitsforschung. Internationale Programme. Deutsche Forscher koennen fuehren. Ausschreibungsgebunden."
+    },
+    {
+      "id": "evita-hpc-training-materials",
+      "name": "EVITA HPC – Call for Modular Training Materials",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "IT-Infrastruktur",
+        "Training",
+        "Digital"
+      ],
+      "karriere": [
+        "prof",
+        "postdoc",
+        "service",
+        "IT"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": null,
+      "frist": "2026-09-07",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://www.evitahpc.eu/public-calls/",
+      "standDatum": "2026-08-12",
+      "hinweis": "EVITA (EuroHPC Virtual Training Academy): Cascade Funding fuer modulare HPC-Trainingsmaterialien. Publikation 16.06.2026, Deadline 07.09.2026, Ergebnisse Nov 2026. Funding pro Modul; Details im Call Document."
+    },
+    {
+      "id": "evita-hpc-external-reviewers",
+      "name": "EVITA HPC – Call for External Reviewers",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "Training",
+        "Evaluierung"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": null,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.evitahpc.eu/public-calls/",
+      "standDatum": "2026-08-12",
+      "hinweis": "EVITA sucht unabhaengige externe Gutachter:innen fuer die Evaluierung der Cascade-Funding-Antraege (Trainingsmaterialien). Publikation 16.06.2026; Fristen im Call Document pruefen."
+    },
+    {
+      "id": "eurohpc-access-calls",
+      "name": "EuroHPC JU – Supercomputer & AI-Factory Access",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "IT-Infrastruktur",
+        "Künstliche Intelligenz",
+        "Digital"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof",
+        "IT"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": null,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.eurohpc-ju.europa.eu/supercomputers/supercomputers-access-calls_en",
+      "standDatum": "2026-08-12",
+      "hinweis": "Zugang zu EuroHPC-Supercomputern und AI Factories fuer Forschung/Industrie. Wiederkehrende Access Calls (Benchmark-/Regular-/Extreme-Scale-Access); Fristen im Portal pruefen. Kein Geldtransfer, sondern Rechenzeit."
+    },
+    {
+      "id": "eurohpc-research-innovation",
+      "name": "EuroHPC JU – Research & Innovation Calls",
+      "kategorie": "EU",
+      "themen": [
+        "High-Performance Computing",
+        "IT-Infrastruktur",
+        "Künstliche Intelligenz",
+        "Quantentechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.eurohpc-ju.europa.eu/research-innovation/research-innovation-calls_en",
+      "standDatum": "2026-08-12",
+      "hinweis": "EuroHPC-Forschungs- und Innovationsausschreibungen (inkl. Quantencomputing). Fristen im Portal pruefen; internationale Konsortien ueblich."
+    },
+    {
+      "id": "eosc-infraeosc",
+      "name": "Horizon Europe – INFRAEOSC (EOSC Ecosystem)",
+      "kategorie": "EU",
+      "themen": [
+        "Forschungsdaten",
+        "Open Access",
+        "Digital",
+        "IT-Infrastruktur"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof",
+        "verwaltung",
+        "service"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://eosc.eu/calls-grants/",
+      "standDatum": "2026-08-12",
+      "hinweis": "Destination 'Enabling an operational, open and FAIR EOSC ecosystem' im Horizon-Europe-Arbeitsprogramm Research Infrastructures. Calls fuer FAIR-Daten, EOSC-Nodes, Trainings; Fristen im EU Funding & Tenders Portal pruefen."
+    },
+    {
+      "id": "embo-fellowships",
+      "name": "EMBO – Fellowships & Young Investigators",
+      "kategorie": "International",
+      "themen": [
+        "Life Sciences",
+        "Medizin",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.embo.org/funding",
+      "standDatum": "2026-08-20",
+      "hinweis": "EMBO (European Molecular Biology Organization). Fellowships für Postdocs, Young Investigator Programme. Deutsche Forscher können führen oder Partner sein. Lebenswissenschaften, Molekularbiologie. Rolling."
+    },
+    {
+      "id": "hfsp-research-grants",
+      "name": "HFSP – Human Frontier Science Program",
+      "kategorie": "International",
+      "themen": [
+        "Life Sciences",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.hfsp.org/funding",
+      "standDatum": "2026-08-20",
+      "hinweis": "HFSP (Human Frontier Science Program). Internationale Postdoc-Fellowships und Research Grants. Lebenswissenschaften, interdisziplinär. Deutsche Forscher können PI sein. Ausschreibungsgebunden."
+    },
+    {
+      "id": "gates-foundation",
+      "name": "Bill & Melinda Gates Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Gesundheit",
+        "Global Health"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.gatesfoundation.org/about/committed-grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Bill & Melinda Gates Foundation. Globale Gesundheit, Entwicklung. Grand Challenges Calls. Deutsche Forscher als Partner möglich. Ausschreibungsgebunden."
+    },
+    {
+      "id": "rockefeller-foundation",
+      "name": "Rockefeller Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Gesundheit",
+        "Klimawandel",
+        "Nachhaltigkeit"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.rockefellerfoundation.org/grants/",
+      "standDatum": "2026-08-20",
+      "hinweis": "Rockefeller Foundation. Gesundheit, Klima, Resilienz. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "sloan-foundation",
+      "name": "Alfred P. Sloan Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Digital",
+        "KI",
+        "Informatik"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://sloan.org/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Alfred P. Sloan Foundation. STEM-Forschung, Informatik, KI, Computational Science. Deutsche Forscher können Partner sein. Ausschreibungsgebunden."
+    },
+    {
+      "id": "kavli-foundation",
+      "name": "Kavli Foundation",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://kavlifoundation.org/",
+      "standDatum": "2026-08-20",
+      "hinweis": "Kavli Foundation. Astrophysik, Nanowissenschaft, Neurowissenschaft. Institute-Programme, Kavli-Preise. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "templeton-foundation",
+      "name": "John Templeton Foundation",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.templeton.org/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "John Templeton Foundation. Wissenschaft, Philosophie, grosse Fragen. Interdisziplinär. Deutsche Forscher können PI oder Partner sein. Ausschreibungsgebunden."
+    },
+    {
+      "id": "hhmi-international",
+      "name": "Howard Hughes Medical Institute (International)",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Life Sciences",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.hhmi.org/programs",
+      "standDatum": "2026-08-20",
+      "hinweis": "Howard Hughes Medical Institute (HHMI). Biomedizin, Life Sciences. International Scholars Programme. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "moore-foundation",
+      "name": "Gordon and Betty Moore Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Nachhaltigkeit",
+        "Umwelt",
+        "Life Sciences"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.moore.org/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Gordon and Betty Moore Foundation. Umwelt, Konservierung, Life Sciences, Halbleiter. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "leverhulme-trust",
+      "name": "Leverhulme Trust",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.leverhulme.ac.uk/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Leverhulme Trust (UK). Alle Disziplinen. Research Fellowships, Project Grants. Deutsche Forscher können Partner sein. Rolling."
+    },
+    {
+      "id": "royal-society",
+      "name": "Royal Society",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://royalsociety.org/grants/",
+      "standDatum": "2026-08-20",
+      "hinweis": "Royal Society (UK). Naturwissenschaften, Mathematik, Ingenieurwissenschaften. Fellowships, Research Grants. Deutsche Forscher als Partner. Rolling."
+    },
+    {
+      "id": "jsps-international",
+      "name": "JSPS – Japan Society for the Promotion of Science",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.jsps.go.jp/english/e-fellow/",
+      "standDatum": "2026-08-20",
+      "hinweis": "JSPS (Japan Society for the Promotion of Science). Internationale Fellowships, Postdoc-Programme. Deutsche Forscher als Partner in Japan. Rolling."
+    },
+    {
+      "id": "arc-international",
+      "name": "ARC – Australian Research Council",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.arc.gov.au/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Australian Research Council (ARC). Discovery Projects, Linkage Projects. Deutsche Forscher als internationale Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "cihr-international",
+      "name": "CIHR – Canadian Institutes of Health Research",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Gesundheit",
+        "Life Sciences"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://cihr-irsc.gc.ca/e/193.html",
+      "standDatum": "2026-08-20",
+      "hinweis": "CIHR (Canadian Institutes of Health Research). Biomedizin, Gesundheitsforschung. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "nserc-international",
+      "name": "NSERC – Natural Sciences & Engineering Research Council",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.nserc-crsng.gc.ca/index_eng.asp",
+      "standDatum": "2026-08-20",
+      "hinweis": "NSERC (Natural Sciences and Engineering Research Council of Canada). Naturwissenschaften, Ingenieurwissenschaften. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "who-tdr",
+      "name": "WHO/TDR – Tropical Disease Research",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Gesundheit",
+        "Global Health"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.who.int/teams/control-of-neglected-tropical-diseases",
+      "standDatum": "2026-08-20",
+      "hinweis": "WHO/TDR (UN Special Programme for Tropical Disease Research). Tropenkrankheiten, vernachlässigte Krankheiten. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "unesco-research",
+      "name": "UNESCO – Research & Heritage",
+      "kategorie": "International",
+      "themen": [
+        "Bildung",
+        "Kultur",
+        "Gesellschaft",
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.unesco.org/en/funding",
+      "standDatum": "2026-08-20",
+      "hinweis": "UNESCO. Bildung, Kultur, Wissenschaft, Welterbe. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    }
+  ]
+}

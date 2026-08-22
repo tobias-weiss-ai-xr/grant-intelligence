@@ -97,7 +97,23 @@ flowchart TD
 - `docs/Architektur.md` – Bausteine, Datenquellen, Datenmodell
 - `docs/Datenquellen.md` – Verifizierte Quellen + Verarbeitungsregeln
 - `docs/MCP-Design.md` – MCP-Server-Konzept und Tool-Referenz
+- `docs/Dashboard.md` – Statisches GitHub-Pages-Dashboard (Alpine.js + Chart.js)
 - `mcp/README.md` – Quickstart, Tools, Cron
+
+## Dashboard
+
+Statisches Dashboard auf GitHub Pages – kein Server, kein Build-Step:
+
+> **Live:** <https://tobias-weiss-ai-xr.github.io/grant-intelligence/>
+
+```bash
+bash dashboard/sync-data.sh     # Daten synchronisieren (DSGVO-gefiltert)
+cd dashboard && python3 -m http.server 8080   # Lokal testen
+```
+
+Features: Katalog-Explorer (97 Programme), Quellen-Browser (26 Quellen),
+Kategorie/Status-Charts, Fristen-Timeline, Profil-Matcher (client-seitig).
+Siehe [`docs/Dashboard.md`](docs/Dashboard.md).
 
 ## Prinzipien
 
