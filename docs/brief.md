@@ -3,7 +3,7 @@
 **Stand:** 2026-08-12 · Profil: Künstliche Intelligenz, Maschinelles Lernen
  · Karriere: postdoc
 
-Katalog: 80 Programme.
+Katalog: 97 Programme.
 
 ## Top-Matches
 

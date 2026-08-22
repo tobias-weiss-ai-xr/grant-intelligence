@@ -95,6 +95,27 @@ die Paywall liegt in kommoden Aggregator-DBs (PIVOT/Research-Professional), nich
 | Wellcome Trust – Global Health | ✓ (`wellcome.org/research-funding`) |
 | Grants.gov (US-Bund, Referenz) | ✓ |
 
+### 6a. Internationale Stiftungen & Fördere
+| Inhalt | Portal | Verifiz. |
+|---|---|---|
+| **EMBO** (Fellowships, Young Investigators) | `embo.org/funding` | ✓ |
+| **HFSP** (Human Frontier Science Program) | `hfsp.org/funding` | ✓ |
+| **Bill & Melinda Gates Foundation** (Global Health) | `gatesfoundation.org` | ✓ |
+| **Rockefeller Foundation** (Health, Climate) | `rockefellerfoundation.org/grants` | ✓ |
+| **Alfred P. Sloan Foundation** (STEM, Computational) | `sloan.org/grants` | ✓ |
+| **Kavli Foundation** (Astro, Nano, Neuro) | `kavlifoundation.org` | ✓ |
+| **John Templeton Foundation** (Science, Philosophy) | `templeton.org/grants` | ✓ |
+| **Howard Hughes Medical Institute** (International) | `hhmi.org/programs` | ✓ |
+| **Gordon and Betty Moore Foundation** (Science, Conservation) | `moore.org/grants` | ✓ |
+| **Leverhulme Trust** (UK, all disciplines) | `leverhulme.ac.uk/grants` | ✓ |
+| **Royal Society** (UK, STEM) | `royalsociety.org/grants` | ✓ |
+| **JSPS** (Japan, international fellowships) | `jsps.go.jp/english/e-fellow` | ✓ |
+| **ARC** (Australian Research Council) | `arc.gov.au/grants` | ✓ |
+| **CIHR** (Canadian Institutes of Health Research) | `cihr-irsc.gc.ca` | ✓ |
+| **NSERC** (Natural Sciences & Engineering, Canada) | `nserc-crsng.gc.ca` | ✓ |
+| **WHO/TDR** (Tropical Disease Research) | `who.int` | ✓ |
+| **UNESCO** (Research & Heritage) | `unesco.org/en/funding` | ✓ |
+
 ## 7. Unterstützende Identitätsschicht (keine Förderung)
 | Zweck | Quelle | Verifiz. |
 |---|---|---|

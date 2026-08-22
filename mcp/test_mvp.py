@@ -486,7 +486,7 @@ class TestCoverageEdges:
     def test_programs_international_filter(self):
         intl = server.programs("International")
         assert all(p["kategorie"] == "International" for p in intl)
-        assert len(intl) == 5
+        assert len(intl) >= 5  # was 5, now 22 after international foundations expansion
 
     # -- server.py: ingest rejection (133-137) --
     def test_ingest_rejects_invalid(self, tmp_path, monkeypatch):

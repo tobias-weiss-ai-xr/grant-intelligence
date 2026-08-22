@@ -9,6 +9,7 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **17 neue Internationale Stiftungen & Fördere:** EMBO, HFSP, Gates Foundation, Rockefeller Foundation, Sloan Foundation, Kavli Foundation, Templeton Foundation, HHMI, Moore Foundation, Leverhulme Trust, Royal Society, JSPS, ARC, CIHR, NSERC, WHO/TDR, UNESCO. Kategorie `International`: 5 → 22. Katalog: 80 → 97.
 - **3 neue Programme:** ERC Consolidator Grant (CoG), ERC Proof of Concept (PoC), DFG Walter Benjamin (Postdoc-Rückkehr/Neueinstieg). Katalog: 52 → 55.
 - **Postdoc-Bedeckung:** 23 → 26 Programme. ERC-Schema-Vollständigkeit (StG, CoG, AdG, SyG, PoC). DFG Postdoc-Trilogie (Sachbeihilfe, Emmy Noether, Walter Benjamin).
 - **7 neue DFG-Programme:** Reinhart Koselleck (High-risk/High-gain), Forschungsgruppen, Schwerpunktprogramme, Kolleg-Forschungsgruppen, Klinische Forschungsgruppen, Wissenschaftliche Netzwerke, Forschungsimpulse. DFG-Einzelfoerderung + Koordinierte-Programme nahezu komplett. Katalog: 55 → 62.

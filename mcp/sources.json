@@ -707,5 +707,100 @@
         "name": "Horizon Europe – INFRAEOSC (EOSC Ecosystem)"
       }
     ]
+  },
+  "international-foundations": {
+    "name": "International Foundations & Funders",
+    "url": "https://www.embo.org/funding",
+    "type": "manual",
+    "update_frequency": "quarterly",
+    "last_check": "2026-08-20",
+    "hinweis": "Internationale Stiftungen und Förderer. Fristen per Portal-Check aktualisieren.",
+    "programs": [
+      {
+        "id": "embo-fellowships",
+        "name": "EMBO Fellowships",
+        "rolling": true
+      },
+      {
+        "id": "hfsp-research-grants",
+        "name": "HFSP Research Grants",
+        "rolling": false
+      },
+      {
+        "id": "gates-foundation",
+        "name": "Bill & Melinda Gates Foundation",
+        "rolling": false
+      },
+      {
+        "id": "rockefeller-foundation",
+        "name": "Rockefeller Foundation",
+        "rolling": false
+      },
+      {
+        "id": "sloan-foundation",
+        "name": "Alfred P. Sloan Foundation",
+        "rolling": false
+      },
+      {
+        "id": "kavli-foundation",
+        "name": "Kavli Foundation",
+        "rolling": false
+      },
+      {
+        "id": "templeton-foundation",
+        "name": "John Templeton Foundation",
+        "rolling": false
+      },
+      {
+        "id": "hhmi-international",
+        "name": "HHMI International",
+        "rolling": false
+      },
+      {
+        "id": "moore-foundation",
+        "name": "Gordon and Betty Moore Foundation",
+        "rolling": false
+      },
+      {
+        "id": "leverhulme-trust",
+        "name": "Leverhulme Trust",
+        "rolling": true
+      },
+      {
+        "id": "royal-society",
+        "name": "Royal Society",
+        "rolling": true
+      },
+      {
+        "id": "jsps-international",
+        "name": "JSPS International",
+        "rolling": true
+      },
+      {
+        "id": "arc-international",
+        "name": "ARC International",
+        "rolling": false
+      },
+      {
+        "id": "cihr-international",
+        "name": "CIHR International",
+        "rolling": false
+      },
+      {
+        "id": "nserc-international",
+        "name": "NSERC International",
+        "rolling": false
+      },
+      {
+        "id": "who-tdr",
+        "name": "WHO/TDR",
+        "rolling": false
+      },
+      {
+        "id": "unesco-research",
+        "name": "UNESCO Research",
+        "rolling": false
+      }
+    ]
   }
 }

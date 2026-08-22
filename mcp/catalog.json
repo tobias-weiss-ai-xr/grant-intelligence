@@ -1,5 +1,5 @@
 {
-  "stand": "2026-08-12",
+  "stand": "2026-08-20",
   "quelleHinweis": "Kuratierter Katalog. status = verifiziert (live geprueft am standDatum) | laufend (keine Frist, rolling) | zu-pruefen (bekanntes Programm, Frist vor Nutzung gegen Portal pruefen). Keine rechtliche Bindung; fuer produktive Nutzung gegen offizielle Stellen pruefen.",
   "programme": [
     {
@@ -2071,6 +2071,444 @@
       "quelle": "https://eosc.eu/calls-grants/",
       "standDatum": "2026-08-12",
       "hinweis": "Destination 'Enabling an operational, open and FAIR EOSC ecosystem' im Horizon-Europe-Arbeitsprogramm Research Infrastructures. Calls fuer FAIR-Daten, EOSC-Nodes, Trainings; Fristen im EU Funding & Tenders Portal pruefen."
+    },
+    {
+      "id": "embo-fellowships",
+      "name": "EMBO – Fellowships & Young Investigators",
+      "kategorie": "International",
+      "themen": [
+        "Life Sciences",
+        "Medizin",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.embo.org/funding",
+      "standDatum": "2026-08-20",
+      "hinweis": "EMBO (European Molecular Biology Organization). Fellowships für Postdocs, Young Investigator Programme. Deutsche Forscher können führen oder Partner sein. Lebenswissenschaften, Molekularbiologie. Rolling."
+    },
+    {
+      "id": "hfsp-research-grants",
+      "name": "HFSP – Human Frontier Science Program",
+      "kategorie": "International",
+      "themen": [
+        "Life Sciences",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.hfsp.org/funding",
+      "standDatum": "2026-08-20",
+      "hinweis": "HFSP (Human Frontier Science Program). Internationale Postdoc-Fellowships und Research Grants. Lebenswissenschaften, interdisziplinär. Deutsche Forscher können PI sein. Ausschreibungsgebunden."
+    },
+    {
+      "id": "gates-foundation",
+      "name": "Bill & Melinda Gates Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Gesundheit",
+        "Global Health"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.gatesfoundation.org/about/committed-grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Bill & Melinda Gates Foundation. Globale Gesundheit, Entwicklung. Grand Challenges Calls. Deutsche Forscher als Partner möglich. Ausschreibungsgebunden."
+    },
+    {
+      "id": "rockefeller-foundation",
+      "name": "Rockefeller Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Gesundheit",
+        "Klimawandel",
+        "Nachhaltigkeit"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.rockefellerfoundation.org/grants/",
+      "standDatum": "2026-08-20",
+      "hinweis": "Rockefeller Foundation. Gesundheit, Klima, Resilienz. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "sloan-foundation",
+      "name": "Alfred P. Sloan Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Digital",
+        "KI",
+        "Informatik"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://sloan.org/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Alfred P. Sloan Foundation. STEM-Forschung, Informatik, KI, Computational Science. Deutsche Forscher können Partner sein. Ausschreibungsgebunden."
+    },
+    {
+      "id": "kavli-foundation",
+      "name": "Kavli Foundation",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://kavlifoundation.org/",
+      "standDatum": "2026-08-20",
+      "hinweis": "Kavli Foundation. Astrophysik, Nanowissenschaft, Neurowissenschaft. Institute-Programme, Kavli-Preise. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "templeton-foundation",
+      "name": "John Templeton Foundation",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.templeton.org/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "John Templeton Foundation. Wissenschaft, Philosophie, grosse Fragen. Interdisziplinär. Deutsche Forscher können PI oder Partner sein. Ausschreibungsgebunden."
+    },
+    {
+      "id": "hhmi-international",
+      "name": "Howard Hughes Medical Institute (International)",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Life Sciences",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.hhmi.org/programs",
+      "standDatum": "2026-08-20",
+      "hinweis": "Howard Hughes Medical Institute (HHMI). Biomedizin, Life Sciences. International Scholars Programme. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "moore-foundation",
+      "name": "Gordon and Betty Moore Foundation",
+      "kategorie": "International",
+      "themen": [
+        "Nachhaltigkeit",
+        "Umwelt",
+        "Life Sciences"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.moore.org/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Gordon and Betty Moore Foundation. Umwelt, Konservierung, Life Sciences, Halbleiter. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "leverhulme-trust",
+      "name": "Leverhulme Trust",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.leverhulme.ac.uk/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Leverhulme Trust (UK). Alle Disziplinen. Research Fellowships, Project Grants. Deutsche Forscher können Partner sein. Rolling."
+    },
+    {
+      "id": "royal-society",
+      "name": "Royal Society",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://royalsociety.org/grants/",
+      "standDatum": "2026-08-20",
+      "hinweis": "Royal Society (UK). Naturwissenschaften, Mathematik, Ingenieurwissenschaften. Fellowships, Research Grants. Deutsche Forscher als Partner. Rolling."
+    },
+    {
+      "id": "jsps-international",
+      "name": "JSPS – Japan Society for the Promotion of Science",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.jsps.go.jp/english/e-fellow/",
+      "standDatum": "2026-08-20",
+      "hinweis": "JSPS (Japan Society for the Promotion of Science). Internationale Fellowships, Postdoc-Programme. Deutsche Forscher als Partner in Japan. Rolling."
+    },
+    {
+      "id": "arc-international",
+      "name": "ARC – Australian Research Council",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.arc.gov.au/grants",
+      "standDatum": "2026-08-20",
+      "hinweis": "Australian Research Council (ARC). Discovery Projects, Linkage Projects. Deutsche Forscher als internationale Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "cihr-international",
+      "name": "CIHR – Canadian Institutes of Health Research",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Gesundheit",
+        "Life Sciences"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://cihr-irsc.gc.ca/e/193.html",
+      "standDatum": "2026-08-20",
+      "hinweis": "CIHR (Canadian Institutes of Health Research). Biomedizin, Gesundheitsforschung. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "nserc-international",
+      "name": "NSERC – Natural Sciences & Engineering Research Council",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.nserc-crsng.gc.ca/index_eng.asp",
+      "standDatum": "2026-08-20",
+      "hinweis": "NSERC (Natural Sciences and Engineering Research Council of Canada). Naturwissenschaften, Ingenieurwissenschaften. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "who-tdr",
+      "name": "WHO/TDR – Tropical Disease Research",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Gesundheit",
+        "Global Health"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.who.int/teams/control-of-neglected-tropical-diseases",
+      "standDatum": "2026-08-20",
+      "hinweis": "WHO/TDR (UN Special Programme for Tropical Disease Research). Tropenkrankheiten, vernachlässigte Krankheiten. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "unesco-research",
+      "name": "UNESCO – Research & Heritage",
+      "kategorie": "International",
+      "themen": [
+        "Bildung",
+        "Kultur",
+        "Gesellschaft",
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.unesco.org/en/funding",
+      "standDatum": "2026-08-20",
+      "hinweis": "UNESCO. Bildung, Kultur, Wissenschaft, Welterbe. Deutsche Forscher als Partner. Ausschreibungsgebunden."
     }
   ]
 }

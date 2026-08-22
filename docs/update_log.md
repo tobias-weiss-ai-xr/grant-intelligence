@@ -963,3 +963,51 @@ Errors:
 - **Tests:** 181/181 grün
 - **Coverage:** 100% auf Kernmodulen (match, grant_types, app, server, brief, export, saia)
 - **mypy:** clean (14 Dateien)
+## 2026-08-22T10:27:37.478624 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-22T10:27:37.480175 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-22T10:27:37.481184 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-22T10:28:03.781726 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-22T10:28:03.782929 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-22T10:28:03.783903 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-22T10:28:16.479403 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-22T10:28:16.481230 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-22T10:28:16.482913 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
+## 2026-08-22T10:29:51.824417 – Fetch Pipeline
+
+- bmbf: +1 / ~0 / x0
+## 2026-08-22T10:29:51.825665 – Fetch Pipeline
+
+- test: +1 / ~0 / x0
+## 2026-08-22T10:29:51.826713 – Fetch Pipeline
+
+- test: +0 / ~0 / x1
+
+Errors:
+- Missing id/name: ?
