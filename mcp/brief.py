@@ -17,6 +17,7 @@ from datetime import date
 
 from grant_types import MatchResult
 from match import load_catalog, match_profile, next_deadline
+from profile import get_profile_by_id
 from saia import erweiterte_begruendung
 
 
@@ -37,22 +38,49 @@ def _zeile(r: MatchResult) -> str:
     return f"| {r.name} | {r.kategorie} | {r.score}/5 | {frist} | {r.begruendung} |"
 
 
-def generate(felder: list[str], karriere: str | None, top: int = 5, tage: int = 60, saia: bool = False) -> str:
+def generate(
+    felder: list[str] | None = None,
+    karriere: str | None = None,
+    top: int = 5,
+    tage: int = 60,
+    saia: bool = False,
+    profil_id: str | None = None,
+) -> str:
     """Generate a weekly brief in Markdown format.
 
     Args:
-        felder: Research fields.
-        karriere: Career level.
+        felder: Research fields. If None, uses profile.themen (requires profil_id).
+        karriere: Career level. If None, uses profile.karriere (requires profil_id).
         top: Number of top matches to show.
         tage: Warning window in days.
         saia: Optional: KI-Begruendungen via SAIA (nur wenn konfiguriert).
+        profil_id: Optional profile ID for profile-based matching.
+            Requires einwilligung=True for matching.
 
     Returns:
         Markdown string with brief content.
     """
+    # Load profile if profil_id is given
+    profil = None
+    if profil_id:
+        profil = get_profile_by_id(profil_id)
+        if profil is None:
+            return f"# Fehler\n\nProfil nicht gefunden: {profil_id}\n"
+        if not profil.einwilligung:
+            return f"# Fehler\n\nProfil '{profil.name}' hat keine Einwilligung – Matching deaktiviert.\n"
+        # Use profile defaults if no explicit args
+        if felder is None:
+            felder = profil.themen
+        if karriere is None:
+            karriere = profil.karriere
+
+    # Ensure felder is a list (may be None if no profil_id and no explicit args)
+    if felder is None:
+        felder = []
+
     programmes = load_catalog()
-    matches = match_profile(programmes, felder, karriere, top=top)
-    fristen = next_deadline(programmes, felder, karriere, top=len(programmes))
+    matches = match_profile(programmes, felder, karriere, top=top, profil=profil)
+    fristen = next_deadline(programmes, felder, karriere, top=len(programmes), profil=profil)
 
     # Filter warnings (rolling or within tage days)
     warn = [
@@ -88,7 +116,7 @@ def generate(felder: list[str], karriere: str | None, top: int = 5, tage: int = 
             prog = next((p for p in programmes if p["id"] == r.id), None)
             if prog is None:
                 continue  # pragma: no cover – Matches stammen immer aus dem Katalog
-            zusatz = erweiterte_begruendung(prog, felder, karriere)
+            zusatz = erweiterte_begruendung(prog, felder if felder is not None else [], karriere)
             if zusatz:
                 zusatz_zeilen.append(f"- **{r.name}:** {zusatz}")
         if zusatz_zeilen:
@@ -129,7 +157,7 @@ def main() -> None:
     ap.add_argument(
         "--felder",
         nargs="+",
-        required=True,
+        default=None,
         help='Forschungsfelder (z.B. Biologie Nachhaltigkeit oder "Biologie, Nachhaltigkeit")',
     )
     ap.add_argument(
@@ -154,15 +182,29 @@ def main() -> None:
         action="store_true",
         help="Optional: KI-Begruendungen via SAIA-KI-API (benoetigt SAIA_API_URL + SAIA_API_KEY)",
     )
+    ap.add_argument(
+        "--profil-id",
+        default=None,
+        help="Profil-ID aus profiles.json (übernimmt Felder & Karriere, erfordert Einwilligung)",
+    )
     ap.add_argument("--out", default=None, help="Zieldatei (sonst stdout)")
     args = ap.parse_args()
 
     # Handle comma-separated single arguments ("Biologie, Nachhaltigkeit")
-    felder: list[str] = []
-    for token in args.felder:
-        felder.extend(f.strip() for f in token.split(",") if f.strip())
+    felder: list[str] | None = None
+    if args.felder:
+        felder = []
+        for token in args.felder:
+            felder.extend(f.strip() for f in token.split(",") if f.strip())
 
-    text = generate(felder, args.karriere, top=args.top, tage=args.tage, saia=args.saia)
+    text = generate(
+        felder=felder,
+        karriere=args.karriere,
+        top=args.top,
+        tage=args.tage,
+        saia=args.saia,
+        profil_id=args.profil_id,
+    )
 
     if args.out:
         with open(args.out, "w", encoding="utf-8") as fh:

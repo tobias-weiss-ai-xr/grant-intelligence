@@ -1,6 +1,6 @@
 {
-  "stand": "2026-08-12",
-  "quelleHinweis": "Pilot- und Nutzer-Profile (oeffentlich geteilt). Einwilligung erteilt = Profil wird im Matching verwendet. Weitere Profile koennen hier per Merge Request hinzugefuegt oder lokal als profiles.local gepflegt werden (nicht oeffentlich).",
+  "stand": "2026-08-20",
+  "quelleHinweis": "Pilot- und Nutzer-Profile (Philipps-Universität Marburg, Fachbereich Mathematik). Einwilligung erteilt = Profil wird im Matching verwendet. Weitere Profile koennen hier per Merge Request hinzugefuegt oder lokal als profiles.local gepflegt werden (nicht oeffentlich).",
   "profile": [
     {
       "id": "pilot-01-tobias",
@@ -13,6 +13,30 @@
       "status": "aktiv",
       "standDatum": "2026-08-12",
       "hinweis": "Pilot-Profil (Postdoc AI Researcher). ORCID oeffentlich verfuegbar, Einwilligung erteilt."
+    },
+    {
+      "id": "pilot-02-math-postdoc",
+      "name": "Mathematik Postdoc (Platzhalter)",
+      "karriere": "postdoc",
+      "themen": ["Mathematik", "Algebra", "Topologie", "Analysis"],
+      "orcid": "",
+      "publikationen": [],
+      "einwilligung": false,
+      "status": "inaktiv",
+      "standDatum": "2026-08-20",
+      "hinweis": "Platzhalter-Profil für Fachbereich Mathematik (Postdoc). Einwilligung noch ausstehend – Matching deaktiviert."
+    },
+    {
+      "id": "pilot-03-math-junior",
+      "name": "Mathematik Junior (Platzhalter)",
+      "karriere": "junior",
+      "themen": ["Mathematik", "Zahlentheorie", "Geometrie"],
+      "orcid": "",
+      "publikationen": [],
+      "einwilligung": false,
+      "status": "inaktiv",
+      "standDatum": "2026-08-20",
+      "hinweis": "Platzhalter-Profil für Fachbereich Mathematik (Junior). Einwilligung noch ausstehend – Matching deaktiviert."
     }
   ]
 }

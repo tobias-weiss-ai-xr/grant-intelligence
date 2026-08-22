@@ -14,6 +14,10 @@ Bewertungsansicht „nächste Chance + Begründung + Frist".
    - Öffentlich per Merge Request (`profiles.json`) oder privat lokal
    (`profiles.local`).
    - Themen-Vektor + Karrierestufe („Postdoc", „Junior-Prof").
+   - **Implementiert:** `mcp/profile.py` (Dataclass, Persistenz, ORCID-Adapter),
+     `mcp/profiles.json` (3 Pilot-Profile, Fachbereich Mathematik).
+   - **DSGVO:** `einwilligung=True` erforderlich für Matching. Ohne Einwilligung:
+     leere Ergebnisse, klare Meldung.
 3. **Matching-Engine**
    - Gewichtete Punkte (Thema, Karriere, Rolle, Geo), Ausgabe Score +
    kurze Begründung je Treffer.
@@ -34,8 +38,18 @@ Programm {
   quelle, standDatum, status, hinweis
 }
 Profil {
-  id, name, themen[], karriere, orcid, publikationen, einwilligung, status
+  id, name, themen[], karriere, orcid, publikationen, einwilligung, status,
+  standDatum, hinweis
 }
+
+**Implementiert in `mcp/profile.py`:**
+- `Profile`-Dataclass mit `from_dict`/`to_dict` (camelCase-Mapping)
+- `load_profiles()`/`save_profiles()` (Persistenz in `profiles.json`)
+- `fetch_orcid()` (ORCID Public API, einwilligungsbasiert)
+- `derive_themen()` (Schlagwort-Extraktion aus Publikationstiteln)
+- Consent-Gate: `match_profile(profil=...)` verweigert Matching ohne Einwilligung
+- MCP-Tool `profile(id?)` zum Laden/Auflisten von Profilen
+- Web-UI: Profil-Dropdown mit Pre-Fill und Consent-Hinweis
 Match { profilId, programmId, score, begruendung }
 FristAlert { profilId, programmId, frist, alarm }
 ```
@@ -46,6 +60,7 @@ FristAlert { profilId, programmId, frist, alarm }
 - Keine teuren Dienste; KI optional nur für die Begründung (SAIA-KI-API).
 
 ## 5. Offene Fragen
-- Zugriff auf ORCID/Uni-Daten (ORCID Public API ja; der Rest je Plattform).
+- ~~Zugriff auf ORCID/Uni-Daten~~ → ORCID Public API implementiert (`fetch_orcid`).
 - Aktualisierungswege je Quelle (Datei / RSS / API).
 - Sprach- und Datumsnormalisierung.
+- Echte Pilot-Kollegen für Mathematik-Fachbereich (Platzhalter aktiv).

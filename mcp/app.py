@@ -25,6 +25,7 @@ from fastapi.responses import HTMLResponse
 
 from grant_types import parse_frist
 from match import load_catalog, match_profile
+from profile import Profile, load_profiles
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -56,7 +57,7 @@ PAGE_TEMPLATE = """<!doctype html>
 <style>
   body{{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#222}}
   h1{{font-size:1.4rem}} h1 small{{font-weight:normal;color:#777;display:block;font-size:.85rem}}
-  form{{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}}
+  form{{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0;align-items:center}}
   input,select,button{{padding:.5rem;font-size:1rem;border:1px solid #bbb;border-radius:6px}}
   input[type=text]{{flex:2;min-width:220px}}
   button{{background:#0b5;color:#fff;border-color:#0b5;cursor:pointer}}
@@ -68,15 +69,22 @@ PAGE_TEMPLATE = """<!doctype html>
   .frist{{color:#777;font-size:.9rem}} .warn{{color:#d33;font-weight:600}}
   .meta{{font-size:.8rem;color:#888;margin-top:.4rem}}
   .fuss{{font-size:.75rem;color:#999;margin-top:1.5rem}}
+  .consent-notice{{background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:.6rem 1rem;margin:1rem 0;color:#856404}}
+  .profile-name{{font-weight:600;color:#0b5}}
 </style></head><body>
 <h1>Förder-Radar <small>Ein Profil, deine nächsten Chancen – Stand {heute}</small></h1>
 <form method="post" action="/brief">
+  <select name="profil_id" id="profil_id" onchange="this.form.submit()">
+    <option value="">– Profil wählen –</option>
+    {profil_optionen}
+  </select>
   <input type="text" name="felder" value="{felder}" placeholder="Forschungsfelder, kommagetrennt (z.B. Biologie, Nachhaltigkeit)" required>
   <select name="karriere">
     {optionen}
   </select>
   <button type="submit">Brief erstellen</button>
 </form>
+{profil_info}
 {inhalt}
 <div class="fuss">Scores sind Orientierung, keine Zusage. Quellen und Stand-Datum sind je Karte sichtbar.
 Katalog: {katalog} Programme, Stand {stand}. Lokaler MVP – Daten bleiben lokal.</div>
@@ -128,13 +136,19 @@ def _format_deadline(frist: str | None, rolling: bool) -> CardStatus:
         return CardStatus(f"<span class='frist'>{delta} Tage bis Frist</span>")
 
 
-def _render(felder: str = "", karriere: str = "postdoc", inhalt: str = "") -> str:
+def _render(
+    felder: str = "",
+    karriere: str = "postdoc",
+    inhalt: str = "",
+    profil_info: str = "",
+) -> str:
     """Render the main page HTML.
 
     Args:
         felder: User's research fields (escaped for display).
         karriere: Selected career level (whitelist validated).
         inhalt: HTML content for results section.
+        profil_info: HTML for profile notice (e.g. consent warning).
 
     Returns:
         Complete HTML page.
@@ -149,11 +163,20 @@ def _render(felder: str = "", karriere: str = "postdoc", inhalt: str = "") -> st
         f'<option value="{k}"{" selected" if k == karriere else ""}>{k}</option>' for k in KARRIEREN
     )
 
+    # Generate profile options
+    profiles = load_profiles()
+    profil_optionen = "".join(
+        f'<option value="{html.escape(p.id)}">{html.escape(p.name)} ({p.karriere})</option>'
+        for p in profiles
+    )
+
     return PAGE_TEMPLATE.format(
         heute=date.today().isoformat(),
         felder=html.escape(felder),
         optionen=options,
+        profil_optionen=profil_optionen,
         inhalt=inhalt,
+        profil_info=profil_info,
         katalog=len(PROGRAMME),
         stand=date.today().isoformat(),
     )
@@ -222,20 +245,55 @@ def index() -> str:
 
 
 @app.post("/brief", response_class=HTMLResponse)
-def brief(felder: str = Form(""), karriere: str = Form("postdoc")) -> str:
+def brief(
+    felder: str = Form(""),
+    karriere: str = Form("postdoc"),
+    profil_id: str = Form(""),
+) -> str:
     """Process form submission and show match results.
 
     Args:
         felder: Comma-separated research fields.
         karriere: Selected career level.
+        profil_id: Optional profile ID from dropdown.
 
     Returns:
         HTML page with match results.
     """
+    profil_info = ""
+
+    # If a profile is selected, load it and use its themen/karriere as defaults
+    if profil_id:
+        from profile import get_profile_by_id
+
+        p = get_profile_by_id(profil_id)
+        if p is not None:
+            if not p.einwilligung:
+                profil_info = (
+                    '<div class="consent-notice">'
+                    f'Profil „{html.escape(p.name)}“ hat keine Einwilligung '
+                    'erteilt – Matching ist deaktiviert.</div>'
+                )
+                return _render(
+                    felder=felder, karriere=karriere, inhalt="", profil_info=profil_info
+                )
+            # Use profile themen if user didn't override fields
+            if not felder.strip():
+                felder = ", ".join(p.themen)
+            # Use profile karriere if user didn't change it from default
+            if not felder.strip() or karriere == "postdoc":
+                karriere = p.karriere
+            profil_info = (
+                f'<div class="profile-name">Profil: {html.escape(p.name)} '
+                f'({p.karriere})</div>'
+            )
+
     # Parse fields (handle comma and whitespace)
     felder_liste = [f.strip() for f in felder.split(",") if f.strip()]
 
     # Generate results
     inhalt = f"<h2>Deine nächsten Chancen</h2>{_cards(felder_liste, karriere)}"
 
-    return _render(felder=felder, karriere=karriere, inhalt=inhalt)
+    return _render(
+        felder=felder, karriere=karriere, inhalt=inhalt, profil_info=profil_info
+    )

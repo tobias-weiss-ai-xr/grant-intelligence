@@ -23,6 +23,7 @@ from mcp.server.fastmcp import FastMCP
 
 from grant_types import MatchResult, Programm
 from match import load_catalog, match_profile, next_deadline, save_catalog
+from profile import Profile, get_profile_by_id, load_profiles
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -189,8 +190,31 @@ def loeschen(programm_id: str) -> dict[str, Any]:
 
 
 @mcp.tool()
+def profile(profil_id: str | None = None) -> dict[str, Any] | list[dict[str, Any]]:
+    """Load a researcher profile by ID, or list all profiles.
+
+    Args:
+        profil_id: Profile ID to load. If None, lists all profiles.
+
+    Returns:
+        Profile dict (if profil_id given) or list of all profile dicts.
+        If profil_id not found, returns an error dict.
+    """
+    if profil_id is None:
+        return [p.to_dict() for p in load_profiles()]
+    p = get_profile_by_id(profil_id)
+    if p is None:
+        return {"fehler": f"Profil nicht gefunden: {profil_id}"}
+    return p.to_dict()
+
+
+@mcp.tool()
 def match_best(
-    felder: list[str], karriere: str | None = None, rolle: str | None = None, top: int = 3
+    felder: list[str] | None = None,
+    karriere: str | None = None,
+    rolle: str | None = None,
+    top: int = 3,
+    profil_id: str | None = None,
 ) -> list[dict[str, Any]]:
     """Find best matching programs for a profile.
 
@@ -198,41 +222,71 @@ def match_best(
 
     Args:
         felder: Research fields (e.g., ["Medizin", "Onkologie"]).
-        karriere: Career level (e.g., "postdoc", "prof", "verwaltung").
+            If None, uses profile.themen (requires profil_id).
+        karriere: Career level (e.g., "postdoc", "prof").
+            If None, uses profile.karriere (requires profil_id).
         rolle: Optional role filter ("lead" or "partner").
         top: Maximum number of results (clamped to >= 1).
+        profil_id: Optional profile ID. Loads profile from profiles.json.
+            Requires einwilligung=True for matching.
 
     Returns:
         List of matching programs with scores and explanations.
+        Empty list if profile lacks consent.
     """
+    profil = None
+    if profil_id:
+        profil = get_profile_by_id(profil_id)
+        if profil is None:
+            return []
+        if not profil.einwilligung:
+            return []
     return [
         _serialize(r)
-        for r in match_profile(PROGRAMME, felder, karriere, rolle=rolle, top=max(1, top))
+        for r in match_profile(PROGRAMME, felder, karriere, rolle=rolle, top=max(1, top), profil=profil)
     ]
 
 
 @mcp.tool()
 def naechste_fristen(
-    felder: list[str], karriere: str | None = None, top: int = 2
+    felder: list[str] | None = None,
+    karriere: str | None = None,
+    top: int = 2,
+    profil_id: str | None = None,
 ) -> list[dict[str, Any]]:
     """Find programs with upcoming deadlines.
 
     Includes days until deadline (None for rolling programs).
 
     Args:
-        felder: Research fields.
-        karriere: Career level.
+        felder: Research fields. If None, uses profile.themen.
+        karriere: Career level. If None, uses profile.karriere.
         top: Maximum number of results (clamped to >= 1).
+        profil_id: Optional profile ID for profile-based matching.
 
     Returns:
         List of programs with deadline information.
     """
-    return [_serialize(r) for r in next_deadline(PROGRAMME, felder, karriere, top=max(1, top))]
+    profil = None
+    if profil_id:
+        profil = get_profile_by_id(profil_id)
+        if profil is None:
+            return []
+        if not profil.einwilligung:
+            return []
+    return [
+        _serialize(r)
+        for r in next_deadline(PROGRAMME, felder, karriere, top=max(1, top), profil=profil)
+    ]
 
 
 @mcp.tool()
 def notify(
-    felder: list[str], karriere: str | None = None, rolle: str | None = None, tage: int = 60
+    felder: list[str] | None = None,
+    karriere: str | None = None,
+    rolle: str | None = None,
+    tage: int = 60,
+    profil_id: str | None = None,
 ) -> list[dict[str, Any]]:
     """Get deadline warnings for programs requiring action.
 
@@ -241,15 +295,23 @@ def notify(
         - Programs with deadlines within `tage` days
 
     Args:
-        felder: Research fields.
-        karriere: Career level.
+        felder: Research fields. If None, uses profile.themen.
+        karriere: Career level. If None, uses profile.karriere.
         rolle: Optional role filter.
         tage: Warning window in days (default 60).
+        profil_id: Optional profile ID for profile-based matching.
 
     Returns:
         List of programs requiring attention.
     """
-    results = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=len(PROGRAMME))
+    profil = None
+    if profil_id:
+        profil = get_profile_by_id(profil_id)
+        if profil is None:
+            return []
+        if not profil.einwilligung:
+            return []
+    results = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=len(PROGRAMME), profil=profil)
     out = []
     for r in results:
         if r.rolling or (r.tage_bis_frist is not None and r.tage_bis_frist <= tage):
@@ -259,11 +321,12 @@ def notify(
 
 @mcp.tool()
 def brief(
-    felder: list[str],
+    felder: list[str] | None = None,
     karriere: str | None = None,
     rolle: str | None = None,
     top: int = 3,
     tage: int = 60,
+    profil_id: str | None = None,
 ) -> dict[str, Any]:
     """Generate a complete weekly brief in one call.
 
@@ -273,22 +336,44 @@ def brief(
         - Warnings (programs requiring attention)
 
     Args:
-        felder: Research fields.
-        karriere: Career level.
+        felder: Research fields. If None, uses profile.themen.
+        karriere: Career level. If None, uses profile.karriere.
         rolle: Optional role filter.
         top: Number of top matches.
         tage: Warning window in days.
+        profil_id: Optional profile ID for profile-based matching.
+            If profile lacks consent, returns error dict.
 
     Returns:
         Dictionary with top_matches, naechste_frist, warnungen.
+        If profil_id is given but not found, includes a fehler field.
+        If profile lacks consent, includes fehler and empty lists.
     """
-    fristen = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=1)
+    profil = None
+    if profil_id:
+        profil = get_profile_by_id(profil_id)
+        if profil is None:
+            return {
+                "fehler": f"Profil nicht gefunden: {profil_id}",
+                "top_matches": [],
+                "naechste_frist": None,
+                "warnungen": [],
+            }
+        if not profil.einwilligung:
+            return {
+                "fehler": "Einwilligung fehlt – Profil kann nicht gematcht werden",
+                "top_matches": [],
+                "naechste_frist": None,
+                "warnungen": [],
+            }
+    fristen = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=1, profil=profil)
     return {
         "top_matches": [
-            _serialize(r) for r in match_profile(PROGRAMME, felder, karriere, rolle=rolle, top=top)
+            _serialize(r)
+            for r in match_profile(PROGRAMME, felder, karriere, rolle=rolle, top=top, profil=profil)
         ],
         "naechste_frist": _serialize(fristen[0]) if fristen else None,
-        "warnungen": notify(felder, karriere, rolle=rolle, tage=tage),
+        "warnungen": notify(felder, karriere, rolle=rolle, tage=tage, profil_id=profil_id),
     }
 
 

@@ -11,10 +11,10 @@ aus offizieller Quelle (Stand sichtbar).
 
 ## Sicht (ein Bildschirm)
 ```
-[ Profil: Stichworte / Karrierestufe ]
+[ Profil: ▼ Dropdown ]  [ Stichworte / Karrierestufe ]
         [ Wer sucht: ..... ]
 
-Deine nächsten 5 Chancen (Stand: 2026-08-12):
+Deine nächsten 5 Chancen (Stand: 2026-08-20):
 1. DFG Sachbeihilfe        – passt: Thema X, Einzelantrag, PostDoc
                               Rolling → jederzeit einreichbar (Rolle: Lead)
 2. ERC Starting (StG)      – passt gut: Thema Y; Hinweis Track A/B
@@ -24,6 +24,12 @@ Deine nächsten 5 Chancen (Stand: 2026-08-12):
 
 [ je Karte: Score, Begründung, Quelle + Stand ]
 ```
+
+## Profil-Auswahl
+- **Dropdown** mit allen Profilen aus `profiles.json` (Pilot: Mathematik FB).
+- Bei Auswahl: Themen und Karrierestufe werden automatisch ausgefüllt.
+- Profile ohne Einwilligung zeigen einen Hinweis und deaktivieren Matching.
+- Manuelles Eingeben bleibt möglich (kein Breaking Change).```
 
 ## Was es demonstriert
 - Profil-Übertragung statt leerer Trefferliste.

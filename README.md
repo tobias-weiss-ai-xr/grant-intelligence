@@ -1,7 +1,7 @@
 # Förder-Radar – Grant Intelligence
 
 > **Status:** Produktionsreif (lokaler MVP). FLASH-Einreichung abgegeben (2026-08).
-> Open Source (MIT). 97 Programme, 181 Tests, 100% Coverage.
+> Open Source (MIT). 97 Programme, 245 Tests, 100% Coverage.
 
 **Kern-These:** Es fehlt nicht an Förderangeboten (DFG, ERC, …), sondern an der
 Übertragung auf *dein* Profil – und an der einzigen Zahl, die zählt: **deine Fristen**.
@@ -51,8 +51,16 @@ cp mcp/profiles.local.example mcp/profiles.local
 # bearbeite mcp/profiles.local (wird nie ins Repo aufgenommen)
 ```
 
-Jedes Profil benötigt `einwilligung: true` und optional eine ORCID. Details in
+Jedes Profil benötigt `einwilligung: true` für Matching. Optional: ORCID iD für
+automatischen Abruf von Publikationen (ORCID Public API). Details in
 [`mcp/profiles.local.example`](mcp/profiles.local.example).
+
+**ORCID-Integration:** `fetch_orcid()` ruft Publikationen von der ORCID Public
+API ab (mit Einwilligung). `derive_themen()` leitet Forschungsfelder aus
+Publikationstiteln ab. Ohne Einwilligung: kein Abruf, kein Matching.
+
+**Pilot (Fachbereich Mathematik):** 3 Profile in `profiles.json` (1 aktiv,
+2 Platzhalter). Pilot-Demo: `python3 mcp/pilot_demo.py` → `docs/pilot-ergebnisse.md`.
 
 ## Architektur (vereinfacht)
 

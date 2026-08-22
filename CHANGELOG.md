@@ -9,6 +9,14 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **Forscherprofil-Modell (`mcp/profile.py`):** `Profile`-Dataclass mit `id`, `name`, `karriere`, `themen`, `orcid`, `publikationen`, `einwilligung`, `status`, `standDatum`, `hinweis`. `from_dict`/`to_dict` mit camelCase-Mapping. `load_profiles()`/`save_profiles()` für Persistenz in `profiles.json`.
+- **ORCID-Public-API-Adapter:** `fetch_orcid()` ruft ORCID-Werke ab (httpx, 10s Timeout, fail-open). `derive_themen()` leitet Forschungsfelder aus Publikationstiteln ab (Wort-Grenzen-Matching, 16 Felder). Einwilligungs-Gate: ohne `einwilligung=True` keine ORCID-Abruf.
+- **Profil-basiertes Matching:** `match_profile()` und `next_deadline()` akzeptieren optionales `profil: Profile`-Argument. Profil-Themen/Karriere als Default; explizite `felder`/`karriere` haben Vorrang. Einwilligungs-Gate: ohne Consent → leere Ergebnisse.
+- **MCP-Tool `profile(id?)`:** Profil nach ID laden oder alle Profile auflisten. `match_best`, `naechste_fristen`, `notify`, `brief` um `profil_id`-Parameter erweitert.
+- **Web-UI Profil-Dropdown:** `app.py` mit Dropdown zur Profilauswahl, automatischem Pre-Fill von Themen/Karriere, Consent-Hinweis bei fehlender Einwilligung.
+- **Pilot-Setup (Fachbereich Mathematik):** `profiles.json` mit 3 Profilen (Tobias Weiss Postdoc KI, 2 Mathematik-Platzhalter). `pilot_demo.py` generiert `docs/pilot-ergebnisse.md`.
+- **Brief-CLI `--profil-id`:** `brief.py` akzeptiert `--profil-id` für profil-basierten Wochen-Brief.
+- **64 neue Tests** (Profile-Dataclass, Persistenz, ORCID-Mock, Profil-Matching, Server-Tools, UI-Dropdown, Pilot-Demo). 181 → 245 Tests. 100% Coverage auf allen Kernmodulen.
 - **17 neue Internationale Stiftungen & Fördere:** EMBO, HFSP, Gates Foundation, Rockefeller Foundation, Sloan Foundation, Kavli Foundation, Templeton Foundation, HHMI, Moore Foundation, Leverhulme Trust, Royal Society, JSPS, ARC, CIHR, NSERC, WHO/TDR, UNESCO. Kategorie `International`: 5 → 22. Katalog: 80 → 97.
 - **3 neue Programme:** ERC Consolidator Grant (CoG), ERC Proof of Concept (PoC), DFG Walter Benjamin (Postdoc-Rückkehr/Neueinstieg). Katalog: 52 → 55.
 - **Postdoc-Bedeckung:** 23 → 26 Programme. ERC-Schema-Vollständigkeit (StG, CoG, AdG, SyG, PoC). DFG Postdoc-Trilogie (Sachbeihilfe, Emmy Noether, Walter Benjamin).

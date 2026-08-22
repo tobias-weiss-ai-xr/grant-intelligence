@@ -17,6 +17,11 @@ from typing import Any
 
 from grant_types import MatchResult, budget_beschreibung, parse_frist
 
+try:
+    from profile import Profile
+except ImportError:  # pragma: no cover
+    Profile = None  # type: ignore[assignment, misc]
+
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
@@ -243,10 +248,11 @@ def _begruendung(prog: dict[str, Any], parts: dict[str, Any]) -> str:
 
 def match_profile(
     programme: list[dict[str, Any]],
-    fields: list[str],
+    fields: list[str] | None = None,
     karriere: str | None = None,
     rolle: str | None = None,
     top: int = 3,
+    profil: Profile | None = None,
 ) -> list[MatchResult]:
     """Find top matching programs for a profile.
 
@@ -255,14 +261,30 @@ def match_profile(
 
     Args:
         programme: List of program dictionaries.
-        fields: User's research fields.
-        karriere: User's career level (hard filter).
+        fields: User's research fields. If None, profile.themen is used.
+        karriere: User's career level (hard filter). If None, profile.karriere is used.
         rolle: Optional role filter (lead/partner).
         top: Maximum number of results to return.
+        profil: Optional Profile object. If provided, its themen and karriere
+            are used as defaults. Explicit fields/karriere arguments take
+            precedence over profile values. If profil.einwilligung is False,
+            returns an empty list (DSGVO consent gate).
 
     Returns:
         List of MatchResult objects, sorted by score and deadline.
     """
+    # DSGVO consent gate
+    if profil is not None and not profil.einwilligung:
+        log.info(f"Matching refused: profile '{profil.id}' has no consent")
+        return []
+
+    # Profile defaults: explicit args take precedence over profile values
+    if profil is not None:
+        if fields is None:
+            fields = profil.themen
+        if karriere is None:
+            karriere = profil.karriere
+
     if not fields or not any(f.strip() for f in fields):
         log.debug("Empty or whitespace-only fields, returning no matches")
         return []
@@ -310,11 +332,12 @@ def match_profile(
 
 def next_deadline(
     programs: list[dict[str, Any]],
-    fields: list[str],
+    fields: list[str] | None = None,
     karriere: str | None = None,
     rolle: str | None = None,
     top: int = 2,
     today: date | None = None,
+    profil: Profile | None = None,
 ) -> list[MatchResult]:
     """Find programs with upcoming deadlines.
 
@@ -322,17 +345,18 @@ def next_deadline(
 
     Args:
         programs: List of program dictionaries.
-        fields: User's research fields.
-        karriere: User's career level.
+        fields: User's research fields. If None, profile.themen is used.
+        karriere: User's career level. If None, profile.karriere is used.
         rolle: Optional role filter.
         top: Maximum number of results.
         today: Reference date (defaults to today).
+        profil: Optional Profile object for defaults and consent gate.
 
     Returns:
         List of MatchResult objects with tage_bis_frist set.
     """
     today = today or date.today()
-    results = match_profile(programs, fields, karriere, rolle=rolle, top=top)
+    results = match_profile(programs, fields, karriere, rolle=rolle, top=top, profil=profil)
 
     out: list[MatchResult] = []
     for r in results:

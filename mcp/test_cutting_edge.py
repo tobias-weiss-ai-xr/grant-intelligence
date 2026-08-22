@@ -267,16 +267,22 @@ class TestPerformance:
 
 class TestGovernance:
     def test_oeffentliche_profile_haben_einwilligung(self):
-        """Öffentliche Profile (profiles.json) haben einwilligung=true – sonst
-        dürften sie nicht im Repo liegen (DSGVO-Konvention)."""
+        """Öffentliche Profile (profiles.json): Profile mit einwilligung=True
+        dürfen gematcht werden. Profile mit einwilligung=False (Platzhalter)
+        müssen status='inaktiv' haben (DSGVO-Konvention)."""
         pfad = Path(__file__).with_name("profiles.json")
         if not pfad.exists():
             pytest.skip("profiles.json nicht vorhanden")
         data = json.loads(pfad.read_text(encoding="utf-8"))
         for profil in data.get("profile", []):
-            assert profil.get("einwilligung") is True, (
-                f"Profil {profil.get('id')} ohne Einwilligung ist öffentlich!"
-            )
+            if profil.get("einwilligung") is False:
+                assert profil.get("status") == "inaktiv", (
+                    f"Profil {profil.get('id')} ohne Einwilligung muss status='inaktiv' haben!"
+                )
+            else:
+                assert profil.get("einwilligung") is True, (
+                    f"Profil {profil.get('id')}: einwilligung muss True oder False sein!"
+                )
 
     def test_private_profile_sind_ignoriert(self):
         """profiles.local darf existieren, wird aber von Git ignoriert
