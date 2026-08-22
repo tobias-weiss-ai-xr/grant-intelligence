@@ -130,19 +130,10 @@ function dashboard() {
       return this.catalog.filter(p => !p.frist && !p.rolling).length;
     },
 
-    // --- Source stats (computed from catalog, not sources.json) ---
-    // Counts catalog programmes whose quelle hostname matches the source URL hostname.
-    _hostname(url) {
-      try { return new URL(url).hostname; } catch { return ''; }
-    },
-
+    // --- Source stats (computed from catalog by ID match) ---
     get sortedSources() {
-      // Build a hostname → count map from the actual catalog
-      const catByHost = {};
-      this.catalog.forEach(p => {
-        const h = this._hostname(p.quelle);
-        if (h) catByHost[h] = (catByHost[h] || 0) + 1;
-      });
+      // Build a set of catalog programme IDs for fast lookup
+      const catIds = new Set(this.catalog.map(p => p.id));
 
       const entries = Object.entries(this.sources).map(([key, v]) => ({
         key,
@@ -152,8 +143,9 @@ function dashboard() {
         update_frequency: v.update_frequency || '',
         last_check: v.last_check || '',
         calls: (v.calls || []).length,
-        // Real programme count from catalog (match by hostname), fallback to sources.json programs
-        programs: catByHost[this._hostname(v.url)] || (v.programs || []).length,
+        // Count programmes by matching IDs (programs + calls) against catalog
+        programs: (v.programs || []).filter(p => catIds.has(p.id)).length
+          + (v.calls || []).filter(c => catIds.has(c.id)).length,
       }));
       return entries.sort((a, b) => {
         let va = a[this.srcSortKey] ?? '';

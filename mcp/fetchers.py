@@ -22,12 +22,27 @@ from typing import Any
 import httpx
 
 from grant_types import parse_frist
+from match import load_catalog as _load_catalog, load_sources as _load_sources
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
 
 SOURCES_JSON = Path(__file__).parent / "sources.json"
 CATALOG_JSON = Path(__file__).parent / "catalog.json"
+
+# Source key → Kategorie mapping for fetched programmes.
+# Used by _enrich_programme() when the fetcher doesn't provide a kategorie.
+_CATEGORY_MAP: dict[str, str] = {
+    "bmbf": "BMBF",
+    "cost": "EU",
+    "eu": "EU",
+    "erc": "ERC",
+    "dfg": "DFG",
+    "openaire": "EU",
+    "crossref": "International",
+    "nih": "International",
+    "nsf": "International",
+}
 
 
 @dataclass
@@ -52,21 +67,17 @@ class ProgrammeUpdate:
 def load_sources() -> dict[str, Any]:
     """Load source definitions from sources.json.
 
-    Returns:
-        Dictionary of source configurations.
+    Delegates to match.load_sources for single-source-of-truth.
     """
-    with open(SOURCES_JSON, encoding="utf-8") as fh:
-        return json.load(fh)
+    return _load_sources()
 
 
 def load_catalog() -> list[dict[str, Any]]:
-    """Load current catalog.
+    """Load current catalog (programme list only).
 
-    Returns:
-        List of programme dictionaries.
+    Delegates to match.load_catalog (cached) for single-source-of-truth.
     """
-    with open(CATALOG_JSON, encoding="utf-8") as fh:
-        return json.load(fh).get("programme", [])
+    return _load_catalog()
 
 
 def check_deadline(programme: dict[str, Any], today: date) -> str | None:
@@ -302,18 +313,6 @@ def _enrich_programme(partial: dict[str, Any], source: str) -> dict[str, Any] | 
     """
     if not partial.get("id") or not partial.get("name"):
         return None
-
-    _CATEGORY_MAP = {
-        "bmbf": "BMBF",
-        "cost": "EU",
-        "eu": "EU",
-        "erc": "ERC",
-        "dfg": "DFG",
-        "openaire": "EU",
-        "crossref": "International",
-        "nih": "International",
-        "nsf": "International",
-    }
 
     # Respect provided kategorie if valid, otherwise derive from source
     from grant_types import Kategorie

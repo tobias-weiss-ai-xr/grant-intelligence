@@ -26,6 +26,7 @@ logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 CATALOG = Path(__file__).with_name("catalog.json")
+SOURCES = Path(__file__).with_name("sources.json")
 
 # Performance: pfad-basierter in-memory Cache für Catalog-Loads
 _CATALOG_CACHE: dict[str, list[dict[str, Any]]] = {}
@@ -45,6 +46,20 @@ class CatalogError(Exception):
     """Raised when catalog operations fail."""
 
     pass
+
+
+def load_sources(path: Path | None = None) -> dict[str, Any]:
+    """Load source definitions from sources.json.
+
+    Args:
+        path: Path to sources file. Defaults to sources.json in same directory.
+
+    Returns:
+        Dictionary of source configurations.
+    """
+    path = path or SOURCES
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
 
 
 def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:

@@ -20,6 +20,7 @@ from pathlib import Path
 
 
 from grant_types import Programm, parse_frist
+from match import load_sources as _load_sources
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -30,13 +31,11 @@ SOURCES_JSON = Path(__file__).with_name("sources.json")
 
 # ------------------------------------------------------------------ Hilfsfunktionen
 def load_sources() -> dict:
-    """Lade Quellen-Registrierung aus sources.json (Single Source of Truth).
+    """Lade Quellen-Registrierung aus sources.json.
 
-    Returns:
-        Quellen-Dictionary aus sources.json.
+    Delegates to match.load_sources for single-source-of-truth.
     """
-    with open(SOURCES_JSON, encoding="utf-8") as fh:
-        return json.load(fh)
+    return _load_sources()
 
 
 def load_catalog(path: Path = CATALOG) -> dict:
