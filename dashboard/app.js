@@ -139,89 +139,149 @@ function dashboard() {
     },
 
     // --- Charts ---
+    cssVar(name, fallback) {
+      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return v || fallback;
+    },
+
     renderCharts() {
-      // Category doughnut (colorblind-friendly palette)
+      const text = this.cssVar('--text', '#222');
+      const textMuted = this.cssVar('--text-muted', '#5f5f5f');
+      const bg = this.cssVar('--bg', '#fff');
+      const cardBg = this.cssVar('--card-bg', '#fafafa');
+      const gridColor = this.cssVar('--chart-grid', 'rgba(136,136,136,0.25)');
+      const borderColor = this.cssVar('--chart-border', 'rgba(136,136,136,0.5)');
+      const tooltipBg = this.cssVar('--card-bg', '#fafafa');
+      const tooltipText = this.cssVar('--text', '#222');
+      const catColors = [
+        this.cssVar('--c1', '#007a3d'), this.cssVar('--c2', '#1a5fb4'),
+        this.cssVar('--c3', '#c0392b'), this.cssVar('--c4', '#8a6500'),
+        this.cssVar('--c5', '#6f42c1'), this.cssVar('--c6', '#e83e8c'),
+        this.cssVar('--c7', '#20c997'), this.cssVar('--c8', '#fd7e14'),
+        this.cssVar('--c9', '#495057'),
+      ];
+      const statusColors = {
+        verifiziert: this.cssVar('--green-bg', '#007a3d'),
+        laufend: this.cssVar('--blue-bg', '#1a5fb4'),
+        'zu-pruefen': this.cssVar('--amber-bg', '#8a6500'),
+      };
+      const statusLabels = {
+        verifiziert: 'Verifiziert',
+        laufend: 'Laufend',
+        'zu-pruefen': 'Zu prüfen',
+      };
+      const tooltipOpts = {
+        backgroundColor: tooltipBg,
+        titleColor: tooltipText,
+        bodyColor: tooltipText,
+        borderColor: gridColor,
+        borderWidth: 1,
+        padding: 10,
+        cornerRadius: 6,
+        displayColors: true,
+      };
+      const scaleOpts = {
+        grid: { color: gridColor },
+        ticks: { color: textMuted },
+        border: { color: borderColor },
+      };
+
+      // Category doughnut
       const cats = {};
       this.catalog.forEach(p => { cats[p.kategorie] = (cats[p.kategorie] || 0) + 1; });
-      const catColors = [
-        getComputedStyle(document.documentElement).getPropertyValue('--c1').trim() || '#007a3d',
-        getComputedStyle(document.documentElement).getPropertyValue('--c2').trim() || '#1a5fb4',
-        getComputedStyle(document.documentElement).getPropertyValue('--c3').trim() || '#c0392b',
-        getComputedStyle(document.documentElement).getPropertyValue('--c4').trim() || '#8a6500',
-        getComputedStyle(document.documentElement).getPropertyValue('--c5').trim() || '#6f42c1',
-        getComputedStyle(document.documentElement).getPropertyValue('--c6').trim() || '#e83e8c',
-        getComputedStyle(document.documentElement).getPropertyValue('--c7').trim() || '#20c997',
-        getComputedStyle(document.documentElement).getPropertyValue('--c8').trim() || '#fd7e14',
-        getComputedStyle(document.documentElement).getPropertyValue('--c9').trim() || '#495057',
-      ];
-
       if (this._catChart) this._catChart.destroy();
       this._catChart = new Chart(document.getElementById('catChart'), {
         type: 'doughnut',
         data: {
           labels: Object.keys(cats),
-          datasets: [{ data: Object.values(cats), backgroundColor: catColors, borderColor: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#fff' }],
+          datasets: [{
+            data: Object.values(cats),
+            backgroundColor: catColors.slice(0, Object.keys(cats).length),
+            borderColor: bg,
+            borderWidth: 2,
+          }],
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'right', labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#222' } },
+            legend: {
+              position: 'bottom',
+              labels: { color: text, usePointStyle: true, padding: 12, font: { size: 11 } },
+            },
+            tooltip: { ...tooltipOpts, callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} Programme` } },
           },
         },
       });
 
-      // Status bar
+      // Status bar (horizontal for readability)
       const stats = {};
       this.catalog.forEach(p => { stats[p.status] = (stats[p.status] || 0) + 1; });
-      const statusColors = {
-        verifiziert: getComputedStyle(document.documentElement).getPropertyValue('--green-bg').trim() || '#007a3d',
-        laufend: getComputedStyle(document.documentElement).getPropertyValue('--blue-bg').trim() || '#1a5fb4',
-        'zu-pruefen': getComputedStyle(document.documentElement).getPropertyValue('--amber-bg').trim() || '#8a6500',
-      };
+      const statLabels = Object.keys(stats).map(k => statusLabels[k] || k);
       if (this._statusChart) this._statusChart.destroy();
       this._statusChart = new Chart(document.getElementById('statusChart'), {
         type: 'bar',
         data: {
-          labels: Object.keys(stats),
-          datasets: [{ label: 'Programme', data: Object.values(stats), backgroundColor: Object.keys(stats).map(k => statusColors[k] || '#999') }],
+          labels: statLabels,
+          datasets: [{
+            label: 'Programme',
+            data: Object.values(stats),
+            backgroundColor: Object.keys(stats).map(k => statusColors[k] || '#999'),
+            borderRadius: 4,
+          }],
         },
         options: {
           responsive: true,
-          plugins: { legend: { display: false } },
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { ...tooltipOpts, callbacks: { label: ctx => ` ${ctx.parsed.x ?? ctx.parsed.y} Programme` } },
+          },
           scales: {
-            y: { beginAtZero: true, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
-            x: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
+            x: { ...scaleOpts, beginAtZero: true, title: { display: true, text: 'Programme', color: textMuted } },
+            y: { ...scaleOpts },
           },
         },
       });
 
-      // Deadline timeline (next 90 days, top 15)
-      const upcoming = this.upcomingDeadlines.slice(0, 15);
+      // Deadline timeline (next 90 days, top 10)
+      const upcoming = this.upcomingDeadlines.slice(0, 10);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       if (this._deadlineChart) this._deadlineChart.destroy();
       this._deadlineChart = new Chart(document.getElementById('deadlineChart'), {
         type: 'bar',
         data: {
-          labels: upcoming.map(p => p.name.length > 40 ? p.name.slice(0, 37) + '…' : p.name),
+          labels: upcoming.map(p => p.name.length > 45 ? p.name.slice(0, 42) + '…' : p.name),
           datasets: [{
             label: 'Tage bis Frist',
             data: upcoming.map(p => Math.ceil((new Date(p.frist) - today) / (24 * 60 * 60 * 1000))),
             backgroundColor: upcoming.map(p => {
               const days = Math.ceil((new Date(p.frist) - today) / (24 * 60 * 60 * 1000));
-              if (days <= 14) return getComputedStyle(document.documentElement).getPropertyValue('--red-bg').trim() || '#c0392b';
-              if (days <= 30) return getComputedStyle(document.documentElement).getPropertyValue('--orange').trim() || '#b85d00';
-              return getComputedStyle(document.documentElement).getPropertyValue('--green-bg').trim() || '#007a3d';
+              if (days <= 14) return this.cssVar('--red-bg', '#c0392b');
+              if (days <= 30) return this.cssVar('--orange', '#b85d00');
+              return this.cssVar('--green-bg', '#007a3d');
             }),
+            borderRadius: 4,
           }],
         },
         options: {
           indexAxis: 'y',
           responsive: true,
-          plugins: { legend: { display: false } },
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              ...tooltipOpts,
+              callbacks: {
+                title: ctx => upcoming[ctx[0].dataIndex].name,
+                label: ctx => ` ${ctx.parsed.x} Tage bis Frist (${upcoming[ctx[0].dataIndex].frist})`,
+              },
+            },
+          },
           scales: {
-            x: { beginAtZero: true, title: { display: true, text: 'Tage bis Frist', color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' }, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
-            y: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
+            x: { ...scaleOpts, beginAtZero: true, title: { display: true, text: 'Tage bis Frist', color: textMuted } },
+            y: { ...scaleOpts, ticks: { ...scaleOpts.ticks, font: { size: 11 } } },
           },
         },
       });

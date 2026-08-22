@@ -66,16 +66,16 @@
 
     <!-- Charts -->
     <section class="charts" aria-label="Diagramme">
-      <div class="chart-container">
+      <div class="chart-container chart-small">
         <h2>Nach Kategorie</h2>
         <canvas id="catChart" role="img" aria-label="Kreisdiagramm: Programme nach Kategorie"></canvas>
       </div>
-      <div class="chart-container">
+      <div class="chart-container chart-small">
         <h2>Nach Status</h2>
         <canvas id="statusChart" role="img" aria-label="Balkendiagramm: Programme nach Status"></canvas>
       </div>
       <div class="chart-container chart-wide">
-        <h2>Fristen-Timeline (nächste 90 Tage)</h2>
+        <h2>Fristen-Timeline <span class="count" x-text="'(nächste 90 Tage, Top 10)'"></span></h2>
         <canvas id="deadlineChart" role="img" aria-label="Balkendiagramm: Fristen der nächsten 90 Tage"></canvas>
       </div>
     </section>
