@@ -24,7 +24,6 @@ function dashboard() {
     srcSortDir: 1,
 
     // Charts
-    _catChart: null,
     _statusChart: null,
     _deadlineChart: null,
 
@@ -97,7 +96,38 @@ function dashboard() {
         .sort((a, b) => new Date(a.frist) - new Date(b.frist));
     },
 
+    get rollingCount() {
+      return this.catalog.filter(p => p.rolling).length;
+    },
+
+    get futureDeadlineCount() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const in90 = new Date(today.getTime() + 90 * 24 * 60 * 60 * 1000);
+      return this.catalog.filter(p => {
+        if (!p.frist) return false;
+        return new Date(p.frist) > in90;
+      }).length;
+    },
+
+    get noDeadlineCount() {
+      return this.catalog.filter(p => !p.frist && !p.rolling).length;
+    },
+
+    // --- Source stats (computed from catalog, not sources.json) ---
+    // Counts catalog programmes whose quelle hostname matches the source URL hostname.
+    _hostname(url) {
+      try { return new URL(url).hostname; } catch { return ''; }
+    },
+
     get sortedSources() {
+      // Build a hostname → count map from the actual catalog
+      const catByHost = {};
+      this.catalog.forEach(p => {
+        const h = this._hostname(p.quelle);
+        if (h) catByHost[h] = (catByHost[h] || 0) + 1;
+      });
+
       const entries = Object.entries(this.sources).map(([key, v]) => ({
         key,
         name: v.name || key,
@@ -105,12 +135,13 @@ function dashboard() {
         type: v.type || 'manual',
         update_frequency: v.update_frequency || '',
         last_check: v.last_check || '',
-        calls: v.calls || [],
-        programs: v.programs || [],
+        calls: (v.calls || []).length,
+        // Real programme count from catalog (match by hostname), fallback to sources.json programs
+        programs: catByHost[this._hostname(v.url)] || (v.programs || []).length,
       }));
       return entries.sort((a, b) => {
-        let va = a[this.srcSortKey] || '';
-        let vb = b[this.srcSortKey] || '';
+        let va = a[this.srcSortKey] ?? '';
+        let vb = b[this.srcSortKey] ?? '';
         if (typeof va === 'string') va = va.toLowerCase();
         if (typeof vb === 'string') vb = vb.toLowerCase();
         if (va < vb) return -1 * this.srcSortDir;
@@ -148,18 +179,10 @@ function dashboard() {
       const text = this.cssVar('--text', '#222');
       const textMuted = this.cssVar('--text-muted', '#5f5f5f');
       const bg = this.cssVar('--bg', '#fff');
-      const cardBg = this.cssVar('--card-bg', '#fafafa');
       const gridColor = this.cssVar('--chart-grid', 'rgba(136,136,136,0.25)');
       const borderColor = this.cssVar('--chart-border', 'rgba(136,136,136,0.5)');
       const tooltipBg = this.cssVar('--card-bg', '#fafafa');
       const tooltipText = this.cssVar('--text', '#222');
-      const catColors = [
-        this.cssVar('--c1', '#007a3d'), this.cssVar('--c2', '#1a5fb4'),
-        this.cssVar('--c3', '#c0392b'), this.cssVar('--c4', '#8a6500'),
-        this.cssVar('--c5', '#6f42c1'), this.cssVar('--c6', '#e83e8c'),
-        this.cssVar('--c7', '#13876b'), this.cssVar('--c8', '#b85d00'),
-        this.cssVar('--c9', '#495057'),
-      ];
       const statusColors = {
         verifiziert: this.cssVar('--green-bg', '#007a3d'),
         laufend: this.cssVar('--blue-bg', '#1a5fb4'),
@@ -186,37 +209,7 @@ function dashboard() {
         border: { color: borderColor },
       };
 
-      // Category doughnut
-      const cats = {};
-      this.catalog.forEach(p => { cats[p.kategorie] = (cats[p.kategorie] || 0) + 1; });
-      const catCanvas = document.getElementById('catChart');
-      if (this._catChart) this._catChart.destroy();
-      if (!catCanvas) return;
-      this._catChart = new Chart(catCanvas, {
-        type: 'doughnut',
-        data: {
-          labels: Object.keys(cats),
-          datasets: [{
-            data: Object.values(cats),
-            backgroundColor: catColors.slice(0, Object.keys(cats).length),
-            borderColor: bg,
-            borderWidth: 2,
-          }],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: { color: text, usePointStyle: true, padding: 12, font: { size: 11 } },
-            },
-            tooltip: { ...tooltipOpts, callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} Programme` } },
-          },
-        },
-      });
-
-      // Status bar (horizontal for readability)
+      // Status bar chart (horizontal for readability)
       const stats = {};
       this.catalog.forEach(p => { stats[p.status] = (stats[p.status] || 0) + 1; });
       const statLabels = Object.keys(stats).map(k => statusLabels[k] || k);
@@ -235,6 +228,7 @@ function dashboard() {
           }],
         },
         options: {
+          indexAxis: 'y',
           responsive: true,
           maintainAspectRatio: false,
           plugins: {

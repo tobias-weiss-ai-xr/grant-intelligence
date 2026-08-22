@@ -183,7 +183,7 @@ main { margin-top: 1rem; }
 /* Charts */
 .charts {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
@@ -206,7 +206,7 @@ main { margin-top: 1rem; }
 }
 
 .chart-small {
-  height: 320px;
+  height: 280px;
 }
 
 .chart-wide {

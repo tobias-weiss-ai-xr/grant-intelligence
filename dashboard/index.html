@@ -62,14 +62,22 @@
         <span class="card-number" x-text="upcomingDeadlines.length"></span>
         <span class="card-label">Fristen ≤ 90 Tage</span>
       </div>
+      <div class="card">
+        <span class="card-number" x-text="rollingCount"></span>
+        <span class="card-label">Rolling</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="futureDeadlineCount"></span>
+        <span class="card-label">Fristen &gt; 90 Tage</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="noDeadlineCount"></span>
+        <span class="card-label">Ohne Frist</span>
+      </div>
     </section>
 
     <!-- Charts -->
     <section class="charts" aria-label="Diagramme">
-      <div class="chart-container chart-small">
-        <h2>Nach Kategorie</h2>
-        <canvas id="catChart" role="img" aria-label="Kreisdiagramm: Programme nach Kategorie"></canvas>
-      </div>
       <div class="chart-container chart-small">
         <h2>Nach Status</h2>
         <canvas id="statusChart" role="img" aria-label="Balkendiagramm: Programme nach Status"></canvas>
