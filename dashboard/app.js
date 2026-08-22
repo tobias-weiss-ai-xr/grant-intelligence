@@ -109,8 +109,8 @@ function dashboard() {
         programs: v.programs || [],
       }));
       return entries.sort((a, b) => {
-        const va = a[this.srcSortKey] || '';
-        const vb = b[this.srcSortKey] || '';
+        let va = a[this.srcSortKey] || '';
+        let vb = b[this.srcSortKey] || '';
         if (typeof va === 'string') va = va.toLowerCase();
         if (typeof vb === 'string') vb = vb.toLowerCase();
         if (va < vb) return -1 * this.srcSortDir;
@@ -134,7 +134,7 @@ function dashboard() {
         this.srcSortDir *= -1;
       } else {
         this.srcSortKey = key;
-        this.sortDir = 1;
+        this.srcSortDir = 1;
       }
     },
 
@@ -157,7 +157,7 @@ function dashboard() {
         this.cssVar('--c1', '#007a3d'), this.cssVar('--c2', '#1a5fb4'),
         this.cssVar('--c3', '#c0392b'), this.cssVar('--c4', '#8a6500'),
         this.cssVar('--c5', '#6f42c1'), this.cssVar('--c6', '#e83e8c'),
-        this.cssVar('--c7', '#20c997'), this.cssVar('--c8', '#fd7e14'),
+        this.cssVar('--c7', '#13876b'), this.cssVar('--c8', '#b85d00'),
         this.cssVar('--c9', '#495057'),
       ];
       const statusColors = {
@@ -189,8 +189,10 @@ function dashboard() {
       // Category doughnut
       const cats = {};
       this.catalog.forEach(p => { cats[p.kategorie] = (cats[p.kategorie] || 0) + 1; });
+      const catCanvas = document.getElementById('catChart');
       if (this._catChart) this._catChart.destroy();
-      this._catChart = new Chart(document.getElementById('catChart'), {
+      if (!catCanvas) return;
+      this._catChart = new Chart(catCanvas, {
         type: 'doughnut',
         data: {
           labels: Object.keys(cats),
@@ -218,8 +220,10 @@ function dashboard() {
       const stats = {};
       this.catalog.forEach(p => { stats[p.status] = (stats[p.status] || 0) + 1; });
       const statLabels = Object.keys(stats).map(k => statusLabels[k] || k);
+      const statusCanvas = document.getElementById('statusChart');
       if (this._statusChart) this._statusChart.destroy();
-      this._statusChart = new Chart(document.getElementById('statusChart'), {
+      if (!statusCanvas) return;
+      this._statusChart = new Chart(statusCanvas, {
         type: 'bar',
         data: {
           labels: statLabels,
@@ -248,8 +252,10 @@ function dashboard() {
       const upcoming = this.upcomingDeadlines.slice(0, 10);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
+      const deadlineCanvas = document.getElementById('deadlineChart');
       if (this._deadlineChart) this._deadlineChart.destroy();
-      this._deadlineChart = new Chart(document.getElementById('deadlineChart'), {
+      if (!deadlineCanvas) return;
+      this._deadlineChart = new Chart(deadlineCanvas, {
         type: 'bar',
         data: {
           labels: upcoming.map(p => p.name.length > 45 ? p.name.slice(0, 42) + '…' : p.name),

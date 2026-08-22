@@ -162,6 +162,26 @@ python3 mcp/export.py --format csv --out docs/export.csv
 0 6 * * 0  cd /opt/git/grant-intelligence/mcp && python3 update_catalog.py --check-expired
 ```
 
+## Ingestion-Pipeline
+
+Registry-basierte, erweiterbare Ingestion mit 7 Fetchern (OpenAIRE, NIH, NSF, Crossref, BMBF, COST, EU):
+
+```bash
+# Alle Fetcher auflisten
+python3 mcp/ingest.py --list
+
+# Einzelnen Fetcher testen (Dry-Run, kein Schreiben)
+python3 mcp/ingest.py --source openaire
+
+# In Katalog importieren
+python3 mcp/ingest.py --source openaire --apply
+
+# Alle Fetcher ausführen
+python3 mcp/ingest.py --all --apply
+```
+
+Neue Quelle hinzufügen = eine Funktion + `@register`-Decorator in `mcp/ingest.py`.
+
 ## Verwandt
 
 Konzept-Ursprung im Repo [mafex-flash](https://github.com/tobias-weiss-ai-xr/mafex-flash)

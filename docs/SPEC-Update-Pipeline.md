@@ -404,21 +404,100 @@ sudo journalctl -u grant-intelligence-deadline.service -f
 
 ---
 
-## 10. Status
+## 10. Ingestion Pipeline (`ingest.py`)
+
+### 10.1 Architektur
+
+`ingest.py` implementiert eine **Registry-basierte Ingestion-Pipeline** mit folgenden Prinzipien:
+
+1. **Repeatable**: Deterministische IDs (slug-basiert), idempotentes Upsert (Re-Run erzeugt keine Duplikate)
+2. **Extensible**: Neuer Fetcher = eine Funktion + `@register`-Decorator
+3. **Safe**: `--dry-run` ist Standard (kein Schreiben ohne `--apply`)
+4. **Token-efficient**: Wiederverwendung von `fetchers.py`-Helfern (`_slug_id`, `_enrich_programme`, `apply_fetch_updates`)
+
+### 10.2 Registry-Muster
+
+```python
+from ingest import register, ProgrammeUpdate
+
+@register("my-source", "My Source", "Description", "api")
+def fetch_my_source() -> ProgrammeUpdate:
+    # HTTP fetch + parse
+    return ProgrammeUpdate(
+        source="my-source",
+        programmes=[...],  # list of programme dicts
+        errors=[],
+        fetched_at=datetime.now().isoformat(),
+        suggestions=[],
+    )
+```
+
+### 10.3 CLI-Nutzung
+
+```bash
+# Alle Fetcher auflisten
+python mcp/ingest.py --list
+
+# Einzelnen Fetcher ausführen (Dry-Run, kein Schreiben)
+python mcp/ingest.py --source openaire
+
+# Einzelnen Fetcher ausführen und in Katalog mergen
+python mcp/ingest.py --source openaire --apply
+
+# Alle Fetcher ausführen (Dry-Run)
+python mcp/ingest.py --all
+
+# Alle Fetcher ausführen und in Katalog mergen
+python mcp/ingest.py --all --apply
+```
+
+### 10.4 Verfügbare Fetcher
+
+| Key | Name | Kategorie | API |
+-----|------|----------|------|-----|
+| `openaire` | OpenAIRE | api | EU-Forschungsprojekte (3.9M) |
+| `nih` | NIH RePORTER | api | US biomedizinische Grants (76K) |
+| `nsf` | NSF Awards | api | US Wissenschafts-Grants |
+| `crossref` | Crossref Funder Registry | registry | 45K Funder mit DOIs |
+| `bmbf` | BMBF | rss | BMBF Bekanntmachungen (RSS) |
+| `cost` | COST | portal | COST European Cooperation |
+| `eu` | EU Horizon | portal | Horizon Europe Portal |
+
+### 10.5 Upsert-Mechanismus
+
+- Jedes gefetchte Programm wird über `Programm.from_dict()` validiert
+- Ungültige Programme werden verworfen und im Audit-Log protokolliert
+- Bestehende Programme (gleiche ID) werden aktualisiert (Update)
+- Neue Programme werden hinzugefügt (Insert)
+- Deterministische IDs via `_slug_id(source, title)` verhindern Duplikate bei Re-Runs
+- Audit-Log wird in `docs/update_log.md` appendiert
+
+### 10.6 Erweiterung um neue Quellen
+
+1. Fetcher-Funktion in `ingest.py` schreiben (HTTP + Parse)
+2. Mit `@register("key", "Name", "Desc", "api")` registrieren
+3. Test in `test_ingest.py` hinzufügen (HTTP gemockt)
+4. `python mcp/ingest.py --source key` zum Testen (Dry-Run)
+5. `python mcp/ingest.py --source key --apply` zum Importieren
+
+---
+
+## 11. Status
 
 | Item | Status |
 |------|--------|
 | Datenmodell | ✓ definiert |
-| Quellen-Registrierung | ✓ (`sources.json`, 15 Quellgruppen) |
+| Quellen-Registrierung | ✓ (`sources.json`, 26 Quellgruppen) |
 | Update-Skript | ✓ (`update_catalog.py`) |
 | Fetch→Persist Pipeline | ✓ (`fetchers.py` `apply_fetch_updates`) |
+| **Ingestion Pipeline** | ✓ (`ingest.py` — Registry-basiert, 7 Fetcher, Dry-Run/Apply) |
 | Validierung | ✓ (`Programm.from_dict`) |
 | Audit-Log | ✓ (`docs/update_log.md`) |
 | Deadline-Cron | ✓ (`cron_check_expired.sh` + systemd-Timer) |
-| Katalog | ✓ 80 Programme (9 Kategorien: DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International) |
+| Katalog | ✓ 97 Programme (9 Kategorien: DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International) |
 | CI/CD | optional |
 
 ---
 
-**Letzte Aktualisierung:** 2026-08-12  
+**Letzte Aktualisierung:** 2026-08-22  
 **Operator:** Tobias Weiss

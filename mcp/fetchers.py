@@ -309,12 +309,24 @@ def _enrich_programme(partial: dict[str, Any], source: str) -> dict[str, Any] | 
         "eu": "EU",
         "erc": "ERC",
         "dfg": "DFG",
+        "openaire": "EU",
+        "crossref": "International",
+        "nih": "International",
+        "nsf": "International",
     }
+
+    # Respect provided kategorie if valid, otherwise derive from source
+    from grant_types import Kategorie
+    provided_kategorie = partial.get("kategorie")
+    if provided_kategorie and Kategorie.is_valid(provided_kategorie):
+        kategorie = provided_kategorie
+    else:
+        kategorie = _CATEGORY_MAP.get(source, source)
 
     return {
         "id": partial["id"],
         "name": partial["name"],
-        "kategorie": _CATEGORY_MAP.get(source, source),
+        "kategorie": kategorie,
         "themen": partial.get("themen", ["thematisch-offen"]),
         "karriere": partial.get("karriere", []),
         "rolle": partial.get("rolle", ["lead"]),
