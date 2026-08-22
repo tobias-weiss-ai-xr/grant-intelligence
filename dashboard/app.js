@@ -26,6 +26,7 @@ function dashboard() {
     // Charts
     _statusChart: null,
     _deadlineChart: null,
+    _chartRetry: 0,
 
     // --- Init ---
     async init() {
@@ -38,11 +39,26 @@ function dashboard() {
         this.stand = catRes.stand || '';
         this.sources = srcRes || {};
         this.loading = false;
-        this.$nextTick(() => this.renderCharts());
+        // Wait for Alpine to remove display:none, then for browser to reflow,
+        // so canvas has non-zero dimensions when Chart.js renders.
+        this._chartRetry = 0;
+        this.$nextTick(() => this._renderChartsWhenVisible());
       } catch (e) {
         this.error = 'Daten konnten nicht geladen werden: ' + e.message;
         this.loading = false;
       }
+    },
+
+    // --- Chart rendering: wait for canvas to be visible ---
+    _renderChartsWhenVisible() {
+      const canvas = document.getElementById('statusChart');
+      if (!canvas || canvas.offsetWidth === 0) {
+        if (this._chartRetry++ < 20) {
+          requestAnimationFrame(() => this._renderChartsWhenVisible());
+        }
+        return;
+      }
+      this.renderCharts();
     },
 
     // --- Computed ---
