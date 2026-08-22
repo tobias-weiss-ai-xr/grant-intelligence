@@ -1,13 +1,12 @@
 // Förder-Radar – Dashboard (Alpine.js + Chart.js)
 // Pure client-side, no build step, no server.
-// Data: fetch('data/catalog.json'), fetch('data/sources.json'), fetch('data/profiles.json')
+// Data: fetch('data/catalog.json'), fetch('data/sources.json')
 
 function dashboard() {
   return {
     // --- State ---
     catalog: [],
     sources: {},
-    profiles: [],
     loading: true,
     error: null,
     stand: '',
@@ -24,10 +23,6 @@ function dashboard() {
     srcSortKey: 'name',
     srcSortDir: 1,
 
-    // Profile matcher
-    profilId: '',
-    matchedProgrammes: [],
-
     // Charts
     _catChart: null,
     _statusChart: null,
@@ -36,15 +31,13 @@ function dashboard() {
     // --- Init ---
     async init() {
       try {
-        const [catRes, srcRes, profRes] = await Promise.all([
+        const [catRes, srcRes] = await Promise.all([
           fetch('data/catalog.json').then(r => { if (!r.ok) throw new Error('catalog.json: ' + r.status); return r.json(); }),
           fetch('data/sources.json').then(r => { if (!r.ok) throw new Error('sources.json: ' + r.status); return r.json(); }),
-          fetch('data/profiles.json').then(r => { if (!r.ok) throw new Error('profiles.json: ' + r.status); return r.json(); }),
         ]);
         this.catalog = catRes.programme || [];
         this.stand = catRes.stand || '';
         this.sources = srcRes || {};
-        this.profiles = profRes.profile || profRes.profiles || [];
         this.loading = false;
         this.$nextTick(() => this.renderCharts());
       } catch (e) {
@@ -93,6 +86,7 @@ function dashboard() {
 
     get upcomingDeadlines() {
       const today = new Date();
+      today.setHours(0, 0, 0, 0);
       const in90 = new Date(today.getTime() + 90 * 24 * 60 * 60 * 1000);
       return this.catalog
         .filter(p => {
@@ -140,119 +134,71 @@ function dashboard() {
         this.srcSortDir *= -1;
       } else {
         this.srcSortKey = key;
-        this.srcSortDir = 1;
+        this.sortDir = 1;
       }
-    },
-
-    // --- Profile Matcher ---
-    selectProfile(id) {
-      this.profilId = id;
-      if (!id) {
-        this.matchedProgrammes = [];
-        return;
-      }
-      const profile = this.profiles.find(p => p.id === id);
-      if (!profile) {
-        this.matchedProgrammes = [];
-        return;
-      }
-      const scored = this.catalog.map(p => {
-        const score = this.scoreProgramme(profile, p);
-        return {
-          id: p.id,
-          name: p.name,
-          kategorie: p.kategorie,
-          frist: p.frist || '',
-          rolling: p.rolling || false,
-          score: score.score,
-          reason: score.reason,
-        };
-      }).filter(m => m.score > 0).sort((a, b) => b.score - a.score);
-      this.matchedProgrammes = scored;
-    },
-
-    scoreProgramme(profile, programme) {
-      let score = 0;
-      const reasons = [];
-
-      // Themen overlap (max 3 points)
-      const profileThemen = profile.themen || [];
-      const progThemen = programme.themen || [];
-      const themenOverlap = progThemen.filter(t =>
-        profileThemen.some(pt => pt.toLowerCase().includes(t.toLowerCase()) || t.toLowerCase().includes(pt.toLowerCase()))
-      );
-      if (themenOverlap.length > 0) {
-        score += Math.min(themenOverlap.length, 3);
-        reasons.push(`Themen: ${themenOverlap.slice(0, 3).join(', ')}`);
-      }
-
-      // Karriere match (1 point)
-      if ((programme.karriere || []).includes(profile.karriere)) {
-        score += 1;
-        reasons.push(`Karriere: ${profile.karriere}`);
-      }
-
-      // Rolle match (0.5 points)
-      const progRolle = programme.rolle || [];
-      if (progRolle.length === 0 || progRolle.includes('lead')) {
-        score += 0.5;
-        reasons.push('Rolle: offen/lead');
-      }
-
-      // Rolling bonus (0.5 points)
-      if (programme.rolling) {
-        score += 0.5;
-        reasons.push('Rolling (keine Frist)');
-      }
-
-      // Status bonus
-      if (programme.status === 'verifiziert') {
-        score += 0.5;
-        reasons.push('Verifiziert');
-      } else if (programme.status === 'laufend') {
-        score += 0.25;
-        reasons.push('Laufend');
-      }
-
-      return {
-        score: Math.min(Math.round(score * 10) / 10, 5),
-        reason: reasons.join('; '),
-      };
     },
 
     // --- Charts ---
     renderCharts() {
-      // Category doughnut
+      // Category doughnut (colorblind-friendly palette)
       const cats = {};
       this.catalog.forEach(p => { cats[p.kategorie] = (cats[p.kategorie] || 0) + 1; });
-      const catColors = ['#0b5', '#36a2eb', '#ff6384', '#ffce56', '#4bc0c0', '#9966ff', '#ff9f40', '#e7e7e7', '#c9cbcf'];
+      const catColors = [
+        getComputedStyle(document.documentElement).getPropertyValue('--c1').trim() || '#007a3d',
+        getComputedStyle(document.documentElement).getPropertyValue('--c2').trim() || '#1a5fb4',
+        getComputedStyle(document.documentElement).getPropertyValue('--c3').trim() || '#c0392b',
+        getComputedStyle(document.documentElement).getPropertyValue('--c4').trim() || '#8a6500',
+        getComputedStyle(document.documentElement).getPropertyValue('--c5').trim() || '#6f42c1',
+        getComputedStyle(document.documentElement).getPropertyValue('--c6').trim() || '#e83e8c',
+        getComputedStyle(document.documentElement).getPropertyValue('--c7').trim() || '#20c997',
+        getComputedStyle(document.documentElement).getPropertyValue('--c8').trim() || '#fd7e14',
+        getComputedStyle(document.documentElement).getPropertyValue('--c9').trim() || '#495057',
+      ];
 
       if (this._catChart) this._catChart.destroy();
       this._catChart = new Chart(document.getElementById('catChart'), {
         type: 'doughnut',
         data: {
           labels: Object.keys(cats),
-          datasets: [{ data: Object.values(cats), backgroundColor: catColors }],
+          datasets: [{ data: Object.values(cats), backgroundColor: catColors, borderColor: getComputedStyle(document.documentElement).getPropertyValue('--bg').trim() || '#fff' }],
         },
-        options: { responsive: true, plugins: { legend: { position: 'right' } } },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'right', labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#222' } },
+          },
+        },
       });
 
       // Status bar
       const stats = {};
       this.catalog.forEach(p => { stats[p.status] = (stats[p.status] || 0) + 1; });
+      const statusColors = {
+        verifiziert: getComputedStyle(document.documentElement).getPropertyValue('--green-bg').trim() || '#007a3d',
+        laufend: getComputedStyle(document.documentElement).getPropertyValue('--blue-bg').trim() || '#1a5fb4',
+        'zu-pruefen': getComputedStyle(document.documentElement).getPropertyValue('--amber-bg').trim() || '#8a6500',
+      };
       if (this._statusChart) this._statusChart.destroy();
       this._statusChart = new Chart(document.getElementById('statusChart'), {
         type: 'bar',
         data: {
           labels: Object.keys(stats),
-          datasets: [{ label: 'Programme', data: Object.values(stats), backgroundColor: ['#0b5', '#36a2eb', '#ffce56'] }],
+          datasets: [{ label: 'Programme', data: Object.values(stats), backgroundColor: Object.keys(stats).map(k => statusColors[k] || '#999') }],
         },
-        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
+            x: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
+          },
+        },
       });
 
-      // Deadline timeline (next 90 days)
+      // Deadline timeline (next 90 days, top 15)
       const upcoming = this.upcomingDeadlines.slice(0, 15);
       const today = new Date();
+      today.setHours(0, 0, 0, 0);
       if (this._deadlineChart) this._deadlineChart.destroy();
       this._deadlineChart = new Chart(document.getElementById('deadlineChart'), {
         type: 'bar',
@@ -263,7 +209,9 @@ function dashboard() {
             data: upcoming.map(p => Math.ceil((new Date(p.frist) - today) / (24 * 60 * 60 * 1000))),
             backgroundColor: upcoming.map(p => {
               const days = Math.ceil((new Date(p.frist) - today) / (24 * 60 * 60 * 1000));
-              return days <= 14 ? '#d33' : days <= 30 ? '#ff9f40' : '#0b5';
+              if (days <= 14) return getComputedStyle(document.documentElement).getPropertyValue('--red-bg').trim() || '#c0392b';
+              if (days <= 30) return getComputedStyle(document.documentElement).getPropertyValue('--orange').trim() || '#b85d00';
+              return getComputedStyle(document.documentElement).getPropertyValue('--green-bg').trim() || '#007a3d';
             }),
           }],
         },
@@ -271,7 +219,10 @@ function dashboard() {
           indexAxis: 'y',
           responsive: true,
           plugins: { legend: { display: false } },
-          scales: { x: { beginAtZero: true, title: { display: true, text: 'Tage bis Frist' } } },
+          scales: {
+            x: { beginAtZero: true, title: { display: true, text: 'Tage bis Frist', color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' }, ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
+            y: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim() || '#5f5f5f' } },
+          },
         },
       });
     },
@@ -282,6 +233,7 @@ function dashboard() {
       if (!p.frist) return '—';
       const d = new Date(p.frist);
       const today = new Date();
+      today.setHours(0, 0, 0, 0);
       const days = Math.ceil((d - today) / (24 * 60 * 60 * 1000));
       if (days < 0) return `${p.frist} (abgelaufen)`;
       if (days <= 30) return `${p.frist} (${days}d)`;

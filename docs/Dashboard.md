@@ -11,20 +11,18 @@ and Chart.js.
 ## Architecture
 
 ```
-mcp/catalog.json ─────┐
-mcp/sources.json ─────┤── sync-data.sh ──→ dashboard/data/*.json
-mcp/profiles.json ────┘                      (DSGVO-filtered)
-                                                    │
-                                                    ▼
-                                         browser fetch() at runtime
-                                                    │
-                                                    ▼
-                                         Alpine.js dashboard()
-                                         ├── Overview cards
-                                         ├── Source browser
-                                         ├── Programme explorer
-                                         ├── Charts (Chart.js)
-                                         └── Profile matcher
+mcp/catalog.json ─┐
+mcp/sources.json ─┤── sync-data.sh ──→ dashboard/data/*.json
+                   │                         │
+                   └── (no profiles)         ▼
+                                    browser fetch() at runtime
+                                              │
+                                              ▼
+                                    Alpine.js dashboard()
+                                    ├── Overview cards
+                                    ├── Source browser
+                                    ├── Programme explorer
+                                    └── Charts (Chart.js)
 ```
 
 ## Local Testing
@@ -70,43 +68,43 @@ Filterable, sortable table of all programmes:
 - **Status bar**: Verifiziert / Laufend / Zu prüfen
 - **Deadline timeline**: Upcoming deadlines (next 90 days), color-coded by urgency
 
-### Profile Matcher
-- Load public profiles (DSGVO-filtered: `einwilligung: true` + `status: "aktiv"`)
-- Client-side scoring: themen overlap + karriere match + rolle + rolling + status → 0-5
-- Results sorted by score, with relevance reason
-
 ## Data Flow
 
 | Source | Dashboard | Filter |
 |---|---|---|
 | `mcp/catalog.json` | `dashboard/data/catalog.json` | None (full copy) |
 | `mcp/sources.json` | `dashboard/data/sources.json` | None (full copy) |
-| `mcp/profiles.json` | `dashboard/data/profiles.json` | DSGVO: only `einwilligung: true` + `status: "aktiv"` |
 
-`sync-data.sh` uses `jq` (or Python fallback) to filter profiles before
-deployment. No private data reaches GitHub Pages.
+No profile data is shipped to the dashboard. Profile matching remains a
+client-side Python feature (`mcp/profile.py`, `mcp/brief.py --profil-id`).
 
 ## Deployment
 
 The GitHub Action (`.github/workflows/deploy-dashboard.yml`) deploys on every
-push to `main` that touches `dashboard/`, `mcp/catalog.json`, `mcp/sources.json`,
-or `mcp/profiles.json`.
+push to `main` that touches `dashboard/`, `mcp/catalog.json`, or
+`mcp/sources.json`.
 
 **Steps:**
 1. Checkout repository
-2. Run `bash dashboard/sync-data.sh` (sync + DSGVO filter)
+2. Run `bash dashboard/sync-data.sh` (sync catalog + sources)
 3. Configure GitHub Pages
 4. Upload `dashboard/` as Pages artifact
 5. Deploy to GitHub Pages
 
 **Manual deploy:** GitHub → Actions → "Deploy Dashboard" → Run workflow
 
-## DSGVO Compliance
+## Accessibility (WCAG 2.1 AA)
 
-- Only public profiles (`einwilligung: true`, `status: "aktiv"`) are shipped
-- No ORCID API calls from dashboard (client-side only)
-- No cookies, no tracking, no analytics
-- `sync-data.sh` filters profiles via `jq` before deployment
+- All text colors meet 4.5:1 contrast ratio (light and dark mode)
+- UI components (borders, chart elements) meet 3:1 contrast ratio
+- ARIA labels on filters, tables, charts, loading/error regions
+- `aria-live="polite"` for dynamic content (filter count, loading)
+- `scope="col"` on all table headers
+- Skip-to-content link for keyboard users
+- Focus indicators (2px blue outline on all interactive elements)
+- `prefers-reduced-motion` respected
+- `prefers-color-scheme: dark` with WCAG-compliant dark palette
+- Colorblind-friendly chart palette (9 distinguishable colors)
 
 ## Dependencies
 
@@ -120,7 +118,8 @@ No npm, no bundler, no build step. Two `<script>` tags in `index.html`.
 ## Tech Stack
 
 - **Alpine.js**: Declarative reactivity (`x-data`, `x-for`, `x-show`, `x-model`)
-  for filterable tables, dropdowns, and profile matcher
+  for filterable tables and dropdowns
 - **Chart.js**: Doughnut, bar, and horizontal bar charts for visualizations
 - **fetch()**: Runtime JSON loading (same-origin, no CORS issues)
-- **CSS custom properties**: Dark mode via `prefers-color-scheme: dark`
+- **CSS custom properties**: WCAG-compliant palette with dark mode via
+  `prefers-color-scheme: dark`

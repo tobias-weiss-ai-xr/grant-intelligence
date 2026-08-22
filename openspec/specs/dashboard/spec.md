@@ -28,21 +28,15 @@ CDN-loaded Alpine.js and Chart.js.
 
 ### Requirement: Data Sync From Catalog
 
-The dashboard data must be synced from `mcp/catalog.json`, `mcp/sources.json`,
-and `mcp/profiles.json` before deployment. The sync step is automated via
+The dashboard data must be synced from `mcp/catalog.json` and
+`mcp/sources.json` before deployment. The sync step is automated via
 `dashboard/sync-data.sh` and runs in the GitHub Action before deployment.
 
 #### Scenario: Sync copies catalog data
 - **WHEN** `sync-data.sh` runs
-- **THEN** `dashboard/data/catalog.json`, `dashboard/data/sources.json`, and
-  `dashboard/data/profiles.json` are created from their `mcp/` counterparts
+- **THEN** `dashboard/data/catalog.json` and `dashboard/data/sources.json` are
+  created from their `mcp/` counterparts
 - **AND** the JSON is valid and parseable by `fetch()` in the browser
-
-#### Scenario: DSGVO filter for profiles
-- **WHEN** `sync-data.sh` runs
-- **THEN** only profiles with `einwilligung: true` AND `status: "aktiv"` are
-  included in `dashboard/data/profiles.json`
-- **AND** profiles with `einwilligung: false` or `status: "inaktiv"` are excluded
 
 ### Requirement: Overview Cards
 
@@ -123,32 +117,38 @@ The dashboard must render charts using Chart.js to visualize catalog data.
 - **THEN** a horizontal bar chart shows upcoming deadlines (next 90 days),
   sorted by date ascending, with programme name and days-until-deadline
 
-### Requirement: Profile Matcher (Client-Side)
+### Requirement: Accessibility (WCAG 2.1 AA)
 
-The dashboard must allow loading a public profile and seeing matching programmes.
+The dashboard must meet WCAG 2.1 AA contrast ratios and include ARIA labels
+for screen readers.
 
-#### Scenario: Select a profile
-- **WHEN** the user selects a profile from the dropdown
-- **THEN** the profile's themen and karriere are used to filter and score
-  programmes client-side
-- **AND** matching programmes are displayed with a relevance score (0-5)
+#### Scenario: Text contrast meets WCAG AA
+- **WHEN** the dashboard renders in light or dark mode
+- **THEN** all text colors meet 4.5:1 contrast ratio against their background
+- **AND** all UI components (borders, chart elements) meet 3:1 contrast ratio
 
-#### Scenario: No profile selected
-- **WHEN** no profile is selected
-- **THEN** the programme explorer shows all programmes without profile-based
-  filtering
+#### Scenario: ARIA labels on interactive elements
+- **WHEN** a screen reader user navigates the dashboard
+- **THEN** all filter inputs have `aria-label`
+- **AND** all table headers have `scope="col"`
+- **AND** chart canvases have `role="img"` and `aria-label`
+- **AND** loading and error regions have `role="status"` / `role="alert"` with
+  `aria-live`
 
-#### Scenario: Profile matching algorithm
-- **WHEN** a profile is selected
-- **THEN** programmes are scored: +1 for each matching thema, +1 for matching
-  karriere, +1 for matching rolle, +0.5 for rolling (no deadline pressure)
-- **AND** the score is normalized to 0-5 and displayed as a badge
+#### Scenario: Keyboard navigation
+- **WHEN** a keyboard user tabs through the dashboard
+- **THEN** a skip-to-content link is visible on focus
+- **AND** all sortable column headers are focusable (`tabindex="0"`)
+- **AND** focus indicators (2px outline) are visible on all interactive elements
+
+#### Scenario: Reduced motion
+- **WHEN** the user has `prefers-reduced-motion: reduce` set
+- **THEN** all CSS transitions and animations are disabled
 
 ### Requirement: GitHub Pages Deployment
 
 The dashboard must be deployed to GitHub Pages via a GitHub Action on every push
-to `main` that touches `dashboard/`, `mcp/catalog.json`, `mcp/sources.json`, or
-`mcp/profiles.json`.
+to `main` that touches `dashboard/`, `mcp/catalog.json`, or `mcp/sources.json`.
 
 #### Scenario: Push to main triggers deployment
 - **WHEN** a commit is pushed to `main` that changes files in `dashboard/` or
