@@ -634,3 +634,642 @@ class TestFetchedProgrammesValid:
         from grant_types import Programm
         prog = Programm.from_dict(enriched)
         assert prog.kategorie == "BMBF"
+
+
+# ---------------------------------------------------------------------------
+# _api_fetch error paths
+# ---------------------------------------------------------------------------
+
+
+class TestApiFetchErrors:
+    """Cover all error branches in _api_fetch."""
+
+    def test_http_status_error(self, monkeypatch):
+        """HTTP 4xx/5xx raises HTTPStatusError → error returned."""
+        def _fail(*a, **k):
+            req = httpx.Request("GET", "https://api.openaire.eu")
+            resp = httpx.Response(500, request=req)
+            raise httpx.HTTPStatusError("HTTP 500", request=req, response=resp)
+        monkeypatch.setattr(httpx, "get", _fail)
+        result = ingest.fetch_openaire()
+        assert result.errors
+        assert "HTTP 500" in result.errors[0]
+        assert result.programmes == []
+
+    def test_request_error(self, monkeypatch):
+        """Network error (ConnectError) → error returned."""
+        def _fail(*a, **k):
+            raise httpx.ConnectError("connection refused")
+        monkeypatch.setattr(httpx, "get", _fail)
+        result = ingest.fetch_openaire()
+        assert result.errors
+        assert "Network error" in result.errors[0]
+
+    def test_json_decode_error(self, monkeypatch):
+        """Invalid JSON → JSONDecodeError → error returned."""
+        class BadJsonResponse:
+            status_code = 200
+            content = b""
+            def raise_for_status(self): pass
+            def json(self): raise json.JSONDecodeError("bad", "doc", 0)
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: BadJsonResponse())
+        result = ingest.fetch_openaire()
+        assert result.errors
+        assert "JSON parse error" in result.errors[0]
+
+    def test_generic_exception(self, monkeypatch):
+        """Unexpected exception → error returned."""
+        def _fail(*a, **k):
+            raise RuntimeError("unexpected")
+        monkeypatch.setattr(httpx, "get", _fail)
+        result = ingest.fetch_openaire()
+        assert result.errors
+        assert "Unexpected error" in result.errors[0]
+
+    def test_post_http_error(self, monkeypatch):
+        """POST with HTTP error for NIH fetcher."""
+        def _fail(*a, **k):
+            req = httpx.Request("POST", "https://api.reporter.nih.gov")
+            resp = httpx.Response(503, request=req)
+            raise httpx.HTTPStatusError("HTTP 503", request=req, response=resp)
+        monkeypatch.setattr(httpx, "post", _fail)
+        result = ingest.fetch_nih_reporter()
+        assert result.errors
+        assert "HTTP 503" in result.errors[0]
+
+    def test_post_request_error(self, monkeypatch):
+        """POST with network error for NIH fetcher."""
+        def _fail(*a, **k):
+            raise httpx.ConnectError("timeout")
+        monkeypatch.setattr(httpx, "post", _fail)
+        result = ingest.fetch_nih_reporter()
+        assert result.errors
+        assert "Network error" in result.errors[0]
+
+    def test_post_json_error(self, monkeypatch):
+        """POST with invalid JSON for NIH fetcher."""
+        class BadJsonResponse:
+            status_code = 200
+            content = b""
+            def raise_for_status(self): pass
+            def json(self): raise json.JSONDecodeError("bad", "doc", 0)
+        monkeypatch.setattr(httpx, "post", lambda *a, **k: BadJsonResponse())
+        result = ingest.fetch_nih_reporter()
+        assert result.errors
+        assert "JSON parse error" in result.errors[0]
+
+
+# ---------------------------------------------------------------------------
+# API fetcher edge cases
+# ---------------------------------------------------------------------------
+
+
+class TestOpenaireEdgeCases:
+    def test_empty_results_dict(self, monkeypatch):
+        """OpenAIRE returns {results: {}} when no results."""
+        data = {"response": {"header": {"total": {"$": "0"}}, "results": {}}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_openaire()
+        assert result.programmes == []
+        assert result.errors == []
+
+    def test_results_missing_metadata(self, monkeypatch):
+        """Result without metadata key is skipped."""
+        data = {"response": {"header": {"$": "1"}, "results": {"result": [
+            {"nope": "bad"},
+            {"metadata": {"oaf:entity": {"oaf:project": {
+                "code": {"$": "123"}, "title": {"$": "OK"},
+            }}}},
+        ]}}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_openaire()
+        assert len(result.programmes) == 1
+        assert "123" in result.programmes[0]["id"]
+
+    def test_total_missing(self, monkeypatch):
+        """Missing total header → suggestions still generated."""
+        data = {"response": {"results": {"result": [
+            {"metadata": {"oaf:entity": {"oaf:project": {
+                "code": {"$": "X"}, "title": {"$": "Test"},
+            }}}},
+        ]}}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_openaire()
+        assert len(result.programmes) == 1
+        assert any("openaire" in s for s in result.suggestions)
+
+
+class TestNIHEdgeCases:
+    def test_empty_results(self, monkeypatch):
+        data = {"meta": {"total": 0}, "results": []}
+        monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nih_reporter()
+        assert result.programmes == []
+        assert result.errors == []
+        assert any("nih" in s for s in result.suggestions)
+
+    def test_missing_project_num_skipped(self, monkeypatch):
+        data = {"meta": {"total": 1}, "results": [
+            {"project_title": "No Num"},
+            {"project_num": "R01", "project_title": "Has Num"},
+        ]}
+        monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nih_reporter()
+        assert len(result.programmes) == 1
+        # _slug_id lowercases, so "R01" → "r01"
+        assert "r01" in result.programmes[0]["id"]
+
+    def test_suggestions_generated(self, monkeypatch):
+        """Verify suggestions line is generated when data is present."""
+        data = {"meta": {"total": 42}, "results": [
+            {"project_num": "R01", "project_title": "Test", "agency": "NIA"},
+        ]}
+        monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nih_reporter()
+        assert len(result.suggestions) == 1
+        assert "42" in result.suggestions[0]
+
+
+class TestNSFEdgeCases:
+    def test_empty_awards(self, monkeypatch):
+        data: dict = {"response": {"award": []}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert result.programmes == []
+        assert result.errors == []
+
+    def test_award_without_expdate(self, monkeypatch):
+        data = {"response": {"award": [
+            {"id": "1", "title": "No Exp Date", "agency": "NSF"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.programmes) == 1
+        assert result.programmes[0]["frist"] is None
+        assert result.programmes[0]["rolling"] is True
+
+    def test_date_parsing_various_formats(self, monkeypatch):
+        """Test MM/DD/YYYY → YYYY-MM-DD conversion."""
+        data = {"response": {"award": [
+            {"id": "1", "title": "A", "expDate": "06/30/2027"},
+            {"id": "2", "title": "B", "expDate": "12/01/2026"},
+            {"id": "3", "title": "C", "expDate": "1/5/2027"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.programmes) == 3
+        assert result.programmes[0]["frist"] == "2027-06-30"
+        assert result.programmes[1]["frist"] == "2026-12-01"
+        assert result.programmes[2]["frist"] == "2027-01-05"
+
+    def test_date_parsing_bad_format(self, monkeypatch):
+        """Bad date format → frist=None, rolling=True."""
+        data = {"response": {"award": [
+            {"id": "1", "title": "Bad", "expDate": "not-a-date"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.programmes) == 1
+        assert result.programmes[0]["frist"] is None
+        assert result.programmes[0]["rolling"] is True
+
+    def test_date_parsing_two_parts(self, monkeypatch):
+        """Date with only 2 parts → frist=None."""
+        data = {"response": {"award": [
+            {"id": "1", "title": "Two", "expDate": "06/30"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.programmes) == 1
+        assert result.programmes[0]["frist"] is None
+
+    def test_suggestions_generated(self, monkeypatch):
+        data = {"response": {"award": [
+            {"id": "1", "title": "A", "agency": "NSF"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.suggestions) == 1
+
+    def test_http_error(self, monkeypatch):
+        def _fail(*a, **k):
+            raise httpx.ConnectError("boom")
+        monkeypatch.setattr(httpx, "get", _fail)
+        result = ingest.fetch_nsf_awards()
+        assert result.errors
+        assert result.programmes == []
+
+
+class TestCrossrefEdgeCases:
+    def test_empty_items(self, monkeypatch):
+        data = {"message": {"total-results": 0, "items": []}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_crossref_funders()
+        assert result.programmes == []
+        assert result.errors == []
+
+    def test_missing_name_skipped(self, monkeypatch):
+        data = {"message": {"total-results": 1, "items": [
+            {"id": "x", "location": "Germany", "count": 1},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_crossref_funders()
+        assert result.programmes == []
+
+    def test_http_error(self, monkeypatch):
+        def _fail(*a, **k):
+            raise httpx.ConnectError("boom")
+        monkeypatch.setattr(httpx, "get", _fail)
+        result = ingest.fetch_crossref_funders()
+        assert result.errors
+
+    def test_suggestions_generated(self, monkeypatch):
+        data = {"message": {"total-results": 500, "items": [
+            {"id": "x", "name": "X", "location": "Germany", "count": 1},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_crossref_funders()
+        assert len(result.suggestions) == 1
+        assert "500" in result.suggestions[0]
+
+
+# ---------------------------------------------------------------------------
+# CLI additional tests
+# ---------------------------------------------------------------------------
+
+
+class TestCLIAdditional:
+    def test_no_args_shows_help(self, capsys):
+        import sys
+        old_argv = sys.argv
+        sys.argv = ["ingest.py"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+        out = capsys.readouterr().out
+        assert "--list" in out or "--source" in out or "usage" in out.lower()
+
+    def test_all_dry_run(self, tmp_path, monkeypatch, capsys):
+        """--all in dry-run should not write catalog."""
+        import sys
+        catalog = {
+            "stand": "2026-01-01", "quelleHinweis": "test",
+            "programme": [],
+        }
+        cat_path = tmp_path / "catalog.json"
+        cat_path.write_text(json.dumps(catalog))
+
+        @ingest.register("test-all-dry", "Test All Dry", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate(
+                "test-all-dry",
+                [{"id": "all-test-1", "name": "All Test", "quelle": "https://test.de"}],
+                [], "now", [],
+            )
+
+        # Mock all real HTTP calls so --all doesn't hit real APIs
+        def _fake_get(*a, **k):
+            return FakeResponse(302)
+        def _fake_post(*a, **k):
+            return FakeResponse(200, {"meta": {"total": 0}, "results": []})
+        monkeypatch.setattr(httpx, "get", _fake_get)
+        monkeypatch.setattr(httpx, "post", _fake_post)
+
+        monkeypatch.setattr(ingest, "CATALOG_JSON", cat_path)
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--all"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+
+        out = capsys.readouterr().out
+        # Should show dry-run info (our test fetcher has programmes)
+        assert "DRY-RUN" in out or "No programmes" in out
+        # Catalog should not have been modified
+        doc = json.loads(cat_path.read_text())
+        assert len(doc["programme"]) == 0
+
+        del ingest._REGISTRY["test-all-dry"]
+
+    def test_all_apply_writes(self, tmp_path, monkeypatch, capsys):
+        """--all --apply should merge into catalog."""
+        import sys
+        catalog = {
+            "stand": "2026-01-01", "quelleHinweis": "test",
+            "programme": [],
+        }
+        cat_path = tmp_path / "catalog.json"
+        cat_path.write_text(json.dumps(catalog))
+        audit_path = tmp_path / "audit.md"
+
+        @ingest.register("test-all-apply", "Test All Apply", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate(
+                "test-all-apply",
+                [{"id": "all-apply-1", "name": "All Apply", "quelle": "https://test.de"}],
+                [], "now", [],
+            )
+
+        # Mock all real HTTP calls so --all doesn't hit real APIs
+        def _fake_get(*a, **k):
+            return FakeResponse(302)
+        def _fake_post(*a, **k):
+            return FakeResponse(200, {"meta": {"total": 0}, "results": []})
+        monkeypatch.setattr(httpx, "get", _fake_get)
+        monkeypatch.setattr(httpx, "post", _fake_post)
+
+        monkeypatch.setattr(ingest, "CATALOG_JSON", cat_path)
+        monkeypatch.setattr(ingest, "AUDIT_LOG", audit_path)
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--all", "--apply"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+
+        out = capsys.readouterr().out
+        assert "New:" in out
+        doc = json.loads(cat_path.read_text())
+        # Should have exactly 1 programme (our test fetcher), not 200+
+        test_progs = [p for p in doc["programme"] if p["id"] == "all-apply-1"]
+        assert len(test_progs) == 1
+
+        del ingest._REGISTRY["test-all-apply"]
+
+    def test_apply_with_errors_printed(self, tmp_path, monkeypatch, capsys):
+        """--apply with rejected programmes should print error count."""
+        import sys
+        catalog = {
+            "stand": "2026-01-01", "quelleHinweis": "test",
+            "programme": [],
+        }
+        cat_path = tmp_path / "catalog.json"
+        cat_path.write_text(json.dumps(catalog))
+        audit_path = tmp_path / "audit.md"
+
+        @ingest.register("test-errs", "Test Errors", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate(
+                "test-errs",
+                [{"name": "No ID"}],  # Missing id → rejected
+                [], "now", [],
+            )
+
+        monkeypatch.setattr(ingest, "CATALOG_JSON", cat_path)
+        monkeypatch.setattr(ingest, "AUDIT_LOG", audit_path)
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--source", "test-errs", "--apply"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+
+        out = capsys.readouterr().out
+        assert "Rejected:" in out
+
+        del ingest._REGISTRY["test-errs"]
+
+    def test_no_programmes_nothing_happens(self, capsys, monkeypatch):
+        """Source with 0 programmes should print 'Nothing to merge'."""
+        import sys
+        @ingest.register("test-empty", "Test Empty", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate("test-empty", [], [], "now", [])
+
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--source", "test-empty"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+
+        out = capsys.readouterr().out
+        assert "Nothing to merge" in out
+
+        del ingest._REGISTRY["test-empty"]
+
+    def test_apply_many_errors_truncated(self, tmp_path, monkeypatch, capsys):
+        """More than 5 errors should be truncated with '... and N more'."""
+        import sys
+        catalog = {
+            "stand": "2026-01-01", "quelleHinweis": "test",
+            "programme": [],
+        }
+        cat_path = tmp_path / "catalog.json"
+        cat_path.write_text(json.dumps(catalog))
+
+        @ingest.register("test-many-err", "Test Many Err", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate(
+                "test-many-err",
+                [{"name": f"No ID {i}"} for i in range(8)],
+                [], "now", [],
+            )
+
+        monkeypatch.setattr(ingest, "CATALOG_JSON", cat_path)
+        monkeypatch.setattr(ingest, "AUDIT_LOG", tmp_path / "audit.md")
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--source", "test-many-err", "--apply"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+
+        out = capsys.readouterr().out
+        assert "Rejected:" in out
+        assert "... and" in out
+
+        del ingest._REGISTRY["test-many-err"]
+
+    def test_idempotent_apply(self, tmp_path, monkeypatch):
+        """Running --apply twice should not duplicate entries."""
+        import sys
+        catalog = {
+            "stand": "2026-01-01", "quelleHinweis": "test",
+            "programme": [],
+        }
+        cat_path = tmp_path / "catalog.json"
+        cat_path.write_text(json.dumps(catalog))
+
+        @ingest.register("test-idem", "Test Idem", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate(
+                "test-idem",
+                [{"id": "idem-1", "name": "Idempotent Test", "quelle": "https://test.de"}],
+                [], "now", [],
+            )
+
+        monkeypatch.setattr(ingest, "CATALOG_JSON", cat_path)
+        monkeypatch.setattr(ingest, "AUDIT_LOG", tmp_path / "audit.md")
+
+        # First apply: should add 1
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--source", "test-idem", "--apply"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+        doc = json.loads(cat_path.read_text())
+        assert len(doc["programme"]) == 1
+
+        # Second apply: should update 0 (no new, no dup)
+        sys.argv = ["ingest.py", "--source", "test-idem", "--apply"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+        doc = json.loads(cat_path.read_text())
+        assert len(doc["programme"]) == 1  # Still 1, not 2
+
+        del ingest._REGISTRY["test-idem"]
+
+    def test_dry_run_with_existing_update(self, tmp_path, monkeypatch, capsys):
+        """Dry-run should count updates for existing entries."""
+        import sys
+        catalog = {
+            "stand": "2026-01-01", "quelleHinweis": "test",
+            "programme": [{
+                "id": "existing-1", "name": "Old", "kategorie": "DFG",
+                "themen": ["frei"], "karriere": ["postdoc"], "rolle": ["lead"],
+                "frist": None, "rolling": True, "status": "laufend",
+                "quelle": "", "standDatum": "2026-01-01",
+            }],
+        }
+        cat_path = tmp_path / "catalog.json"
+        cat_path.write_text(json.dumps(catalog))
+
+        @ingest.register("test-upd", "Test Update", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate(
+                "test-upd",
+                [{"id": "existing-1", "name": "Updated", "quelle": "https://test.de"}],
+                [], "now", [],
+            )
+
+        monkeypatch.setattr(ingest, "CATALOG_JSON", cat_path)
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--source", "test-upd"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+
+        out = capsys.readouterr().out
+        assert "DRY-RUN" in out
+        assert "Would update: 1" in out
+        assert "Would add: 0" in out
+
+        # Catalog should not be modified
+        doc = json.loads(cat_path.read_text())
+        assert doc["programme"][0]["name"] == "Old"
+
+        del ingest._REGISTRY["test-upd"]
+
+    def test_list_output_format(self, capsys):
+        import sys
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--list"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+        out = capsys.readouterr().out
+        # Should contain all fetcher keys
+        for key in ("bmbf", "cost", "crossref", "eu", "nih", "nsf", "openaire"):
+            assert key in out
+
+
+# ---------------------------------------------------------------------------
+# Additional edge cases for coverage
+# ---------------------------------------------------------------------------
+
+
+class TestNIHDedup:
+    def test_nih_dedup(self, monkeypatch):
+        """Duplicate project_num + title should be deduplicated."""
+        data = {"meta": {"total": 2}, "results": [
+            {"project_num": "R01", "project_title": "Same Project"},
+            {"project_num": "R01", "project_title": "Same Project"},
+        ]}
+        monkeypatch.setattr(httpx, "post", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nih_reporter()
+        assert len(result.programmes) == 1
+
+
+class TestNSFDedup:
+    def test_nsf_dedup(self, monkeypatch):
+        """Duplicate award_id + title should be deduplicated."""
+        data = {"response": {"award": [
+            {"id": "1", "title": "Same Award", "agency": "NSF"},
+            {"id": "1", "title": "Same Award", "agency": "NSF"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.programmes) == 1
+
+    def test_nsf_date_value_error(self, monkeypatch):
+        """Date with non-numeric month should be caught by except."""
+        data = {"response": {"award": [
+            {"id": "1", "title": "Bad Date", "expDate": "xx/30/2027"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.programmes) == 1
+        assert result.programmes[0]["frist"] is None
+        assert result.programmes[0]["rolling"] is True
+
+    def test_nsf_date_index_error(self, monkeypatch):
+        """Date with only 1 part should be caught by except."""
+        data = {"response": {"award": [
+            {"id": "1", "title": "Short Date", "expDate": "2027"},
+        ]}}
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, data))
+        result = ingest.fetch_nsf_awards()
+        assert len(result.programmes) == 1
+        assert result.programmes[0]["frist"] is None
+
+
+class TestPrintResults:
+    def test_print_results_with_errors(self, capsys):
+        """_print_results should print errors."""
+        u = ingest.ProgrammeUpdate(
+            "test-src", [], ["Error 1", "Error 2"], "now", ["Suggestion 1"],
+        )
+        ingest._print_results([u])
+        out = capsys.readouterr().out
+        assert "ERROR: Error 1" in out
+        assert "ERROR: Error 2" in out
+        assert "INFO: Suggestion 1" in out
+
+
+class TestCLIDryRunNoCatalog:
+    def test_dry_run_no_catalog_file(self, tmp_path, monkeypatch, capsys):
+        """Dry-run with missing catalog file should still work (FileNotFoundError caught)."""
+        import sys
+        # Point to a non-existent catalog
+        missing = tmp_path / "nonexistent.json"
+        monkeypatch.setattr(ingest, "CATALOG_JSON", missing)
+
+        @ingest.register("test-nocat", "Test NoCat", "", "api")
+        def _test():
+            return ingest.ProgrammeUpdate(
+                "test-nocat",
+                [{"id": "nocat-1", "name": "Test", "quelle": "https://test.de"}],
+                [], "now", [],
+            )
+
+        old_argv = sys.argv
+        sys.argv = ["ingest.py", "--source", "test-nocat"]
+        try:
+            ingest.main()
+        finally:
+            sys.argv = old_argv
+
+        out = capsys.readouterr().out
+        # Should show dry-run with Would add: 1 (no existing catalog = all new)
+        assert "DRY-RUN" in out
+        assert "Would add: 1" in out
+
+        del ingest._REGISTRY["test-nocat"]
