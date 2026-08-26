@@ -109,6 +109,17 @@ class TestFitsProperties:
         """_fits wirft nie – auch bei exotischen Strings."""
         _fits([a], b)  # darf nicht crashen
 
+    def test_leeres_oder_whitespace_feld_false(self):
+        """Deterministisch: leere/Whitespace-Felder matchen nie.
+
+        (Hypothesis-Daten sind zufällig – dieser Guard braucht einen
+        deterministischen Test für stabile 100%-Abdeckung.)
+        """
+        assert _fits(["frei"], "") is False
+        assert _fits(["frei"], "   ") is False
+        assert _fits(["frei"], "\t") is False
+        assert _fits(["frei"], "\r\n") is False
+
 
 # =============================================================================
 # 2. Fuzz-Tests – kaputte/feindliche Eingaben

@@ -314,13 +314,15 @@ def _enrich_programme(partial: dict[str, Any], source: str) -> dict[str, Any] | 
     if not partial.get("id") or not partial.get("name"):
         return None
 
-    # Respect provided kategorie if valid, otherwise derive from source
+    # Respect provided kategorie if valid, otherwise derive from source.
+    # Unknown sources fall back to "International" (a valid Kategorie value)
+    # so that semi-automatic entries never inject an invalid category.
     from grant_types import Kategorie
     provided_kategorie = partial.get("kategorie")
     if provided_kategorie and Kategorie.is_valid(provided_kategorie):
         kategorie = provided_kategorie
     else:
-        kategorie = _CATEGORY_MAP.get(source, source)
+        kategorie = _CATEGORY_MAP.get(source, "International")
 
     return {
         "id": partial["id"],

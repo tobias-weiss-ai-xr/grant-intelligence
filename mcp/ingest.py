@@ -28,7 +28,13 @@ from typing import Any, Callable
 
 import httpx
 
-from fetchers import ProgrammeUpdate, _enrich_programme, _slug_id, apply_fetch_updates
+from fetchers import (
+    ProgrammeUpdate,
+    _CATEGORY_MAP,
+    _enrich_programme,
+    _slug_id,
+    apply_fetch_updates,
+)
 from grant_types import Programm
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
@@ -95,11 +101,7 @@ def ingest_all() -> list[ProgrammeUpdate]:
 # Helpers
 # ---------------------------------------------------------------------------
 
-_CATEGORY_MAP = {
-    "openaire": "EU", "crossref": "International", "nih": "International",
-    "nsf": "International", "cost": "EU", "eu": "EU",
-    "bmbf": "BMBF", "dfg": "DFG", "erc": "ERC",
-}
+# _CATEGORY_MAP is imported from fetchers.py (single source of truth).
 
 
 def _oa_get(obj: Any, *path: str) -> str | None:

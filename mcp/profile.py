@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from dataclasses import asdict, dataclass, field
 from datetime import date
 from pathlib import Path
@@ -32,6 +33,26 @@ _PROFILE_KEY_MAP: dict[str, str] = {
 """Mapping from profiles.json (camelCase) keys to dataclass fields."""
 
 _PROFILE_REVERSE_MAP = {v: k for k, v in _PROFILE_KEY_MAP.items()}
+
+# Kuratierte Keywords zur Themen-Ableitung aus Publikationstiteln.
+_FIELD_KEYWORDS: dict[str, list[str]] = {
+    "Künstliche Intelligenz": ["künstliche intelligenz", "artificial intelligence", "machine learning", "deep learning", "neural network"],
+    "Maschinelles Lernen": ["machine learning", "deep learning", "neural network"],
+    "Graphen": ["graph", "graphen"],
+    "GraphRAG": ["graphrag", "graph rag", "knowledge graph"],
+    "Mathematik": ["mathematik", "mathematics"],
+    "Algebra": ["algebra"],
+    "Topologie": ["topologie", "topology", "mannigfaltigkeit"],
+    "Analysis": ["analysis", "differential", "integral", "funktionalanalysis"],
+    "Zahlentheorie": ["zahlentheorie", "number theory", "primzahl"],
+    "Geometrie": ["geometrie", "geometry"],
+    "Stochastik": ["stochastik", "wahrscheinlichkeit", "probability", "statistik"],
+    "Numerik": ["numerik", "numerical", "approximation"],
+    "Biologie": ["biologie", "biology"],
+    "Medizin": ["medizin", "medical", "clinical"],
+    "Physik": ["physik", "physics"],
+    "Chemie": ["chemie", "chemistry"],
+}
 
 
 @dataclass
@@ -264,37 +285,13 @@ def derive_themen(titles: list[str]) -> list[str]:
     Returns:
         List of derived theme keywords (deduplicated).
     """
-    _FIELD_KEYWORDS: dict[str, list[str]] = {
-        "Künstliche Intelligenz": ["künstliche intelligenz", "artificial intelligence", "machine learning", "deep learning", "neural network"],
-        "Maschinelles Lernen": ["machine learning", "deep learning", "neural network"],
-        "Graphen": ["graph", "graphen"],
-        "GraphRAG": ["graphrag", "graph rag", "knowledge graph"],
-        "Mathematik": ["mathematik", "mathematics"],
-        "Algebra": ["algebra"],
-        "Topologie": ["topologie", "topology", "mannigfaltigkeit"],
-        "Analysis": ["analysis", "differential", "integral", "funktionalanalysis"],
-        "Zahlentheorie": ["zahlentheorie", "number theory", "primzahl"],
-        "Geometrie": ["geometrie", "geometry"],
-        "Stochastik": ["stochastik", "wahrscheinlichkeit", "probability", "statistik"],
-        "Numerik": ["numerik", "numerical", "approximation"],
-        "Biologie": ["biologie", "biology"],
-        "Medizin": ["medizin", "medical", "clinical"],
-        "Physik": ["physik", "physics"],
-        "Chemie": ["chemie", "chemistry"],
-    }
-
-    # Use left word-boundary matching to avoid false positives (e.g. "ki" in
+    # Left word-boundary matching avoids false positives (e.g. "ki" in
     # "cooking") while still matching plurals/derivatives (e.g. "graph" in
     # "graphs", "algebra" in "algebraic")
-    import re
-
     lower_titles = " ".join(t.lower() for t in titles)
     found: list[str] = []
     for field_name, keywords in _FIELD_KEYWORDS.items():
         for kw in keywords:
-            # Left word boundary only — matches "graph" in "graphs" but not
-            # "ki" in "cooking" (because "ki" would need \bki which matches
-            # at start of "künstliche" but not inside "cooking")
             if re.search(rf"\b{re.escape(kw)}", lower_titles):
                 if field_name not in found:
                     found.append(field_name)

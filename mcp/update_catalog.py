@@ -18,8 +18,10 @@ import sys
 from datetime import date
 from pathlib import Path
 
+import fetchers
 
 from grant_types import Programm, parse_frist
+from match import load_catalog_doc as _load_catalog_doc
 from match import load_sources as _load_sources
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
@@ -39,14 +41,18 @@ def load_sources() -> dict:
 
 
 def load_catalog(path: Path = CATALOG) -> dict:
-    with open(path, encoding="utf-8") as fh:
-        return json.load(fh)
+    """Lade den vollständigen Katalog (dict mit 'programme'-Schlüssel).
+
+    Delegates to match.load_catalog_doc for single-source-of-truth.
+    """
+    return _load_catalog_doc(path)
 
 
 def save_catalog(doc: dict, path: Path = CATALOG) -> None:
     doc["stand"] = date.today().isoformat()
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")  # konsistent mit match.save_catalog (Trailing-Newline)
     log.info(f"Katalog gespeichert: {path} ({len(doc.get('programme', []))} Programme)")
 
 
@@ -123,9 +129,9 @@ def fetch_manual(source: str) -> list[dict] | None:
         Liste von Programm-Dicts oder None (fuer rein manuelle Quellen).
     """
     _FETCHER_MAP = {
-        "cost": lambda: __import__("fetchers", fromlist=["fetch_cost"]).fetch_cost(),
-        "eu": lambda: __import__("fetchers", fromlist=["fetch_eu_horizon"]).fetch_eu_horizon(),
-        "bmbf": lambda: __import__("fetchers", fromlist=["fetch_bmbf_rss"]).fetch_bmbf_rss(),
+        "cost": fetchers.fetch_cost,
+        "eu": fetchers.fetch_eu_horizon,
+        "bmbf": fetchers.fetch_bmbf_rss,
     }
 
     sources = load_sources()

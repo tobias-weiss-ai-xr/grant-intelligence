@@ -62,6 +62,24 @@ def load_sources(path: Path | None = None) -> dict[str, Any]:
         return json.load(fh)
 
 
+def load_catalog_doc(path: Path | None = None) -> dict[str, Any]:
+    """Load the full catalog document (dict with 'programme' key).
+
+    Single source of truth for reading the raw catalog JSON. Returns the
+    entire document (stand, quelleHinweis, programme) so callers that need
+    the metadata can use it directly.
+
+    Args:
+        path: Path to catalog file. Defaults to catalog.json in same directory.
+
+    Returns:
+        The parsed JSON document as a dict.
+    """
+    path = path or CATALOG
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
 def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:
     """Load the program catalog from JSON.
 
@@ -81,15 +99,14 @@ def load_catalog(path: Path | None = None) -> list[dict[str, Any]]:
     if key in _CATALOG_CACHE:
         return _CATALOG_CACHE[key]
     try:
-        with open(path, encoding="utf-8") as fh:
-            data = json.load(fh)
-            if not isinstance(data, dict):
-                raise CatalogError(
-                    f"Invalid catalog structure: expected object, got {type(data).__name__}"
-                )
-            result = data.get("programme", [])
-            _CATALOG_CACHE[key] = result
-            return result
+        data = load_catalog_doc(path)
+        if not isinstance(data, dict):
+            raise CatalogError(
+                f"Invalid catalog structure: expected object, got {type(data).__name__}"
+            )
+        result = data.get("programme", [])
+        _CATALOG_CACHE[key] = result
+        return result
     except FileNotFoundError:
         log.error(f"Catalog file not found: {path}")
         raise CatalogError(f"Catalog file not found: {path}") from None

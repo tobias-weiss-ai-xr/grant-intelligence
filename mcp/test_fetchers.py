@@ -147,6 +147,21 @@ class TestEnrichProgramme:
         partial = {"id": "test"}
         assert fetchers._enrich_programme(partial, "bmbf") is None
 
+    def test_unknown_source_falls_back_to_international(self):
+        """Unknown source with no valid kategorie → valid 'International' value.
+
+        Regression: the fallback used to be the raw source identifier, which
+        could inject an invalid kategorie value that Programm.from_dict does
+        not catch.
+        """
+        partial = {"id": "custom-1", "name": "Custom", "quelle": "https://x.de"}
+        result = fetchers._enrich_programme(partial, "custom-source")
+        assert result is not None
+        assert result["kategorie"] == "International"
+        # must survive validation (invalid kategorie used to slip through)
+        from grant_types import Programm
+        Programm.from_dict(result)
+
 
 class TestApplyFetchUpdates:
     def test_valid_fetch_merged(self, tmp_path):
@@ -175,7 +190,9 @@ class TestApplyFetchUpdates:
             fetched_at="2026-08-12", suggestions=[],
         )
 
-        result = fetchers.apply_fetch_updates([update], catalog_path=catalog_path)
+        result = fetchers.apply_fetch_updates(
+            [update], catalog_path=catalog_path, audit_path=tmp_path / "audit.md"
+        )
         assert result["gesamt_neu"] == 1
         assert result["gesamt_abgelehnt"] == 0
 
@@ -199,7 +216,9 @@ class TestApplyFetchUpdates:
             fetched_at="2026-08-12", suggestions=[],
         )
 
-        result = fetchers.apply_fetch_updates([update], catalog_path=catalog_path)
+        result = fetchers.apply_fetch_updates(
+            [update], catalog_path=catalog_path, audit_path=tmp_path / "audit.md"
+        )
         # The enrichment fills defaults but the result should be valid now
         # (since _enrich_programme adds all required fields)
         # So test with truly un-enrichable data
@@ -218,7 +237,9 @@ class TestApplyFetchUpdates:
             fetched_at="2026-08-12", suggestions=[],
         )
 
-        result = fetchers.apply_fetch_updates([update], catalog_path=catalog_path)
+        result = fetchers.apply_fetch_updates(
+            [update], catalog_path=catalog_path, audit_path=tmp_path / "audit.md"
+        )
         assert result["gesamt_abgelehnt"] == 1
 
     def test_audit_log_written(self, tmp_path):
@@ -365,7 +386,9 @@ class TestApplyFetchUpdatesAdditional:
         update = fetchers.ProgrammeUpdate(
             "bmbf", [updated], [], "now", [],
         )
-        result = fetchers.apply_fetch_updates([update], catalog_path=cat_path)
+        result = fetchers.apply_fetch_updates(
+            [update], catalog_path=cat_path, audit_path=tmp_path / "audit.md"
+        )
         assert result["gesamt_aktualisiert"] == 1
         assert result["gesamt_neu"] == 0
 
@@ -520,7 +543,9 @@ class TestFetchersCoverage:
         # Programm.from_dict will reject invalid frist
         progs: list[dict] = [enriched] if enriched else []
         update = fetchers.ProgrammeUpdate("bmbf", progs, [], "now", [])
-        result = fetchers.apply_fetch_updates([update], catalog_path=cat_path)
+        result = fetchers.apply_fetch_updates(
+            [update], catalog_path=cat_path, audit_path=tmp_path / "audit.md"
+        )
         # If enriched is not None and frist is invalid, it should be rejected
         # If enriched is None (missing id/name), it's rejected differently
         assert result["gesamt_abgelehnt"] >= 0  # Either rejected or accepted

@@ -281,6 +281,31 @@ class TestServer:
         warn = server.notify(POSTDOC, "postdoc", tage=0)
         assert any(w.get("rolling") for w in warn)
 
+    def test_filter_warnungen_included_in_brief(self):
+        """brief uses _filter_warnungen: rolling + within window survive, others don't."""
+        from grant_types import MatchResult
+        from server import _filter_warnungen
+
+        def make(id_: str, rolling: bool = False, tage_bis_frist: int | None = None):
+            return MatchResult(
+                id=id_, name="X", kategorie="DFG", score=1, frist=None,
+                rolling=rolling, status="laufend", quelle="", stand_datum="",
+                begruendung="", tage_bis_frist=tage_bis_frist,
+            )
+
+        rolling = make("r1", rolling=True)
+        within = make("r2", tage_bis_frist=5)
+        outside = make("r3", tage_bis_frist=200)
+        ohne = make("r4")
+
+        out = _filter_warnungen([rolling, within, outside, ohne], tage=60)
+        assert {r.id for r in out} == {"r1", "r2"}
+
+        # Edge: negative (bereits abgelaufen) taucht ebenfalls auf → stale data
+        expired = make("r5", tage_bis_frist=-3)
+        out2 = _filter_warnungen([expired], tage=60)
+        assert out2[0].id == "r5"
+
     def test_brief_ohne_match_kein_crash(self):
         # Völlig unbekannte Karrierestufe -> harter Filter, keine Treffer
         b = server.brief(["Biologie"], "abgelehnt")
@@ -438,6 +463,25 @@ class TestCoverageEdges:
         bad.write_text("{invalid", encoding="utf-8")
         with pytest.raises(CatalogError, match="Invalid JSON"):
             load_catalog(path=bad)
+
+    def test_load_catalog_doc_full(self):
+        """load_catalog_doc returns the full document (dict with 'programme')."""
+        from match import load_catalog, load_catalog_doc
+        doc = load_catalog_doc()
+        assert isinstance(doc, dict)
+        assert "programme" in doc
+        assert "stand" in doc
+        assert len(doc["programme"]) == len(load_catalog())
+
+    def test_load_catalog_doc_roundtrip(self, tmp_path):
+        """load_catalog_doc on a written file matches the programme list."""
+        from match import load_catalog, load_catalog_doc, save_catalog
+        katalog = load_catalog()
+        p = tmp_path / "rt_doc.json"
+        save_catalog(katalog, path=p)
+        doc = load_catalog_doc(path=p)
+        assert doc["programme"] == katalog
+        assert doc["stand"] == date.today().isoformat()
 
     # -- match.py: save_catalog error (88-90) --
     def test_save_catalog_oserror(self, tmp_path):

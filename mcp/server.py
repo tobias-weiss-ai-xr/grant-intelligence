@@ -59,6 +59,27 @@ def _serialize(r: MatchResult) -> dict[str, Any]:
     }
 
 
+def _filter_warnungen(results: list[MatchResult], tage: int) -> list[MatchResult]:
+    """Keep deadline results that require attention.
+
+    Includes rolling programs (always relevant) and programs with a
+    deadline within `tage` days (including already-expired ones, so stale
+    catalog data surfaces as a warning).
+
+    Args:
+        results: Deadline results from next_deadline().
+        tage: Warning window in days.
+
+    Returns:
+        Filtered list of MatchResult objects.
+    """
+    return [
+        r
+        for r in results
+        if r.rolling or (r.tage_bis_frist is not None and r.tage_bis_frist <= tage)
+    ]
+
+
 @mcp.tool()
 def programs(kategorie: str | None = None) -> list[dict[str, Any]]:
     """List curated grant programs, optionally filtered by category.
@@ -312,11 +333,7 @@ def notify(
         if not profil.einwilligung:
             return []
     results = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=len(PROGRAMME), profil=profil)
-    out = []
-    for r in results:
-        if r.rolling or (r.tage_bis_frist is not None and r.tage_bis_frist <= tage):
-            out.append(_serialize(r))
-    return out
+    return [_serialize(r) for r in _filter_warnungen(results, tage)]
 
 
 @mcp.tool()
@@ -367,13 +384,16 @@ def brief(
                 "warnungen": [],
             }
     fristen = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=1, profil=profil)
+    # Warnungen direkt aus dem bereits geladenen Profil berechnen (kein zweiter
+    # Profil-Load / Consent-Check noetig).
+    warn_fristen = next_deadline(PROGRAMME, felder, karriere, rolle=rolle, top=len(PROGRAMME), profil=profil)
     return {
         "top_matches": [
             _serialize(r)
             for r in match_profile(PROGRAMME, felder, karriere, rolle=rolle, top=top, profil=profil)
         ],
         "naechste_frist": _serialize(fristen[0]) if fristen else None,
-        "warnungen": notify(felder, karriere, rolle=rolle, tage=tage, profil_id=profil_id),
+        "warnungen": [_serialize(r) for r in _filter_warnungen(warn_fristen, tage)],
     }
 
 
