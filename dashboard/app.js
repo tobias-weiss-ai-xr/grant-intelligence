@@ -237,6 +237,7 @@ function dashboard() {
         },
         options: {
           indexAxis: 'y',
+          animation: false,  // avoids Chart.js RAF crash on Alpine reflow (null ctx)
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
@@ -275,6 +276,7 @@ function dashboard() {
         },
         options: {
           indexAxis: 'y',
+          animation: false,  // avoids Chart.js RAF crash on Alpine reflow (null ctx)
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
