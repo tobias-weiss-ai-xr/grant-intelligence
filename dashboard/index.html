@@ -44,90 +44,9 @@
   <!-- Main content -->
   <main x-show="!loading && !error" id="programme">
 
-    <!-- Overview Cards -->
-    <section class="cards" aria-label="Übersicht">
-      <div class="card">
-        <span class="card-number" x-text="catalog.length"></span>
-        <span class="card-label">Programme</span>
-      </div>
-      <div class="card">
-        <span class="card-number" x-text="categories.length"></span>
-        <span class="card-label">Kategorien</span>
-      </div>
-      <div class="card">
-        <span class="card-number" x-text="Object.keys(sources).length"></span>
-        <span class="card-label">Quellgruppen</span>
-      </div>
-      <div class="card">
-        <span class="card-number" x-text="upcomingDeadlines.length"></span>
-        <span class="card-label">Fristen ≤ 90 Tage</span>
-      </div>
-      <div class="card">
-        <span class="card-number" x-text="rollingCount"></span>
-        <span class="card-label">Rolling</span>
-      </div>
-      <div class="card">
-        <span class="card-number" x-text="futureDeadlineCount"></span>
-        <span class="card-label">Fristen &gt; 90 Tage</span>
-      </div>
-      <div class="card">
-        <span class="card-number" x-text="noDeadlineCount"></span>
-        <span class="card-label">Ohne Frist</span>
-      </div>
-    </section>
-
-    <!-- Charts -->
-    <section class="charts" aria-label="Diagramme">
-      <div class="chart-container chart-small">
-        <h2>Nach Status</h2>
-        <canvas id="statusChart" role="img" aria-label="Balkendiagramm: Programme nach Status"></canvas>
-      </div>
-      <div class="chart-container chart-wide">
-        <h2>Fristen-Timeline <span class="count" x-text="'(nächste 90 Tage, Top 10)'"></span></h2>
-        <canvas id="deadlineChart" role="img" aria-label="Balkendiagramm: Fristen der nächsten 90 Tage"></canvas>
-      </div>
-    </section>
-
-    <!-- Source Browser -->
-    <section class="source-browser" aria-label="Quellen">
-      <h2>Quellen <span class="count" x-text="'(' + Object.keys(sources).length + ')'"></span></h2>
-      <table class="source-table">
-        <thead>
-          <tr>
-            <th @click="toggleSortSrc('name')" class="sortable" scope="col" tabindex="0" aria-sort="none">Quelle ↕</th>
-            <th scope="col">URL</th>
-            <th scope="col">Typ</th>
-            <th scope="col">Frequenz</th>
-            <th scope="col">Letzter Check</th>
-            <th scope="col">Calls</th>
-            <th scope="col">Programme</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template x-for="src in sortedSources" :key="src.key">
-            <tr>
-              <td x-text="src.name"></td>
-              <td>
-                <a x-show="src.url" :href="src.url" target="_blank" rel="noopener" x-text="src.url.replace('https://','')"></a>
-                <span x-show="!src.url">—</span>
-              </td>
-              <td>
-                <span class="badge" :class="src.type === 'manual' ? 'badge-manual' : 'badge-auto'"
-                      x-text="src.type === 'manual' ? 'Manuell' : 'Automatisiert'"></span>
-              </td>
-              <td x-text="src.update_frequency || '—'"></td>
-              <td x-text="src.last_check || '—'"></td>
-              <td x-text="src.calls"></td>
-              <td x-text="src.programs"></td>
-            </tr>
-          </template>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- Programme Explorer -->
-    <section class="programme-explorer" aria-label="Programme">
-      <h2>Programme <span class="count" x-text="'(' + catalog.length + ')'"></span></h2>
+    <!-- 1. Grants (Förderprogramme) -->
+    <section class="programme-explorer" aria-label="Förderprogramme">
+      <h2>Förderprogramme <span class="count" x-text="'(' + catalog.length + ')'"></span></h2>
       <div class="filters">
         <input type="text" x-model="search" placeholder="Suche (Name, Themen)…"
                aria-label="Programme durchsuchen">
@@ -190,6 +109,86 @@
           </template>
         </tbody>
       </table>
+    </section>
+
+    <!-- 2. Institutions (Quellen) -->
+    <section class="source-browser" aria-label="Institutionen & Quellen">
+      <h2>Institutionen & Quellen <span class="count" x-text="'(' + Object.keys(sources).length + ')'"></span></h2>
+      <table class="source-table">
+        <thead>
+          <tr>
+            <th @click="toggleSortSrc('name')" class="sortable" scope="col" tabindex="0" aria-sort="none">Quelle ↕</th>
+            <th scope="col">URL</th>
+            <th scope="col">Typ</th>
+            <th scope="col">Frequenz</th>
+            <th scope="col">Letzter Check</th>
+            <th scope="col">Calls</th>
+            <th scope="col">Programme</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="src in sortedSources" :key="src.key">
+            <tr>
+              <td x-text="src.name"></td>
+              <td>
+                <a x-show="src.url" :href="src.url" target="_blank" rel="noopener" x-text="src.url.replace('https://','')"></a>
+                <span x-show="!src.url">—</span>
+              </td>
+              <td>
+                <span class="badge" :class="src.type === 'manual' ? 'badge-manual' : 'badge-auto'"
+                      x-text="src.type === 'manual' ? 'Manuell' : 'Automatisiert'"></span>
+              </td>
+              <td x-text="src.update_frequency || '—'"></td>
+              <td x-text="src.last_check || '—'"></td>
+              <td x-text="src.calls"></td>
+              <td x-text="src.programs"></td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 3. Statistics (Übersicht & Diagramme) -->
+    <section class="cards" aria-label="Übersicht">
+      <div class="card">
+        <span class="card-number" x-text="catalog.length"></span>
+        <span class="card-label">Programme</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="categories.length"></span>
+        <span class="card-label">Kategorien</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="Object.keys(sources).length"></span>
+        <span class="card-label">Quellgruppen</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="upcomingDeadlines.length"></span>
+        <span class="card-label">Fristen ≤ 90 Tage</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="rollingCount"></span>
+        <span class="card-label">Rolling</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="futureDeadlineCount"></span>
+        <span class="card-label">Fristen &gt; 90 Tage</span>
+      </div>
+      <div class="card">
+        <span class="card-number" x-text="noDeadlineCount"></span>
+        <span class="card-label">Ohne Frist</span>
+      </div>
+    </section>
+
+    <section class="charts" aria-label="Diagramme">
+      <div class="chart-container chart-small">
+        <h2>Nach Status</h2>
+        <canvas id="statusChart" role="img" aria-label="Balkendiagramm: Programme nach Status"></canvas>
+      </div>
+      <div class="chart-container chart-wide">
+        <h2>Fristen-Timeline <span class="count" x-text="'(nächste 90 Tage, Top 10)'"></span></h2>
+        <canvas id="deadlineChart" role="img" aria-label="Balkendiagramm: Fristen der nächsten 90 Tage"></canvas>
+      </div>
     </section>
 
     <footer>
