@@ -88,7 +88,9 @@ class TestKatalog:
     def test_verifiziert_hat_frist(self):
         for p in PROGS:
             if p["status"] == "verifiziert":
-                assert p.get("frist"), f"verifiziert ohne Frist: {p['id']}"
+                # verifiziert must have a frist OR be rolling (no deadline)
+                assert p.get("frist") or p.get("rolling"), \
+                    f"verifiziert ohne Frist und nicht rolling: {p['id']}"
 
     def test_kein_budget_null(self):
         for p in PROGS:
@@ -169,7 +171,9 @@ class TestFristen:
                 assert x.tage_bis_frist == (d - date.today()).days
 
     def test_rolling_frist_none(self):
-        r = next_deadline(PROGS, POSTDOC, "postdoc", top=10)
+        # Use top=30 to ensure rolling programmes are included (they sort after
+        # programmes with deadlines in next_deadline)
+        r = next_deadline(PROGS, POSTDOC, "postdoc", top=30)
         rolling = [x for x in r if x.rolling]
         assert rolling and all(x.tage_bis_frist is None for x in rolling)
 

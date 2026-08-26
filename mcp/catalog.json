@@ -1,5 +1,5 @@
 {
-  "stand": "2026-08-20",
+  "stand": "2026-08-26",
   "quelleHinweis": "Kuratierter Katalog. status = verifiziert (live geprueft am standDatum) | laufend (keine Frist, rolling) | zu-pruefen (bekanntes Programm, Frist vor Nutzung gegen Portal pruefen). Keine rechtliche Bindung; fuer produktive Nutzung gegen offizielle Stellen pruefen.",
   "programme": [
     {
@@ -169,12 +169,12 @@
       "budget_min": null,
       "budget_max": 3000000,
       "dauerJahre": 8,
-      "frist": "2026-09-15",
-      "rolling": false,
+      "frist": null,
+      "rolling": true,
       "status": "zu-pruefen",
       "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/graduiertenkollegs",
-      "standDatum": "2026-08-03",
-      "hinweis": "Forschungsausbildung in thematisch fokussierten Kollegs; Stichtag je Runde."
+      "standDatum": "2026-08-26",
+      "hinweis": "Graduiertenkolleg: Antragsskizzen können jederzeit eingereicht werden (rolling). Infoveranstaltung 25. September 2026."
     },
     {
       "id": "dfg-sfb",
@@ -195,12 +195,12 @@
       "budget_min": null,
       "budget_max": 10000000,
       "dauerJahre": 8,
-      "frist": "2026-11-01",
-      "rolling": false,
+      "frist": null,
+      "rolling": true,
       "status": "zu-pruefen",
       "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/sonderforschungsbereiche",
-      "standDatum": "2026-08-03",
-      "hinweis": "Großverbünde; mehrere Antragsrunden; thematisch fokussiert."
+      "standDatum": "2026-08-26",
+      "hinweis": "SFB/Transregio: keine Einreichungsfrist (rolling). Skizze vorab einreichen. Bewilligungsausschuss tagt 24. November 2026."
     },
     {
       "id": "bmbf-digital-ai",
@@ -1342,12 +1342,12 @@
       "budget_min": null,
       "budget_max": 2000000,
       "dauerJahre": 5,
-      "frist": null,
+      "frist": "2027-01-12",
       "rolling": false,
-      "status": "zu-pruefen",
+      "status": "verifiziert",
       "quelle": "https://erc.europa.eu/apply-grant/consolidator-grant",
-      "standDatum": "2026-08-12",
-      "hinweis": "7-12 Jahre nach Promotion. Naechste Frist am Portal pruefen."
+      "standDatum": "2026-08-26",
+      "hinweis": "ERC Consolidator Grant 2027. Opening 24. September 2026, Deadline 12. Januar 2027. 7-12 Jahre nach Promotion."
     },
     {
       "id": "erc-poc",
@@ -1368,12 +1368,12 @@
       "budget_min": null,
       "budget_max": 150000,
       "dauerJahre": 1,
-      "frist": null,
-      "rolling": true,
-      "status": "zu-pruefen",
+      "frist": "2026-09-17",
+      "rolling": false,
+      "status": "verifiziert",
       "quelle": "https://erc.europa.eu/apply-grant/proof-concept",
-      "standDatum": "2026-08-12",
-      "hinweis": "Nur fuer aktive ERC-Geförderte. Rolling Calls jaehrlich."
+      "standDatum": "2026-08-26",
+      "hinweis": "Nur fuer aktive ERC-Geförderte. ERC-2026-PoC: Frist 17. September 2026. Zwei Cut-off-Termine pro Jahr."
     },
     {
       "id": "dfg-walter-benjamin",
@@ -2509,6 +2509,81 @@
       "quelle": "https://www.unesco.org/en/funding",
       "standDatum": "2026-08-20",
       "hinweis": "UNESCO. Bildung, Kultur, Wissenschaft, Welterbe. Deutsche Forscher als Partner. Ausschreibungsgebunden."
+    },
+    {
+      "id": "erc-plus-2026",
+      "name": "ERC Plus Grant (ERC-2026-PLUS)",
+      "kategorie": "ERC",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": "2026-09-02",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/plus-grants",
+      "standDatum": "2026-08-26",
+      "hinweis": "ERC Plus Grant: Für herausragende Forschende mit Vision für transformative Forschung jenseits bestehender ERC-Programme. Frist 2. September 2026."
+    },
+    {
+      "id": "eu-eic-pathfinder",
+      "name": "EIC Pathfinder Challenges (Horizon Europe)",
+      "kategorie": "EU",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 4000000,
+      "dauerJahre": 4,
+      "frist": "2026-10-28",
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://eic.ec.europa.eu/eic-pathfinder",
+      "standDatum": "2026-08-26",
+      "hinweis": "EIC Pathfinder Challenges: Förderung für tiefgreifende wissenschaftliche Durchbrüche. Frist 28. Oktober 2026. Pathfinder Open war am 12. Mai 2026 (abgelaufen)."
+    },
+    {
+      "id": "eu-eic-accelerator",
+      "name": "EIC Accelerator (Horizon Europe)",
+      "kategorie": "EU",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 2500000,
+      "dauerJahre": 3,
+      "frist": null,
+      "rolling": true,
+      "status": "verifiziert",
+      "quelle": "https://eic.ec.europa.eu/eic-accelerator",
+      "standDatum": "2026-08-26",
+      "hinweis": "EIC Accelerator: Förderung für SMEs/Startups mit bahnbrechenden Innovationen. Rolling cut-off-Termine, Work Programme 2026 veröffentlicht am 17. Juni 2026."
     }
   ]
 }
