@@ -1,6 +1,6 @@
 # Pilot-Ergebnisse – Förder-Radar
 
-**Stand:** 2026-08-22 · Katalog: 97 Programme
+**Stand:** 2026-08-26 · Katalog: 100 Programme
 **Pilot-Fakultät:** Philipps-Universität Marburg, Fachbereich Mathematik
 **Profile:** 3 (1 mit Einwilligung)
 
@@ -18,19 +18,19 @@
 
 | # | Programm | Kategorie | Score | Frist | Begründung |
 |---|---|---|---|---|---|
-| 1 | MSCA – Postdoctoral Fellowships (PF) | EU | 4/5 | 2026-09-09 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 09.09.2026 – noch 18 Tage; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
-| 2 | COST – European Cooperation in Science (Netzwerke) | EU | 4/5 | 2026-09-10 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 10.09.2026 – noch 19 Tage; bis ca. 500 Tausend Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
-| 3 | DFG – Graduiertenkolleg (Graduiertenkollegs) | DFG | 4/5 | 2026-09-15 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 15.09.2026 – noch 24 Tage; bis ca. 3.0 Mio. Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
-| 4 | DFG – Emmy Noether-Programm (Nachwuchsgruppenleitung) | DFG | 4/5 | 2026-10-01 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 01.10.2026 – noch 40 Tage; bis ca. 1.5 Mio. Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
-| 5 | ERC Starting Grant (StG) 2027 | ERC | 4/5 | 2026-10-14 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 14.10.2026 – noch 53 Tage; bis ca. 1.5 Mio. Euro |
+| 1 | ERC Plus Grant (ERC-2026-PLUS) | ERC | 4/5 | 2026-09-02 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 02.09.2026 – noch 7 Tage |
+| 2 | MSCA – Postdoctoral Fellowships (PF) | EU | 4/5 | 2026-09-09 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 09.09.2026 – noch 14 Tage; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
+| 3 | COST – European Cooperation in Science (Netzwerke) | EU | 4/5 | 2026-09-10 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 10.09.2026 – noch 15 Tage; bis ca. 500 Tausend Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
+| 4 | DFG – Emmy Noether-Programm (Nachwuchsgruppenleitung) | DFG | 4/5 | 2026-10-01 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 01.10.2026 – noch 36 Tage; bis ca. 1.5 Mio. Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
+| 5 | ERC Starting Grant (StG) 2027 | ERC | 4/5 | 2026-10-14 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 14.10.2026 – noch 49 Tage; bis ca. 1.5 Mio. Euro |
 
 ### Nächste Fristen
 
 | Programm | Frist | Tage | Begründung |
 |---|---|---|---|
-| MSCA – Postdoctoral Fellowships (PF) | 2026-09-09 | 18 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 09.09.2026 – noch 18 Tage; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
-| COST – European Cooperation in Science (Netzwerke) | 2026-09-10 | 19 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 10.09.2026 – noch 19 Tage; bis ca. 500 Tausend Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
-| DFG – Graduiertenkolleg (Graduiertenkollegs) | 2026-09-15 | 24 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 15.09.2026 – noch 24 Tage; bis ca. 3.0 Mio. Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
+| ERC Plus Grant (ERC-2026-PLUS) | 2026-09-02 | 7 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 02.09.2026 – noch 7 Tage |
+| MSCA – Postdoctoral Fellowships (PF) | 2026-09-09 | 14 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 09.09.2026 – noch 14 Tage; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
+| COST – European Cooperation in Science (Netzwerke) | 2026-09-10 | 15 | Themen-Ueberlappung: Künstliche Intelligenz, Maschinelles Lernen, Graphen, GraphRAG, AI Literacy, AI Adoption; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; Frist 10.09.2026 – noch 15 Tage; bis ca. 500 Tausend Euro; Achtung: Details/Frist vor Antrag gegen Portal prüfen |
 
 ## Profil: Mathematik Postdoc (Platzhalter)
 

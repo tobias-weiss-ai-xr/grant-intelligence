@@ -3,7 +3,7 @@
 > Zielgruppe: FLASH-Jury, Demo-Day-Besucher, Forschende an der Philipps-
 > Universität Marburg, potenzielle Mitwirkende (Open Source).
 > Grundsatz des Projekts: **ehrlich, ohne Übertreibung** – alle Zahlen sind
-> real (Stand 2026-08-12): 97 Programme, 9 Förder-Kategorien, Open Source (MIT),
+> real (Stand 2026-08-12): 100 Programme, 9 Förder-Kategorien, Open Source (MIT),
 > lokal & datenschutzfreundlich.
 
 ---
@@ -16,7 +16,7 @@
 > mit Begründung, Budget und Frist-Zähler. Er nutzt keine teure Abo-Datenbank,
 > sondern offene, offizielle Quellen (DFG, ERC, Bund, Land, Stiftungen) und
 > läuft lokal – datenschutzfreundlich, ohne Cloud. Der Prototyp ist Open
-> Source, deckt 97 Programme aus neun Förder-Kategorien ab und ist als
+> Source, deckt 100 Programme aus neun Förder-Kategorien ab und ist als
 > Agent-Schleife über das Model Context Protocol (MCP) an jede KI anbindbar.
 > Erster Pilot: unser eigener Fachbereich."
 
@@ -63,7 +63,7 @@ Warnungen rechtzeitig.
 | **Datenschutzfreundlich** | Läuft lokal, keine Cloud-Pflicht, DSGVO-fähige Einwilligung für Profile |
 | **Standardbasiert** | Model Context Protocol (MCP) – anbindbar an beliebige KI-Assistenten |
 | **Ehrlich** | Nur offizielle Quellen, jede Frist mit Stand-Datum, Scores als Orientierung |
-| **Faktenbasiert** | 97 Programme, 9 Kategorien, 181 Tests, 100 % Testabdeckung |
+| **Faktenbasiert** | 100 Programme, 9 Kategorien, 435 Tests, 100 % Testabdeckung |
 
 **Der Nutzen**
 - Weniger Such- und Abstimmungsaufwand
@@ -99,7 +99,7 @@ Matching-Regeln, beim ersten gemeinsamen Pilot.
 > - 🧩 **Open Source** (MIT) – Code und Katalog sind öffentlich, Mitmachen per Merge Request
 > - 🔒 **Datenschutzfreundlich** – läuft lokal, DSGVO-fähig, keine Cloud-Pflicht
 > - 🤖 **Standardbasiert** – Model Context Protocol (MCP), anbindbar an beliebige KI
-> - 📊 **Fakten statt Hype** – 97 Programme, 9 Kategorien, 100 % Testabdeckung
+> - 📊 **Fakten statt Hype** – 100 Programme, 9 Kategorien, 100 % Testabdeckung
 >
 > Erster Pilot: unser eigener Fachbereich an der Philipps-Universität Marburg.
 > Interesse an einem gemeinsamen Pilot oder am Quellen-Pflegen? Meldet euch
@@ -114,7 +114,7 @@ Matching-Regeln, beim ersten gemeinsamen Pilot.
 > Förder-Radar verdichtet offene Quellen (DFG, ERC, Bund, Land, Stiftungen) zu
 > einem persönlichen Brief: Top-Matches + Frist-Zähler, lokal & DSGVO-freundlich.
 >
-> Open Source (MIT) · MCP-basiert · 97 Programme · erster Pilot an der
+> Open Source (MIT) · MCP-basiert · 100 Programme · erster Pilot an der
 > Uni Marburg. Mitmachen erwünscht! 💡
 >
 > #FörderRadar #FLASH #OpenSource #MCP #Forschung
@@ -148,7 +148,7 @@ Matching-Regeln, beim ersten gemeinsamen Pilot.
 **Warum wir** 💡
 - Open Source (MIT) · lokal · DSGVO-freundlich
 - MCP-Standard → anbindbar an jede KI
-- 97 Programme · 9 Kategorien · 181 Tests
+- 100 Programme · 9 Kategorien · 435 Tests
 
 ### Fußzeile
 > **Live-Demo:** 3 Profile · 1 Bildschirm · 2 Minuten
@@ -165,7 +165,7 @@ Matching-Regeln, beim ersten gemeinsamen Pilot.
 | 0:15–0:45 | `brief.py --felder "Künstliche Intelligenz" --karriere postdoc` | „Ein Befehl – und der Wochen-Brief steht da: Top-Matches, Begründung, Fristen in Tagen, Warnungen." |
 | 0:45–1:15 | UI `uvicorn app:app` (Browser) | „Die gleiche Logik als eine Seite – keine Anmeldung, keine Cloud, alles lokal." |
 | 1:15–1:45 | `match_best(...)` über MCP (Demo-Agent) | „Und weil alles auf MCP basiert, kann jeder KI-Assistent direkt fragen: 'Welche Förderung passt zu mir?'" |
-| 1:45–2:00 | Katalog-Zahl nennen | „97 Programme aus neun Kategorien – DFG, ERC, Bund, Land, Stiftungen, EU, Industrie, international. Alle aus offiziellen Quellen, jede Frist mit Stand-Datum." |
+| 1:45–2:00 | Katalog-Zahl nennen | „100 Programme aus neun Kategorien – DFG, ERC, Bund, Land, Stiftungen, EU, Industrie, international. Alle aus offiziellen Quellen, jede Frist mit Stand-Datum." |
 
 **Fallback, falls Demo hakt:** Katalog-Ausdruck (One-Pager §3) + Screenshot bereithalten.
 
