@@ -14,7 +14,7 @@ fristen -> notify) als MCP-Tools bereit.
 
 | Datei | Zweck |
 |-------|-------|
-| `catalog.json` | Kuratierte Förderprogramme (97 Programme, Stand 2026-08) |
+| `catalog.json` | Kuratierte Förderprogramme (103 Programme, Stand 2026-08) |
 | `profiles.json` | Öffentliche Pilot- und Nutzer-Profile (im Repo) |
 | `profiles.local.example` | Template für private Profile |
 | `profiles.local` | Private Profile (gitignored, nicht im Repo) |
@@ -27,9 +27,8 @@ fristen -> notify) als MCP-Tools bereit.
 | `fetchers.py` | Auto-Fetching für RSS/API-Quellen |
 | `saia.py` | Optionale KI-Begründungen via SAIA-KI-API (GWDG), nur bei Config aktiv |
 | `update_catalog.py` | Validierung, Frist-Check, Audit-Log |
-| `demo.py` | Ausführbare Demo der Agent-Schleife |
 | `sources.json` | Quellen-Registrierung mit URLs und Update-Frequenz |
-| `requirements.txt` | `mcp`, `fastapi`, `uvicorn`, `bs4`, `httpx`, `` |
+| `requirements.txt` | `mcp`, `fastapi`, `uvicorn`, `httpx` (+ `bs4` optional) |
 
 ## Profile
 
@@ -53,11 +52,10 @@ Jedes Profil benötigt `einwilligung: true` für die Matching-Verarbeitung. Sieh
 python3 -m venv .venv && . .venv/bin/activate
 pip install -r requirements.txt
 
-# Logik-/Agent-Schleife-Demo (ohne MCP-Client):
-python3 demo.py
+# Schnelltest der Matching-/Brief-Logik (ohne MCP-Client):
+python3 brief.py --felder Biologie Nachhaltigkeit --karriere postdoc
 
 # Wochen-Brief erzeugen (stdout oder Datei):
-python3 brief.py --felder Biologie Nachhaltigkeit --karriere postdoc
 python3 brief.py --felder Medizin --karriere prof --out ../docs/brief.md
 
 # Ein-Bildschirm-UI (http://127.0.0.1:8000):

@@ -1,5 +1,32 @@
 # Förder-Radar – Grant Intelligence
 
+**Dein Fördermittel-Radar für die Fakultät** – kuratierte Förderprogramme, deine Fristen,
+eine Live-Ansicht zum Anklicken:
+
+[![Förder-Radar – Live-Dashboard](docs/screenshot-dashboard-charts.png)](https://tobias-weiss-ai-xr.github.io/grant-intelligence/)
+
+<div align="center">
+
+**[▶ Live-Dashboard öffnen](https://tobias-weiss-ai-xr.github.io/grant-intelligence/)**
+· [🖥️ Lokal starten](#schnellstart) · [🏛️ Was es kann](#was-es-kann) · [📖 Dokumentation](#dokumentation)
+
+*Screenshot: Fristen-Timeline (nächste 90 Tage) & Status-Charts · Stand 2026-08-26 · 103 Programme · 26 Quellen*
+
+</div>
+
+Das Dashboard ist **statisch auf GitHub Pages** – kein Server, kein Build-Step,
+kein Tracking – und wird bei jedem Push automatisch neu deployed:
+
+| | |
+|---|---|
+| 📋 **Katalog-Explorer** | 103 Förderprogramme durchsuchen & filtern (Text, Kategorie, Status) |
+| 🏛️ **Quellen-Browser** | 26 Institutionen – DFG, ERC, MSCA, BMBF/BMFTR, LOEWE, Stiftungen, international |
+| ⏳ **Fristen-Timeline** | nächste 90 Tage, farbcodiert: ≤14 Tage rot · ≤30 orange · sonst grün |
+| 📊 **Charts** | Status (verifiziert/laufend/zu prüfen) & Kategorien, Dark Mode, WCAG 2.1 AA |
+| 🔒 **DSGVO-freundlich** | statisch & lokal, keine Cloud, keine Nutzerdaten, kein Tracking |
+
+---
+
 > **Status:** Produktionsreif (lokaler MVP). FLASH-Einreichung abgegeben (2026-08).
 > Open Source (MIT). 103 Programme, 443 Tests, 99–100 % Coverage (Kernmodule 100 %).
 
@@ -17,9 +44,9 @@ Abo-Datenbanken.
 
 ```bash
 cd mcp && pip install -r requirements.txt
-python3 demo.py                      # Agent-Schleife
 uvicorn app:app --port 8000          # UI: http://127.0.0.1:8000
-python3 brief.py --felder Biologie --karriere postdoc
+python3 brief.py --felder Biologie --karriere postdoc   # Wochen-Brief (CLI)
+python3 server.py                    # MCP-Server (stdio, für Agents)
 ```
 
 ## Was es kann
@@ -100,20 +127,17 @@ flowchart TD
 - `docs/Dashboard.md` – Statisches GitHub-Pages-Dashboard (Alpine.js + Chart.js)
 - `mcp/README.md` – Quickstart, Tools, Cron
 
-## Dashboard
+## Dashboard (lokal)
 
-Statisches Dashboard auf GitHub Pages – kein Server, kein Build-Step:
-
-> **Live:** <https://tobias-weiss-ai-xr.github.io/grant-intelligence/>
+Der Live-Link und die Screenshots oben stammen aus diesem statischen Setup –
+zum Selbst-Experimentieren:
 
 ```bash
-bash dashboard/sync-data.sh     # Daten synchronisieren (DSGVO-gefiltert)
-cd dashboard && python3 -m http.server 8080   # Lokal testen
+bash dashboard/sync-data.sh                 # Katalog → dashboard/data (DSGVO-gefiltert)
+cd dashboard && python3 -m http.server 8080 # Lokal testen: http://127.0.0.1:8080
 ```
 
-Features: Katalog-Explorer (103 Programme), Quellen-Browser (26 Quellen),
-Kategorie/Status-Charts, Fristen-Timeline, Profil-Matcher (client-seitig).
-Siehe [`docs/Dashboard.md`](docs/Dashboard.md).
+Details & Aufbau: [`docs/Dashboard.md`](docs/Dashboard.md).
 
 ## Prinzipien
 
