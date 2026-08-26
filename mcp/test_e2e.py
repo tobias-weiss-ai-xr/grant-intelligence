@@ -321,7 +321,7 @@ class TestStoryKurator:
         import json
         doc = json.loads(kat.read_text(encoding="utf-8"))
         from datetime import date
-        assert len(doc["programme"]) == 100
+        assert len(doc["programme"]) == 103
         assert all(p["standDatum"] == date.today().isoformat() for p in doc["programme"])
         assert doc["programme"]  # Trailing-Newline & Stand-Datum gesetzt
 
@@ -351,7 +351,7 @@ class TestStoryKurator:
         lines = proc.stdout.strip().splitlines()
         header = lines[0].split(",")
         assert header[0] == "id"
-        assert len(lines) == 101  # 100 Programme + Kopfzeile
+        assert len(lines) == 104  # 103 Programme + Kopfzeile
 
     def test_export_json(self, tmp_path):
         import json
@@ -359,7 +359,7 @@ class TestStoryKurator:
         proc = _cli("export.py", "--format", "json", "--out", str(out))
         assert proc.returncode == 0
         doc = json.loads(out.read_text(encoding="utf-8"))
-        assert len(doc["programme"]) == 100
+        assert len(doc["programme"]) == 103
 
     def test_export_markdown(self):
         proc = _cli("export.py", "--format", "markdown", "--out", "-")
@@ -394,4 +394,4 @@ class TestStoryKonsistenz:
 
         file_n = len(json.loads((MCP_DIR / "catalog.json").read_text(encoding="utf-8"))["programme"])
 
-        assert web_n == mcp_n == cli_n == file_n == 100
+        assert web_n == mcp_n == cli_n == file_n == 103

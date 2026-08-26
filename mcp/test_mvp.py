@@ -108,6 +108,104 @@ class TestKatalog:
             assert Kategorie.is_valid(c), f"Unknown kategorie '{c}' in catalog"
 
 
+# ------------------------------------------------- Katalog 2026 (add-2026-programmes)
+class TestKatalog2026:
+    """Neue 2026-Eintraege, entferntes Duplikat, reparierte Quelle-URLs."""
+
+    NEU = {"msca-staff-exchanges", "humboldt-feodor-lynen",
+           "dfg-int-kooperationen", "dfg-int-veranstaltungen"}
+
+    def test_neue_eintraege_vorhanden(self):
+        ids = {p["id"] for p in PROGS}
+        assert ids >= self.NEU, f"fehlende 2026-Eintraege: {self.NEU - ids}"
+
+    def test_graduate_school_entfernt(self):
+        ids = {p["id"] for p in PROGS}
+        assert "dfg-graduate-school" not in ids
+        # strukturierte Promotion bleibt durch Graduiertenkolleg abgedeckt
+        assert "dfg-graduiertenkolleg" in ids
+
+    def test_neue_kategorien(self):
+        by = {p["id"]: p for p in PROGS}
+        assert by["msca-staff-exchanges"]["kategorie"] == "EU"
+        assert by["humboldt-feodor-lynen"]["kategorie"] == "Stiftung"
+        assert by["dfg-int-kooperationen"]["kategorie"] == "DFG"
+        assert by["dfg-int-veranstaltungen"]["kategorie"] == "DFG"
+
+    def test_alle_neuen_haben_hinweis_und_budget_null(self):
+        for p in PROGS:
+            if p["id"] in self.NEU:
+                assert p.get("hinweis"), p["id"]
+                assert p.get("budget_min") is None, p["id"]
+
+    def test_quelle_urls_repariert(self):
+        """Polski-R5: reparierte Eintraege nutzen die verifizierten URLs (deterministisch)."""
+        by = {p["id"]: p["quelle"] for p in PROGS}
+        dfg = "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/"
+        msca = "https://marie-sklodowska-curie-actions.ec.europa.eu/"
+        erwartet = {
+            "dfg-sachbeihilfe": dfg + "einzelfoerderung/sachbeihilfe",
+            "dfg-emmy-noether": dfg + "einzelfoerderung/emmy-noether",
+            "dfg-heisenberg": dfg + "einzelfoerderung/heisenberg",
+            "dfg-graduiertenkolleg": dfg + "koordinierte-programme/graduiertenkollegs",
+            "dfg-sfb": dfg + "koordinierte-programme/sfb",
+            "dfg-fdm": dfg + "infrastruktur/lis/lis-foerderangebote/forschungsdaten",
+            "dfg-ub-digiserv": dfg + "infrastruktur/lis/lis-foerderangebote/digitalisierung-erschliessung",
+            "hrz-it-infra": dfg + "infrastruktur/wgi/foerderangebote/forschungsgrossgeraete",
+            "dfg-irtg": dfg + "koordinierte-programme/graduiertenkollegs",
+            "dfg-int-kooperationen": dfg + "inter-foerdermassnahmen/aufbau-internationaler-kooperationen",
+            "dfg-int-veranstaltungen": dfg + "inter-foerdermassnahmen/int-wiss-veranstaltungen",
+            "msc-itn": msca + "actions/doctoral-networks",
+            "msc-cofund": msca + "actions/cofund",
+            "msca-staff-exchanges": msca + "actions/staff-exchanges",
+            "erc-plus-2026": "https://erc.europa.eu/apply-grant/erc-plus-grant",
+            "loewe-hessen": "https://wissenschaft.hessen.de/forschen/landesprogramm-loewe",
+            "loewe-verwaltung": "https://wissenschaft.hessen.de/forschen/landesprogramm-loewe",
+            "volkswagen-stiftung": "https://www.volkswagenstiftung.de/en/funding/our-funding-portfolio",
+            "max-weber-bayern": "https://www.studienstiftung.de/max-weber-programm",
+            "nrw-mwk-wissenschaft": "https://www.mkw.nrw/",
+            "krebshilfe-onkologie": "https://www.krebshilfe.de/forschen",
+            "humboldt-feodor-lynen": "https://www.humboldt-foundation.de/bewerben/foerderprogramme/feodor-lynen-forschungsstipendium",
+        }
+        for pid, url in erwartet.items():
+            assert pid in by, f"fehlender Eintrag {pid}"
+            assert by[pid] == url, f"{pid}: falsche Quelle\n  {by[pid]}\n  != {url}"
+        # keine reparierten URLs mehr auf toten Pfaeden
+        tote = [by["dfg-sachbeihilfe"], by["dfg-emmy-noether"], by["dfg-heisenberg"],
+                by["dfg-graduiertenkolleg"], by["dfg-sfb"], by["dfg-fdm"],
+                by["dfg-ub-digiserv"], by["hrz-it-infra"], by["dfg-irtg"]]
+        assert all("/de/foerderung/foerdermoeglichkeiten/programme/" in u for u in tote)
+        for bf in ("bmbf-digital-ai", "bmbf-energie-nachhaltigkeit",
+                   "bmbf-gesundheit-medizin", "bmbf-forschungsdaten", "bmbf-digiserv"):
+            assert "foerderinfo.bund.de" in by[bf], f"{bf}: BMBF->BMFTR-Portal erwartet"
+
+    def test_loewe_hinweis_nennt_foerderlinien(self):
+        loewe = next(p for p in PROGS if p["id"] == "loewe-hessen")
+        assert "Förderlinien" in loewe["hinweis"] or "Foerderlinien" in loewe["hinweis"]
+
+    def test_neue_eintraege_matchen(self):
+        """Spec-Szenarien: Postdoc/junior/prof finden die 2026-Eintraege."""
+        ids = {p["id"] for p in PROGS}
+        assert ids >= self.NEU
+
+        def _found(karriere: str, feld: str, top: int = 40) -> set[str]:
+            r = match_profile(PROGS, fields=[feld], karriere=karriere, top=top)
+            assert r, f"keine Treffer fuer {karriere}/{feld}"
+            return {m.id for m in r}
+
+        # Postdoc mit offenem Themenfeld findet MSCA SE, Feodor Lynen, DFG int.
+        post = _found("postdoc", "Mathematik")
+        assert "msca-staff-exchanges" in post
+        assert "humboldt-feodor-lynen" in post
+        assert "dfg-int-kooperationen" in post
+        assert "dfg-int-veranstaltungen" in post
+        # Junior (MSCA SE) und Prof (Konferenzen) ebenfalls
+        assert "msca-staff-exchanges" in _found("junior", "frei")
+        assert "dfg-int-veranstaltungen" in _found("prof", "frei")
+        # ausgefallenes Programm erscheint nicht mehr
+        assert "dfg-graduate-school" not in _found("junior", "frei")
+
+
 # ----------------------------------------------------------------------- Matching
 class TestMatch:
     def test_karriere_harter_filter(self):
@@ -154,6 +252,16 @@ class TestMatch:
         # ERC ist themenfrei -> auch exotische Felder matchen (ehrlich, kein Bug)
         r = match_profile(PROGS, ["Astroteilchenphysik"], "postdoc", top=10)
         assert any(x.id == "erc-stg-2027" for x in r)
+
+    def test_thematisch_offen_gilt_als_wildcard(self):
+        # thematisch-offen = offen fuer alle Felder (wie "frei") -> Programme
+        # mit thematisch-offen muessen in normalen Suchen auffindbar sein.
+        offen = next(p for p in PROGS if p["id"] == "fritz-thyssen")  # thematisch-offen + postdoc
+        assert offen["themen"] == ["thematisch-offen"]
+        r = match_profile(PROGS, ["Astroteilchenphysik"], "postdoc", top=1000)
+        assert any(x.id == offen["id"] for x in r), (
+            f"thematisch-offen-Eintrag {offen['id']} unsichtbar in normaler Suche"
+        )
 
     def test_kein_fehler_bei_kein_match(self):
         # Völlig unbekannte Karrierestufe -> harter Filter, kein Match, kein Crash

@@ -99,8 +99,8 @@
       "frist": null,
       "rolling": true,
       "status": "laufend",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/sachbeihilfe",
+      "standDatum": "2026-08-26",
       "hinweis": "DFG Einzelprojektfoerderung. Alle Disziplinen, Bottom-up. Rolling."
     },
     {
@@ -122,8 +122,8 @@
       "frist": "2026-10-01",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung/emmy-noether",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/emmy-noether",
+      "standDatum": "2026-08-26",
       "hinweis": "Stichtage 1.2. / 1.10.; naechster Stichtag vor Portalbesuch bestaetigen."
     },
     {
@@ -146,8 +146,8 @@
       "frist": "2026-10-01",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/personenfoerderung/heisenberg",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/heisenberg",
+      "standDatum": "2026-08-26",
       "hinweis": "Stichtage 1.2. / 1.10.; fuer etablierte PostDocs/Professoren."
     },
     {
@@ -172,7 +172,7 @@
       "frist": null,
       "rolling": true,
       "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/graduiertenkollegs",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/graduiertenkollegs",
       "standDatum": "2026-08-26",
       "hinweis": "Graduiertenkolleg: Antragsskizzen können jederzeit eingereicht werden (rolling). Infoveranstaltung 25. September 2026."
     },
@@ -198,7 +198,7 @@
       "frist": null,
       "rolling": true,
       "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/sonderforschungsbereiche",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/sfb",
       "standDatum": "2026-08-26",
       "hinweis": "SFB/Transregio: keine Einreichungsfrist (rolling). Skizze vorab einreichen. Bewilligungsausschuss tagt 24. November 2026."
     },
@@ -227,8 +227,8 @@
       "frist": "2026-12-15",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.foerderinfo.bund.de/foerderinfo/de/home/home_node.html",
+      "standDatum": "2026-08-26",
       "hinweis": "Bundesförderung KI-Verbünde; thematisch fokussiert auf Digital/KI."
     },
     {
@@ -257,8 +257,8 @@
       "frist": "2027-02-28",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.foerderinfo.bund.de/foerderinfo/de/home/home_node.html",
+      "standDatum": "2026-08-26",
       "hinweis": "Bundesprogramm Energieforschung; thematisch fokussiert."
     },
     {
@@ -287,13 +287,13 @@
       "frist": "2026-11-30",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.foerderinfo.bund.de/foerderinfo/de/home/home_node.html",
+      "standDatum": "2026-08-26",
       "hinweis": "Bundesprogramm Gesundheitsforschung; thematisch fokussiert."
     },
     {
       "id": "loewe-hessen",
-      "name": "LOEWE – Exzellenzforschung (Hessen)",
+      "name": "LOEWE – Landes-Offensive (Förderlinien 1–4b, Hessen)",
       "kategorie": "Land",
       "themen": [
         "frei"
@@ -314,9 +314,9 @@
       "frist": null,
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://wissenschaft.hessen.de/forschung/loewe",
-      "standDatum": "2026-08-03",
-      "hinweis": "Jaehrliche LOEWE-Runde mit Stichtag; aktueller Stichtag via Landesportal pruefen."
+      "quelle": "https://wissenschaft.hessen.de/forschen/landesprogramm-loewe",
+      "standDatum": "2026-08-26",
+      "hinweis": "LOEWE-Foerderlinien 2026: Zentren (bis 5 Mio. EUR/Jahr, Linie 1), Schwerpunkte (Linie 2), Spitzen-/Start-Professuren (Linien 4a/b). Stichtage je Runde via Landesportal bestaetigen."
     },
     {
       "id": "volkswagen-stiftung",
@@ -339,8 +339,8 @@
       "frist": "2026-10-15",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.volkswagenstiftung.de/foerdern/unsere-programme",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.volkswagenstiftung.de/en/funding/our-funding-portfolio",
+      "standDatum": "2026-08-26",
       "hinweis": "Zweimal jährl. Antragsrunden; themenoffen; explorative Forschung."
     },
     {
@@ -395,8 +395,8 @@
       "frist": "2026-10-01",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.krebshilfe.de/forschung",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.krebshilfe.de/forschen",
+      "standDatum": "2026-08-26",
       "hinweis": "Festfristen: 1.10., 1.2., 1.5., 1.8.; thematisch Onkologie."
     },
     {
@@ -669,8 +669,8 @@
       "frist": "2026-11-30",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.foerderinfo.bund.de/foerderinfo/de/home/home_node.html",
+      "standDatum": "2026-08-26",
       "hinweis": "Forschungsdaten-Management für Bibliotheken/HRZ; thematisch fokussiert."
     },
     {
@@ -699,8 +699,8 @@
       "frist": "2027-01-15",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.foerderinfo.bund.de/foerderinfo/de/home/home_node.html",
+      "standDatum": "2026-08-26",
       "hinweis": "Digitale Service-Infrastruktur; für Bibliotheken, HRZ, Verwaltung."
     },
     {
@@ -729,8 +729,8 @@
       "frist": null,
       "rolling": true,
       "status": "laufend",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/forschungsdaten",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/infrastruktur/lis/lis-foerderangebote/forschungsdaten",
+      "standDatum": "2026-08-26",
       "hinweis": "Rolling; FDM-Infrastruktur und Services für Bibliotheken/HRZ."
     },
     {
@@ -758,8 +758,8 @@
       "frist": "2026-10-15",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/einzelfoerderung/bibliothek",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/infrastruktur/lis/lis-foerderangebote/digitalisierung-erschliessung",
+      "standDatum": "2026-08-26",
       "hinweis": "FDM, Open Access, digitale Dienste; für Universitätsbibliotheken."
     },
     {
@@ -787,8 +787,8 @@
       "frist": "2026-11-01",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/foerdermoeglichkeiten/verbundfoerderung/it",
-      "standDatum": "2026-08-03",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/infrastruktur/wgi/foerderangebote/forschungsgrossgeraete",
+      "standDatum": "2026-08-26",
       "hinweis": "IT-Infrastruktur, HPC, Cloud-Services; für HRZ und zentrale IT."
     },
     {
@@ -847,8 +847,8 @@
       "frist": null,
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://wissenschaft.hessen.de/forschung/loewe",
-      "standDatum": "2026-08-03",
+      "quelle": "https://wissenschaft.hessen.de/forschen/landesprogramm-loewe",
+      "standDatum": "2026-08-26",
       "hinweis": "Verwaltungsinnovation, Service-Design; für zentrale Verwaltung/Service."
     },
     {
@@ -1191,30 +1191,9 @@
       "frist": null,
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/programme/einzelfoerderung/international_research_training_groups",
-      "standDatum": "2026-08-12",
-      "hinweis": "Bilaterale Doktorandenprogramme. Stichtage: standortspezifisch."
-    },
-    {
-      "id": "dfg-graduate-school",
-      "name": "DFG – Graduate School",
-      "kategorie": "DFG",
-      "themen": [
-        "thematisch-offen"
-      ],
-      "karriere": [
-        "student",
-        "junior"
-      ],
-      "rolle": [
-        "lead"
-      ],
-      "frist": null,
-      "rolling": false,
-      "status": "zu-pruefen",
-      "quelle": "https://www.dfg.de/foerderung/programme/einzelfoerderung/graduiertenkollegs",
-      "standDatum": "2026-08-12",
-      "hinweis": "Strukturierte Promotionsprogramme. Stichtage: standortspezifisch."
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/koordinierte-programme/graduiertenkollegs",
+      "standDatum": "2026-08-26",
+      "hinweis": "IRTG sind ein Typ des Graduiertenkollegs mit internationaler Bilateral-Kooperation (deutsche + auslaendische Partneruni). Details via DFG-GRK-Seite pruefen."
     },
     {
       "id": "msc-itn",
@@ -1232,8 +1211,8 @@
       "frist": "2027-01-12",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://marie-sklodowska-curieactions.ec.europa.eu",
-      "standDatum": "2026-08-12",
+      "quelle": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/doctoral-networks",
+      "standDatum": "2026-08-26",
       "hinweis": "EU-Doktoranden-Netzwerke. 3 Jahre, internationale Mobilitaet verpflichtend."
     },
     {
@@ -1253,8 +1232,8 @@
       "frist": "2027-03-20",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://marie-sklodowska-curieactions.ec.europa.eu",
-      "standDatum": "2026-08-12",
+      "quelle": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/cofund",
+      "standDatum": "2026-08-26",
       "hinweis": "EU-kofinanzierte Programme. PhD + Postdoc."
     },
     {
@@ -1274,8 +1253,8 @@
       "frist": null,
       "rolling": true,
       "status": "laufend",
-      "quelle": "https://www.studienstiftung.de/foerderung/max-weber-programm",
-      "standDatum": "2026-08-12",
+      "quelle": "https://www.studienstiftung.de/max-weber-programm",
+      "standDatum": "2026-08-26",
       "hinweis": "Bayern: Hochbegabtenfoerderung, verwaltet durch Studienstiftung."
     },
     {
@@ -1760,8 +1739,8 @@
       "frist": null,
       "rolling": false,
       "status": "laufend",
-      "quelle": "https://www.mkw.nrw/wissenschaft",
-      "standDatum": "2026-08-12",
+      "quelle": "https://www.mkw.nrw/",
+      "standDatum": "2026-08-26",
       "hinweis": "Landesfoerderung NRW. Forschungsinfrastruktur, Nachwuchs, Transfer. Ausschreibungsgebunden."
     },
     {
@@ -2531,7 +2510,7 @@
       "frist": "2026-09-02",
       "rolling": false,
       "status": "verifiziert",
-      "quelle": "https://erc.europa.eu/apply-grant/plus-grants",
+      "quelle": "https://erc.europa.eu/apply-grant/erc-plus-grant",
       "standDatum": "2026-08-26",
       "hinweis": "ERC Plus Grant: Für herausragende Forschende mit Vision für transformative Forschung jenseits bestehender ERC-Programme. Frist 2. September 2026."
     },
@@ -2584,6 +2563,106 @@
       "quelle": "https://eic.ec.europa.eu/eic-accelerator",
       "standDatum": "2026-08-26",
       "hinweis": "EIC Accelerator: Förderung für SMEs/Startups mit bahnbrechenden Innovationen. Rolling cut-off-Termine, Work Programme 2026 veröffentlicht am 17. Juni 2026."
+    },
+    {
+      "id": "msca-staff-exchanges",
+      "name": "MSCA – Staff Exchanges (SE)",
+      "kategorie": "EU",
+      "themen": [
+        "thematisch-offen"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 4,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/staff-exchanges",
+      "standDatum": "2026-08-26",
+      "hinweis": "Horizon Europe MSCA Staff Exchanges: kurzzeitiger Personalaustausch in internationalen Konsortien (2-12 Monate, zweite Wege). Aktuelle call-frist via Funding & Tenders Portal pruefen."
+    },
+    {
+      "id": "humboldt-feodor-lynen",
+      "name": "Humboldt – Feodor Lynen-Forschungsstipendium",
+      "kategorie": "Stiftung",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "laufend",
+      "quelle": "https://www.humboldt-foundation.de/bewerben/foerderprogramme/feodor-lynen-forschungsstipendium",
+      "standDatum": "2026-08-26",
+      "hinweis": "Feodor Lynen-Forschungsstipendium der AvH: Fuer deutsche Postdocs und erfahrene Forschende (Forschungsvorhaben im Ausland). 6-24 Monate, Rolling Bewerbung."
+    },
+    {
+      "id": "dfg-int-kooperationen",
+      "name": "DFG – Aufbau internationaler Kooperationen",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "junior",
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": 50000,
+      "dauerJahre": 1,
+      "frist": null,
+      "rolling": true,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/inter-foerdermassnahmen/aufbau-internationaler-kooperationen",
+      "standDatum": "2026-08-26",
+      "hinweis": "DFG-Foerdermassnahme zum Aufbau internationaler Kooperationen (Vorbereitung gemeinsamer Projekte, ANR/Partnerlaender). Stichtage via DFG-Portal bestaetigen."
+    },
+    {
+      "id": "dfg-int-veranstaltungen",
+      "name": "DFG – Internationale wissenschaftliche Veranstaltungen",
+      "kategorie": "DFG",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "junior",
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 1,
+      "frist": null,
+      "rolling": true,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/inter-foerdermassnahmen/int-wiss-veranstaltungen",
+      "standDatum": "2026-08-26",
+      "hinweis": "DFG-Foerderung internationaler wissenschaftlicher Veranstaltungen (Konferenzen, Workshops im Aus-/Inland). Antraege fortlaufend; Vorlaufzeiten beachten."
     }
   ]
 }

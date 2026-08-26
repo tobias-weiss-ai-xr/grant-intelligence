@@ -1,7 +1,7 @@
 # Förder-Radar – Grant Intelligence
 
 > **Status:** Produktionsreif (lokaler MVP). FLASH-Einreichung abgegeben (2026-08).
-> Open Source (MIT). 100 Programme, 435 Tests, 99–100 % Coverage (Kernmodule 100 %).
+> Open Source (MIT). 103 Programme, 443 Tests, 99–100 % Coverage (Kernmodule 100 %).
 
 **Kern-These:** Es fehlt nicht an Förderangeboten (DFG, ERC, …), sondern an der
 Übertragung auf *dein* Profil – und an der einzigen Zahl, die zählt: **deine Fristen**.
@@ -111,7 +111,7 @@ bash dashboard/sync-data.sh     # Daten synchronisieren (DSGVO-gefiltert)
 cd dashboard && python3 -m http.server 8080   # Lokal testen
 ```
 
-Features: Katalog-Explorer (100 Programme), Quellen-Browser (26 Quellen),
+Features: Katalog-Explorer (103 Programme), Quellen-Browser (26 Quellen),
 Kategorie/Status-Charts, Fristen-Timeline, Profil-Matcher (client-seitig).
 Siehe [`docs/Dashboard.md`](docs/Dashboard.md).
 

@@ -2,7 +2,7 @@
 
 > For: FLASH jury (EN versions), Demo Day visitors, international partners,
 > open-source contributors. All figures are real (as of 2026-08-12):
-> **97 programmes, 9 funding categories, open source (MIT), local &
+> **103 programmes, 9 funding categories, open source (MIT), local &
 > privacy-friendly.** Project principle: honest, no overstatement.
 
 ---
@@ -15,7 +15,7 @@
 > a deadline countdown. No expensive subscription database: it uses open,
 > official sources (DFG, ERC, national, regional, foundations) and runs
 > locally — privacy-friendly, no cloud required. The prototype is open
-> source, covers 97 programmes across nine funding categories, and connects
+> source, covers 103 programmes across nine funding categories, and connects
 > to any AI assistant via the Model Context Protocol (MCP). First pilot: our
 > own faculty at Philipps-Universität Marburg."
 
@@ -57,7 +57,7 @@ the next deadline in days, timely warnings.
 | **Privacy-friendly** | Runs locally, no cloud requirement, DSGVO-ready consent for profiles |
 | **Standards-based** | Model Context Protocol (MCP) — pluggable into any AI assistant |
 | **Honest** | Official sources only, every deadline with a "as of" date, scores as orientation |
-| **Fact-based** | 97 programmes, 9 categories, 181 tests, 100 % test coverage |
+| **Fact-based** | 103 programmes, 9 categories, 443 tests, 100 % test coverage |
 
 **The value**
 - Less searching and coordinating
@@ -93,7 +93,7 @@ joining the first pilot.
 > - 🧩 **Open source** (MIT) — code and catalog are public, contribute via merge request
 > - 🔒 **Privacy-friendly** — runs locally, DSGVO-ready, no cloud requirement
 > - 🤖 **Standards-based** — Model Context Protocol (MCP), pluggable into any AI
-> - 📊 **Facts over hype** — 97 programmes, 9 categories, 100 % test coverage
+> - 📊 **Facts over hype** — 103 programmes, 9 categories, 100 % test coverage
 >
 > First pilot: our own faculty at Philipps-Universität Marburg. Interested in
 > a joint pilot or in maintaining sources? Reach out — or just contribute:
@@ -109,7 +109,7 @@ joining the first pilot.
 > foundations) into a personal brief: top matches + deadline countdown,
 > local & privacy-friendly.
 >
-> Open source (MIT) · MCP-based · 97 programmes · first pilot at the
+> Open source (MIT) · MCP-based · 103 programmes · first pilot at the
 > University of Marburg. Join us! 💡
 >
 > #GrantRadar #FLASH #OpenSource #MCP #Research
@@ -143,7 +143,7 @@ joining the first pilot.
 **Why us** 💡
 - Open source (MIT) · local · privacy-friendly
 - MCP standard → pluggable into any AI
-- 97 programmes · 9 categories · 181 tests
+- 103 programmes · 9 categories · 443 tests
 
 ### Footer
 > **Live demo:** 3 profiles · 1 screen · 2 minutes
@@ -160,7 +160,7 @@ joining the first pilot.
 | 0:15–0:45 | `brief.py --felder "Artificial Intelligence" --karriere postdoc` | "One command — and the weekly brief is there: top matches, reasoning, deadlines in days, warnings." |
 | 0:45–1:15 | UI `uvicorn app:app` (browser) | "The same logic as a single page — no signup, no cloud, all local." |
 | 1:15–1:45 | `match_best(...)` via MCP (demo agent) | "And because everything is MCP-based, any AI assistant can directly ask: 'Which funding fits me?'" |
-| 1:45–2:00 | State catalog number | "97 programmes across nine categories — DFG, ERC, national, regional, foundations, EU, industry, international. All from official sources, every deadline with an 'as of' date." |
+| 1:45–2:00 | State catalog number | "103 programmes across nine categories — DFG, ERC, national, regional, foundations, EU, industry, international. All from official sources, every deadline with an 'as of' date." |
 
 **Fallback if the demo fails:** one-pager (§3) + screenshot at hand.
 

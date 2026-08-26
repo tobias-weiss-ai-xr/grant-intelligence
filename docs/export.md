@@ -4,7 +4,7 @@
 > ausführen.
 
 **Exportiert:** 2026-08-03T22:33:27.741121
-**Gesamt:** 32 Programme (Beispielstand; aktuell 100 Programme)
+**Gesamt:** 32 Programme (Beispielstand; aktuell 103 Programme)
 
 ## Alle Programme
 

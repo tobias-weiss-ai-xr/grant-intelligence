@@ -156,7 +156,8 @@ def save_catalog(programme: list[dict[str, Any]], path: Path | None = None) -> N
 def _fits(theme_defs: list[str], field: str) -> bool:
     """Check if a field matches the program's theme definitions.
 
-    'alle'/'frei' matches everything. Otherwise, case-insensitive substring match.
+    'alle'/'frei'/'thematisch-offen' match everything (wildcards).
+    Otherwise, case-insensitive substring match.
 
     Args:
         theme_defs: List of theme definitions from the program.
@@ -165,11 +166,12 @@ def _fits(theme_defs: list[str], field: str) -> bool:
     Returns:
         True if field matches any theme definition.
     """
+    wildcards = ("alle", "frei", "thematisch-offen")
     f = field.lower().strip()
     if not f:
         return False
     return any(
-        t.lower() in ("alle", "frei") or t.lower() in f or f in t.lower() for t in theme_defs
+        t.lower() in wildcards or t.lower() in f or f in t.lower() for t in theme_defs
     )
 
 
