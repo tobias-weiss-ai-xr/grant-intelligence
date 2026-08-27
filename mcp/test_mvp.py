@@ -179,6 +179,35 @@ class TestKatalog2026:
                    "bmbf-gesundheit-medizin", "bmbf-forschungsdaten", "bmbf-digiserv"):
             assert "foerderinfo.bund.de" in by[bf], f"{bf}: BMBF->BMFTR-Portal erwartet"
 
+    def test_quellen_verify_run_repariert(self):
+        """Source-verify run (2026-08-26): kaputte Quell-Links repariert.
+
+        Browser/requests-check fand 9 tote Links (Begabtenfoerderwerke, SNSF,
+        ARC, UNESCO, KAS) + 2 nur-per-Browser-erreichbare (CIHR, Sloan).
+        Hier wird nur die reparierte URL deterministisch geprueft (kein Netz).
+        """
+        by = {p["id"]: p["quelle"] for p in PROGS}
+        erwartet = {
+            "bfw-ev-studienwerk": "https://www.evstudienwerk.de",
+            "bfw-rls": "https://www.rosalux.de/stiftung/studienwerk/stipendien",
+            "bfw-hss": "https://www.hss.de/stipendium/",
+            "bfw-sdw": "https://www.sdw.org/bewerbung",
+            "bfw-avicenna": "https://www.avicenna-studienwerk.de/",
+            "dach-snsf-fwf": "https://www.snf.ch/en/ORgUpoSFePiH6QCp/page/get-a-grant",
+            "arc-international": "https://www.arc.gov.au/funding-research",
+            "unesco-research": "https://www.unesco.org/en/fellowships",
+            "bfw-kas": "https://www.kas.de/web/begabtenfoerderung-und-kultur/home",
+        }
+        for pid, url in erwartet.items():
+            assert pid in by, f"fehlender Eintrag {pid}"
+            assert by[pid] == url, f"{pid}: falsche Quelle\n  {by[pid]}\n  != {url}"
+        # alte tote Pfaede duerfen nicht mehr referenziert werden
+        assert "rosalux.de/stipendien" not in by["bfw-rls"], by["bfw-rls"]
+        assert "snf.ch/de/foerderung" not in by["dach-snsf-fwf"], by["dach-snsf-fwf"]
+        assert "arc.gov.au/grants" not in by["arc-international"], by["arc-international"]
+        assert "unesco.org/en/funding" not in by["unesco-research"], by["unesco-research"]
+        assert "kas.de/de/studienfoerderung" not in by["bfw-kas"], by["bfw-kas"]
+
     def test_loewe_hinweis_nennt_foerderlinien(self):
         loewe = next(p for p in PROGS if p["id"] == "loewe-hessen")
         assert "Förderlinien" in loewe["hinweis"] or "Foerderlinien" in loewe["hinweis"]
