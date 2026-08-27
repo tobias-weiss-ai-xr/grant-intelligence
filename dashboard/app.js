@@ -23,6 +23,12 @@ function dashboard() {
     srcSortKey: 'name',
     srcSortDir: 1,
 
+    // Pagination
+    page: 1,
+    pageSize: 10,
+    srcPage: 1,
+    srcPageSize: 10,
+
     // Charts
     _statusChart: null,
     _deadlineChart: null,
@@ -43,6 +49,11 @@ function dashboard() {
         // so canvas has non-zero dimensions when Chart.js renders.
         this._chartRetry = 0;
         this.$nextTick(() => this._renderChartsWhenVisible());
+        // Reset page to first when filters change (result count may shrink)
+        this.$watch('search', () => { this.page = 1; });
+        this.$watch('kategorie', () => { this.page = 1; });
+        this.$watch('status', () => { this.page = 1; });
+        this.$watch('karriere', () => { this.page = 1; });
       } catch (e) {
         this.error = 'Daten konnten nicht geladen werden: ' + e.message;
         this.loading = false;
@@ -98,6 +109,32 @@ function dashboard() {
       });
       return result;
     },
+
+    // --- Pagination (Programme) ---
+    get totalPages() {
+      return Math.max(1, Math.ceil(this.filtered.length / this.pageSize));
+    },
+    get currentPage() {
+      return Math.min(Math.max(1, this.page), this.totalPages);
+    },
+    get paged() {
+      const cur = this.currentPage;
+      const start = (cur - 1) * this.pageSize;
+      return this.filtered.slice(start, start + this.pageSize);
+    },
+    get pageInfo() {
+      const total = this.filtered.length;
+      if (total === 0) return '0 von 0';
+      const start = (this.currentPage - 1) * this.pageSize + 1;
+      const end = Math.min(this.currentPage * this.pageSize, total);
+      return start + '–' + end + ' von ' + total;
+    },
+    get pageNumbers() {
+      return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    },
+    setPage(p) { this.page = Math.max(1, Math.min(p, this.totalPages)); },
+    nextPage() { this.setPage(this.page + 1); },
+    prevPage() { this.setPage(this.page - 1); },
 
     get upcomingDeadlines() {
       const today = new Date();
@@ -158,6 +195,32 @@ function dashboard() {
       });
     },
 
+    // --- Pagination (Quellen) ---
+    get srcTotalPages() {
+      return Math.max(1, Math.ceil(this.sortedSources.length / this.srcPageSize));
+    },
+    get srcCurrentPage() {
+      return Math.min(Math.max(1, this.srcPage), this.srcTotalPages);
+    },
+    get srcPaged() {
+      const cur = this.srcCurrentPage;
+      const start = (cur - 1) * this.srcPageSize;
+      return this.sortedSources.slice(start, start + this.srcPageSize);
+    },
+    get srcPageInfo() {
+      const total = this.sortedSources.length;
+      if (total === 0) return '0 von 0';
+      const start = (this.srcCurrentPage - 1) * this.srcPageSize + 1;
+      const end = Math.min(this.srcCurrentPage * this.srcPageSize, total);
+      return start + '–' + end + ' von ' + total;
+    },
+    get srcPageNumbers() {
+      return Array.from({ length: this.srcTotalPages }, (_, i) => i + 1);
+    },
+    setSrcPage(p) { this.srcPage = Math.max(1, Math.min(p, this.srcTotalPages)); },
+    nextSrcPage() { this.setSrcPage(this.srcPage + 1); },
+    prevSrcPage() { this.setSrcPage(this.srcPage - 1); },
+
     // --- Sorting ---
     toggleSort(key) {
       if (this.sortKey === key) {
@@ -176,7 +239,6 @@ function dashboard() {
         this.srcSortDir = 1;
       }
     },
-
     // --- Charts ---
     cssVar(name, fallback) {
       const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();

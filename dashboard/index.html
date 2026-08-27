@@ -90,7 +90,7 @@
           </tr>
         </thead>
         <tbody>
-          <template x-for="p in filtered" :key="p.id">
+          <template x-for="p in paged" :key="p.id">
             <tr>
               <td x-text="p.name"></td>
               <td><span class="badge" x-text="p.kategorie"></span></td>
@@ -109,6 +109,21 @@
           </template>
         </tbody>
       </table>
+
+      <nav class="pagination" aria-label="Seitennavigation Förderprogramme" x-show="totalPages > 1">
+        <span class="page-info" x-text="pageInfo"></span>
+        <div class="page-controls">
+          <button type="button" class="page-btn" @click="prevPage()" :disabled="currentPage <= 1" aria-label="Vorherige Seite">←</button>
+          <template x-for="n in pageNumbers" :key="n">
+            <button type="button" class="page-btn" :class="{ 'page-current': n === currentPage }"
+                    @click="setPage(n)" x-text="n"
+                    :aria-current="n === currentPage ? 'page' : null"
+                    :aria-label="'Seite ' + n"></button>
+          </template>
+          <button type="button" class="page-btn" @click="nextPage()" :disabled="currentPage >= totalPages" aria-label="Nächste Seite">→</button>
+        </div>
+      </nav>
+      <p class="empty" x-show="filtered.length === 0">Keine Treffer – Filter anpassen.</p>
     </section>
 
     <!-- 2. Institutions (Quellen) -->
@@ -127,7 +142,7 @@
           </tr>
         </thead>
         <tbody>
-          <template x-for="src in sortedSources" :key="src.key">
+          <template x-for="src in srcPaged" :key="src.key">
             <tr>
               <td x-text="src.name"></td>
               <td>
@@ -146,6 +161,20 @@
           </template>
         </tbody>
       </table>
+
+      <nav class="pagination" aria-label="Seitennavigation Institutionen" x-show="srcTotalPages > 1">
+        <span class="page-info" x-text="srcPageInfo"></span>
+        <div class="page-controls">
+          <button type="button" class="page-btn" @click="prevSrcPage()" :disabled="srcCurrentPage <= 1" aria-label="Vorherige Seite">←</button>
+          <template x-for="n in srcPageNumbers" :key="n">
+            <button type="button" class="page-btn" :class="{ 'page-current': n === srcCurrentPage }"
+                    @click="setSrcPage(n)" x-text="n"
+                    :aria-current="n === srcCurrentPage ? 'page' : null"
+                    :aria-label="'Seite ' + n"></button>
+          </template>
+          <button type="button" class="page-btn" @click="nextSrcPage()" :disabled="srcCurrentPage >= srcTotalPages" aria-label="Nächste Seite">→</button>
+        </div>
+      </nav>
     </section>
 
     <!-- 3. Statistics (Übersicht & Diagramme) -->

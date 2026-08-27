@@ -325,6 +325,63 @@ tbody tr:hover { background: var(--hover); }
 .programme-table td:nth-child(1) { max-width: 250px; }
 .programme-table a { font-size: 0.8rem; }
 
+/* Pagination (Listen) */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.page-info {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.page-controls {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  min-width: 2rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.page-btn:hover:not(:disabled):not(.page-current) { background: var(--hover); }
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-current {
+  background: var(--green-bg);
+  color: var(--text-on-green);
+  border-color: var(--green-bg);
+  font-weight: 700;
+}
+
+.page-btn:focus {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.empty {
+  margin-top: 1rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
 /* Footer */
 footer {
   margin-top: 2rem;
