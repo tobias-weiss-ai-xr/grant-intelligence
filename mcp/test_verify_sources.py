@@ -59,6 +59,8 @@ def _fake_get(url, **kw):
         return _FakeResp(404)
     if "block.example" in url:
         return _FakeResp(403)
+    if "rate.example" in url:
+        return _FakeResp(429)
     if "down.example" in url:
         raise requests.exceptions.ConnectionError("x")
     if "slow.example" in url:
@@ -71,7 +73,16 @@ def test_http_check_classification():
         assert vs.http_check("https://ok.example", 5, vs.DEFAULT_UA)["kind"] == "ok"
         assert vs.http_check("https://dead.example", 5, vs.DEFAULT_UA)["kind"] == "broken"
         assert vs.http_check("https://block.example", 5, vs.DEFAULT_UA)["kind"] == "uncertain"
+        assert vs.http_check("https://rate.example", 5, vs.DEFAULT_UA)["kind"] == "uncertain"
         assert vs.http_check("https://down.example", 5, vs.DEFAULT_UA)["kind"] == "broken"
+
+
+def test_run_rate_limit_is_botblock_not_broken(tmp_path):
+    cat = {"programme": [{"id": "r", "quelle": "https://rate.example/r"}]}
+    cfg = _write_cfg(tmp_path, cat)
+    with mock.patch("requests.get", side_effect=_fake_get):
+        totals, results, status = vs.run(cfg, str(tmp_path / "x.json"))
+    assert totals["broken"] == 0 and totals["botblock"] == 1 and status == 0
         assert vs.http_check("https://slow.example", 5, vs.DEFAULT_UA)["kind"] == "uncertain"
 
 
