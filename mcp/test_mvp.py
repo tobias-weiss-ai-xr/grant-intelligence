@@ -6,6 +6,7 @@ Fristen, Persistenz, MCP-Tools, UI-Rendering, Wochen-Brief.
 
 from __future__ import annotations
 
+import json
 from datetime import date, datetime
 from pathlib import Path
 
@@ -26,6 +27,8 @@ from match import (
 
 PROGS = load_catalog()
 POSTDOC = ["Biologie", "Nachhaltigkeit"]
+
+SOURCES = json.load(open(Path(__file__).parent / "sources.json"))
 
 # Schutz: echte catalog.json darf durch Tests nie veraendert werden
 _KATALOG_SNAPSHOT = CATALOG.read_bytes()
@@ -207,6 +210,33 @@ class TestKatalog2026:
         assert "arc.gov.au/grants" not in by["arc-international"], by["arc-international"]
         assert "unesco.org/en/funding" not in by["unesco-research"], by["unesco-research"]
         assert "kas.de/de/studienfoerderung" not in by["bfw-kas"], by["bfw-kas"]
+
+    def test_sources_verify_run_repariert(self):
+        """Verify-Sources run (2026-08-27): kaputte sources.json-URLs repariert.
+
+        Der verallgemeinerte Link-Verifier (verify_sources.py) fand 5 tote
+        Quell-Links in sources.json, die der Katalog-Audit (67c1f7c) uebersah:
+        BMBF-Domain nach BMFTR-Migration, LOEWE-Hessen, NRW-MWK-Pfad,
+        MSCA-Hostname (Bindestrich), SNSF-Pfad. Deterministic (kein Netz).
+        """
+        by = {k: v["url"] for k, v in SOURCES.items()
+              if isinstance(v, dict) and v.get("url")}
+        erwartet = {
+            "bmbf": "https://www.bmftr.bund.de/SiteGlobals/Forms/Suche/Bekanntmachungsuche/Bekanntmachungsuche_Formular.html?nn=907934",
+            "loewe": "https://www.wissenschaft-hessen.de/foerderprogramme/loewe",
+            "nrw-mwk": "https://www.mkw.nrw/themen/wissenschaft",
+            "msc": "https://marie-sklodowska-curie-actions.ec.europa.eu",
+            "dach-snsf-fwf": "https://www.snf.ch/de",
+        }
+        for sid, url in erwartet.items():
+            assert sid in by, f"fehlende Quelle {sid}"
+            assert by[sid] == url, f"{sid}: falsche URL\n  {by[sid]}\n  != {url}"
+        # alte tote Pfaede duerfen nicht mehr referenziert werden
+        assert "bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen" not in by["bmbf"]
+        assert "wissenschaft.hessen.de/forschung/loewe" not in by["loewe"]
+        assert "mkw.nrw/wissenschaft" not in by["nrw-mwk"]
+        assert "marie-sklodowska-curieactions.ec.europa.eu" not in by["msc"]  # ohne Bindestrich
+        assert "snf.ch/de/foerderung" not in by["dach-snsf-fwf"]
 
     def test_loewe_hinweis_nennt_foerderlinien(self):
         loewe = next(p for p in PROGS if p["id"] == "loewe-hessen")
