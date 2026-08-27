@@ -63,8 +63,10 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 - MCP-API-Serialisierung auf camelCase vereinheitlicht
 - `server.ingest` validiert Programme vor dem Persistieren
 - `is_urgent` von @property zu parametrierter Methode
+- **Verallgemeinerter Link-Verifier `verify_sources.py`:** repo-agnostisches, config-getriebenes CLI (2-Stufen: HTTP + optional Playwright) prüft beliebige "Liste von Einträgen mit URL-Feldern". Identisch in `mcp/` (Katalog `quelle` + `sources.json` `url`) und `skeleton-research/scripts/` (`papers.yaml` `url`/`code_url`/`project_url`). `.github/workflows/verify-sources.yml` in beiden Repos (wöchentlich + dispatch + Pfad-Trigger, Report-Artifact). 8 + 7 Offline-Tests.
 
 ### Fixed
+- **5 tote `sources.json`-URLs repariert** (vom verallgemeinerten Verifier entdeckt, vom Katalog-Audit übersehen): BMBF→BMFTR-Domain-Migration, LOEWE-Hessen-Pfad, NRW-MWK-Pfad, MSCA-Hostname (fehlender Bindestrich), SNSF-Pfad. Deterministic Regression-Test `test_sources_verify_run_repariert`.
 - All 52 tests passing
 - XSS protection in UI
 - Career level whitelist validation

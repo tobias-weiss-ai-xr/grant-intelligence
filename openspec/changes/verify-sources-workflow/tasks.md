@@ -8,4 +8,5 @@
 - [x] `grant-intelligence/mcp/test_verify_sources.py` (offline, 8 Tests)
 - [x] `skeleton-research/tests/test_verify_sources.py` (offline, 7 Tests)
 - [x] Smoke-Test gegen echte Kataloge: grant-intelligence 0 broken (exit 0), skeleton-research 5 OK (exit 0 mit --no-fail)
-- [ ] CI auf GitHub verifizieren (erster scheduled/dispatch Run in beiden Repos)
+- [x] Verifier fand 5 tote `sources.json`-URLs (Katalog-Audit uebersah sie) -> repariert + Regression-Test
+- [x] CI auf GitHub verifiziert (erster Run beider Repos: grant-intelligence BROKEN:0, exit 0; skeleton-research success)
