@@ -75,6 +75,7 @@ def test_http_check_classification():
         assert vs.http_check("https://block.example", 5, vs.DEFAULT_UA)["kind"] == "uncertain"
         assert vs.http_check("https://rate.example", 5, vs.DEFAULT_UA)["kind"] == "uncertain"
         assert vs.http_check("https://down.example", 5, vs.DEFAULT_UA)["kind"] == "broken"
+        assert vs.http_check("https://slow.example", 5, vs.DEFAULT_UA)["kind"] == "uncertain"
 
 
 def test_run_rate_limit_is_botblock_not_broken(tmp_path):
@@ -83,7 +84,6 @@ def test_run_rate_limit_is_botblock_not_broken(tmp_path):
     with mock.patch("requests.get", side_effect=_fake_get):
         totals, results, status = vs.run(cfg, str(tmp_path / "x.json"))
     assert totals["broken"] == 0 and totals["botblock"] == 1 and status == 0
-        assert vs.http_check("https://slow.example", 5, vs.DEFAULT_UA)["kind"] == "uncertain"
 
 
 def test_resolve_verdict():
