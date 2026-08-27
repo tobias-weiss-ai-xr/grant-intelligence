@@ -1,0 +1,14 @@
+{
+  "inputs": [
+    {"file": "catalog.json", "format": "json", "list_key": "programme", "id_field": "id", "url_fields": ["quelle"]},
+    {"file": "sources.json", "format": "json", "object_map": true, "id_field": "key", "url_fields": ["url"]}
+  ],
+  "settings": {
+    "timeout": 20,
+    "workers": 12,
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "browser": false,
+    "fail_on_broken": true,
+    "report": "verify-sources-report.json"
+  }
+}

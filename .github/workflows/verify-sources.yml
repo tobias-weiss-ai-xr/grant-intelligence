@@ -1,0 +1,47 @@
+name: Verify Sources
+
+# Repo-agnostic link-liveness audit. Runs the two-stage verifier
+# (verify_sources.py): HTTP check + optional Playwright recheck of uncertain
+# URLs. Catches definitively-dead links (404/410/5xx/connection errors);
+# 403/Cloudflare bot-blocks on official portals are reported as warnings.
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'            # Monday 07:00 UTC — weekly link audit
+  workflow_dispatch:
+  push:
+    paths:
+      - 'mcp/catalog.json'
+      - 'mcp/sources.json'
+      - 'mcp/verify_sources.py'
+      - 'mcp/verify-sources.json'
+      - '.github/workflows/verify-sources.yml'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r mcp/requirements-dev.txt pyyaml
+
+      - name: Verify source links (HTTP stage)
+        working-directory: mcp
+        run: python verify_sources.py verify-sources.json
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-sources-report
+          path: mcp/verify-sources-report.json

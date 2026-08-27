@@ -20,3 +20,6 @@ data/local/*
 
 # Coverage data
 .coverage
+
+# verify_sources.py audit report (generated)
+verify-sources-report.json
