@@ -159,6 +159,31 @@ def diff_urgent(
     return [e for e in new_digest.get("urgent", []) if e["id"] not in old_ids]
 
 
+def render_body(digest: dict[str, Any]) -> str:
+    """Baue den Issue-Body (Markdown) für neue dringende Fristen.
+
+    Args:
+        digest: Digest-Dict mit 'urgent' (und optional 'stand').
+
+    Returns:
+        Markdown-Text mit Tabelle der dringenden Fristen.
+    """
+    lines = [
+        "## 🔴 Neue dringende Fristen (seit letztem Lauf)",
+        "",
+        "| ID | Programm | Kategorie | Frist | Tage | Status |",
+        "|---|---|---|---|---|---|",
+    ]
+    for e in digest.get("urgent", []):
+        lines.append(
+            f"| {e['id']} | {e['name']} | {e['kategorie']} | {e['frist']} | "
+            f"{e['tage_bis_frist']} | {e['status']} |"
+        )
+    lines.append("")
+    lines.append(f"_Stand: {digest.get('stand', '?')} · Quelle im Katalog._")
+    return "\n".join(lines) + "\n"
+
+
 def save_digest(digest: dict[str, Any], path: Path = DIGEST) -> None:
     """Persistiere den Digest als JSON (UTF-8, indent 2, Trailing-Newline).
 

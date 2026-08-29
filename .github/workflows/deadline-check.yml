@@ -2,7 +2,8 @@ name: Deadline Check
 
 on:
   schedule:
-    - cron: '0 6 * * 0'   # Sonntag 06:00 UTC (Empfehlung aus cron_check_expired.sh)
+    # Sonntag 06:00 UTC (Empfehlung aus cron_check_expired.sh)
+    - cron: '0 6 * * 0'
   workflow_dispatch:
 
 permissions:
@@ -39,6 +40,12 @@ jobs:
             echo "Digest committed."
           fi
 
+      - name: Render issue body
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python .github/scripts/deadline_issue_body.py
+
       - name: Open/update issue for new urgent deadlines
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -48,33 +55,20 @@ jobs:
             echo "No new urgent deadlines — no issue needed."
             exit 0
           fi
-
           # Label sicherstellen
           gh label create deadline-warning \
             --color "B85D00" \
             --description "Dringende Frist-Warnung" >/dev/null 2>&1 || true
-
-          BODY=$(python - <<'PY'
-import json
-d = json.load(open('mcp/deadline-digest.json'))
-lines = ['## 🔴 Neue dringende Fristen (seit letztem Lauf)', '', '| ID | Programm | Kategorie | Frist | Tage | Status |', '|---|---|---|---|---|---|']
-for e in d['urgent']:
-    lines.append(f"| {e['id']} | {e['name']} | {e['kategorie']} | {e['frist']} | {e['tage_bis_frist']} | {e['status']} |")
-lines.append('')
-lines.append('_Stand: ' + d.get('stand', '?') + ' · Quelle im [Katalog](mcp/catalog.json)._')
-print('\n'.join(lines))
-PY
-          )
-
+          # Vorhandenes offenes Issue mit dem Label aktualisieren, sonst neu öffnen
           EXISTING=$(gh issue list --label deadline-warning --state open \
             --json number --jq '.[0].number' 2>/dev/null || true)
           if [ -n "$EXISTING" ]; then
-            gh issue comment "$EXISTING" --body "$BODY"
+            gh issue comment "$EXISTING" --body-file .github/deadline-issue-body.md
             echo "Updated existing issue #$EXISTING."
           else
             gh issue create \
               --title "🔴 Frist-Warnung: $NEW neue dringende Frist(en)" \
               --label deadline-warning \
-              --body "$BODY"
+              --body-file .github/deadline-issue-body.md
             echo "Created new issue."
           fi
