@@ -204,3 +204,52 @@ class TestMain:
     def test_main_nationale_zahl(self, tmp_path, monkeypatch):
         d = dd.compute_digest([{**VOLL, "id": "n", "frist": _iso(10)}], TODAY)
         assert d["stand"] == "2026-09-01"
+
+
+class TestIssueBody:
+    def test_render_body_zeilen(self, tmp_path):
+        digest = {
+            "stand": "2026-08-29",
+            "neu_urgent": 2,
+            "urgent": [
+                {"id": "a", "name": "Alpha", "kategorie": "DFG",
+                 "frist": "2026-09-01", "tage_bis_frist": 3, "status": "zu-pruefen"},
+                {"id": "b", "name": "Beta", "kategorie": "EU",
+                 "frist": "2026-09-10", "tage_bis_frist": 12, "status": "verifiziert"},
+            ],
+        }
+        body = dd.render_body(digest)
+        assert "## 🔴 Neue dringende Fristen" in body
+        assert "| a | Alpha | DFG | 2026-09-01 | 3 | zu-pruefen |" in body
+        assert "| b | Beta | EU | 2026-09-10 | 12 | verifiziert |" in body
+        assert "_Stand: 2026-08-29" in body
+
+    def test_render_body_leer(self):
+        body = dd.render_body({"urgent": [], "stand": "x"})
+        # Tabelle bleibt (Header), aber keine Datenzeilen
+        assert "|---|---|" in body
+
+
+# --- Import des Issue-Body-Skripts (nutzt dd.render) ---
+from pathlib import Path as _P
+
+_SCRIPT = _P(__file__).resolve().parents[1] / ".github/scripts/deadline_issue_body.py"
+if _SCRIPT.exists():
+    import importlib.util as _ilu
+
+    _spec = _ilu.spec_from_file_location("deadline_issue_body", _SCRIPT)
+    _mod = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_mod)  # type: ignore[union-attr]
+
+    class TestBodyScript:
+        def test_render_body_datei(self, tmp_path, monkeypatch):
+            d = {"stand": "2026-08-29", "neu_urgent": 1,
+                 "urgent": [{"id": "a", "name": "A", "kategorie": "DFG",
+                             "frist": "2026-09-01", "tage_bis_frist": 3,
+                             "status": "zu-pruefen"}]}
+            out = tmp_path / "body.md"
+            monkeypatch.setattr(_mod, "DIGEST", tmp_path / "no-digest.json")
+            # render() direkt testen (Datei-Schreibpfad ist in CI relevant,
+            # hier offline ohne Digest-Datei)
+            out.write_text(dd.render_body(d), encoding="utf-8")
+            assert "| a | A | DFG | 2026-09-01 | 3 | zu-pruefen |" in out.read_text(encoding="utf-8")
