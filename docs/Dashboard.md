@@ -20,6 +20,7 @@ mcp/sources.json ─┤── sync-data.sh ──→ dashboard/data/*.json
                                               ▼
                                     Alpine.js dashboard()
                                     ├── Overview cards
+                                    ├── Frist-Radar (upcoming deadlines)
                                     ├── Source browser
                                     ├── Programme explorer
                                     └── Charts (Chart.js)
@@ -42,10 +43,21 @@ open http://localhost:8080
 ## Features
 
 ### Overview Cards
-- Total programmes (97)
+- Total programmes (103)
 - Categories (9)
 - Source groups (26)
 - Upcoming deadlines (next 90 days)
+- **Urgent deadlines (next 30 days)** – turns red when > 0
+- Rolling / no-deadline counts
+
+### Frist-Radar
+Table of all upcoming deadlines (next 90 days), sorted by date:
+- Programm, Kategorie, Frist, Tage, Status
+- Color-coded rows by urgency (WCAG-compliant):
+  - red ≤ 14 days (`dl-critical`)
+  - orange ≤ 30 days (`dl-soon`)
+  - green > 30 days (`dl-normal`)
+- Shows an empty hint when no deadlines are within 90 days
 
 ### Source Browser
 All 26 source groups with:
@@ -64,7 +76,6 @@ Filterable, sortable table of all programmes:
 - **Sortable columns**: Name, Category, Status, Deadline, Budget
 
 ### Charts (Chart.js)
-- **Category doughnut**: Distribution across 9 categories
 - **Status bar**: Verifiziert / Laufend / Zu prüfen
 - **Deadline timeline**: Upcoming deadlines (next 90 days), color-coded by urgency
 
@@ -74,6 +85,7 @@ Filterable, sortable table of all programmes:
 |---|---|---|
 | `mcp/catalog.json` | `dashboard/data/catalog.json` | None (full copy) |
 | `mcp/sources.json` | `dashboard/data/sources.json` | None (full copy) |
+| `mcp/deadline-digest.json` (optional, if present) | `dashboard/data/deadline-digest.json` | None (full copy) |
 
 No profile data is shipped to the dashboard. Profile matching remains a
 client-side Python feature (`mcp/profile.py`, `mcp/brief.py --profil-id`).
@@ -86,7 +98,7 @@ push to `main` that touches `dashboard/`, `mcp/catalog.json`, or
 
 **Steps:**
 1. Checkout repository
-2. Run `bash dashboard/sync-data.sh` (sync catalog + sources)
+2. Run `bash dashboard/sync-data.sh` (sync catalog + sources + optional digest)
 3. Configure GitHub Pages
 4. Upload `dashboard/` as Pages artifact
 5. Deploy to GitHub Pages

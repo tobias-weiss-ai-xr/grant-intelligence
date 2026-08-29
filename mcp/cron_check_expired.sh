@@ -21,6 +21,8 @@ echo "--- Förder-Radar Deadline-Check: $(date -Iseconds) ---" >> "$LOG_FILE"
 
 cd "$SCRIPT_DIR"
 python3 update_catalog.py --check-expired >> "$LOG_FILE" 2>&1
+# Strukturierter Frist-Digest (dringend/anstehend/abgelaufen, dedupliziert)
+python3 deadline_digest.py >> "$LOG_FILE" 2>&1
 
 EXIT_CODE=$?
 if [ $EXIT_CODE -ne 0 ]; then

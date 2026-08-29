@@ -7,6 +7,11 @@
 ## Nah (MVP, jetzt)
 - Förder-Radar als Agent-Schleife: `ingest` -> `search` -> `match_best` ->
   `naechste_fristen` -> `notify` -> `brief` (Demo vorhanden).
+- **Frist-Pipeline aktiv:** `deadline_digest.py` erzeugt wöchentlich einen
+  deduplizierten Frist-Digest (dringend/anstehend/abgelaufen); GitHub Action
+  committet ihn und öffnet ein Issue bei neuen dringenden Fristen; das
+  Dashboard zeigt ein „Frist-Radar“-Panel. Lokaler Lauf via
+  `cron_check_expired.sh` (systemd-Timer dokumentiert).
 - Erster Anwender: eigener Fachbereich; Katalog aus offiziellen, frei
   lizenzierten Quellen (DFG/ERC/Bund/Land/Stiftungen) pflegen.
 - Betrieb: lokal, datenschutzfreundlich, optional über SAIA-KI-API (GWDG).

@@ -149,6 +149,36 @@ function dashboard() {
         .sort((a, b) => new Date(a.frist) - new Date(b.frist));
     },
 
+    get urgentDeadlines() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const in30 = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+      return this.catalog
+        .filter(p => {
+          if (!p.frist) return false;
+          const d = new Date(p.frist);
+          return d >= today && d <= in30;
+        })
+        .sort((a, b) => new Date(a.frist) - new Date(b.frist));
+    },
+
+    // --- Frist-Radar helpers ---
+    deadlineDays(p) {
+      if (p.rolling) return 'Rolling';
+      if (!p.frist) return '—';
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return Math.ceil((new Date(p.frist) - today) / (24 * 60 * 60 * 1000));
+    },
+
+    deadlineClass(p) {
+      const days = this.deadlineDays(p);
+      if (days === 'Rolling' || days === '—') return '';
+      if (days <= 14) return 'dl-critical';   // ≤14d
+      if (days <= 30) return 'dl-soon';       // ≤30d
+      return 'dl-normal';                     // >30d
+    },
+
     get rollingCount() {
       return this.catalog.filter(p => p.rolling).length;
     },

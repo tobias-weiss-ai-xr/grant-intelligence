@@ -325,6 +325,26 @@ tbody tr:hover { background: var(--hover); }
 .programme-table td:nth-child(1) { max-width: 250px; }
 .programme-table a { font-size: 0.8rem; }
 
+/* Deadline radar */
+.deadline-radar { margin-bottom: 2rem; }
+
+.deadline-table { margin-top: 0.5rem; }
+.deadline-table td:nth-child(1) { max-width: 300px; }
+
+/* Dringlichkeits-Farben (WCAG-freundliche, dezente Zeilen-Highlights) */
+.deadline-table tr.dl-critical { background: rgba(192, 57, 43, 0.12); }
+.deadline-table tr.dl-soon    { background: rgba(184, 93, 0, 0.10); }
+.deadline-table tr.dl-normal  { background: rgba(0, 122, 61, 0.06); }
+
+@media (prefers-color-scheme: dark) {
+  .deadline-table tr.dl-critical { background: rgba(255, 84, 71, 0.18); }
+  .deadline-table tr.dl-soon    { background: rgba(232, 148, 58, 0.16); }
+  .deadline-table tr.dl-normal  { background: rgba(61, 186, 111, 0.10); }
+}
+
+/* Card danger (dringende Fristen) */
+.card-danger { color: var(--red); }
+
 /* Pagination (Listen) */
 .pagination {
   display: flex;

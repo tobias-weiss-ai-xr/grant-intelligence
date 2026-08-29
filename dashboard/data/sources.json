@@ -169,11 +169,11 @@
     ]
   },
   "bmbf": {
-    "name": "BMBF",
-    "url": "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen",
+    "name": "BMFTR (vormals BMBF)",
+    "url": "https://www.bmftr.bund.de/SiteGlobals/Forms/Suche/Bekanntmachungsuche/Bekanntmachungsuche_Formular.html?nn=907934",
     "type": "manual",
     "update_frequency": "weekly",
-    "last_check": "2026-08-03",
+    "last_check": "2026-08-27",
     "hinweis": "BMBF-Bekanntmachungen per Portal-Check",
     "programs": [
       {
@@ -245,10 +245,10 @@
   },
   "loewe": {
     "name": "LOEWE (Hessen)",
-    "url": "https://wissenschaft.hessen.de/forschung/loewe",
+    "url": "https://www.wissenschaft-hessen.de/foerderprogramme/loewe",
     "type": "manual",
     "update_frequency": "monthly",
-    "last_check": "2026-08-03",
+    "last_check": "2026-08-27",
     "hinweis": "Jaehrliche LOEWE-Runde mit Stichtag; aktueller Stichtag via Landesportal pruefen",
     "programs": [
       {
@@ -265,10 +265,10 @@
   },
   "nrw-mwk": {
     "name": "NRW MWK (Kultur und Wissenschaft)",
-    "url": "https://www.mkw.nrw/wissenschaft",
+    "url": "https://www.mkw.nrw/themen/wissenschaft",
     "type": "manual",
     "update_frequency": "monthly",
-    "last_check": "2026-08-12",
+    "last_check": "2026-08-27",
     "hinweis": "Nordrhein-Westfalen Landesfoerderung. Forschung, Nachwuchs, Transfer.",
     "programs": [
       {
@@ -469,10 +469,10 @@
   },
   "msc": {
     "name": "Marie Sklodowska-Curie Actions (MSCA)",
-    "url": "https://marie-sklodowska-curieactions.ec.europa.eu",
+    "url": "https://marie-sklodowska-curie-actions.ec.europa.eu",
     "type": "manual",
     "update_frequency": "monthly",
-    "last_check": "2026-08-12",
+    "last_check": "2026-08-27",
     "hinweis": "EU-Doktoranden- und Postdoc-Foerderung. ITN (doctoral networks), COFUND (co-funded programmes).",
     "calls": [
       {
@@ -630,10 +630,10 @@
   },
   "dach-snsf-fwf": {
     "name": "DACH – SNSF (CH) / FWF (AT)",
-    "url": "https://www.snf.ch/de/foerderung",
+    "url": "https://www.snf.ch/de",
     "type": "manual",
     "update_frequency": "monthly",
-    "last_check": "2026-08-12",
+    "last_check": "2026-08-27",
     "hinweis": "Schweiz (SNSF) und Oesterreich (FWF). DACH-Kooperation.",
     "programs": [
       {

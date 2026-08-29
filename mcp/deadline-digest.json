@@ -1,0 +1,298 @@
+{
+  "stand": "2026-08-29",
+  "urgent_days": 30,
+  "upcoming_days": 90,
+  "urgent": [
+    {
+      "id": "gerda-henkel",
+      "name": "Gerda Henkel Stiftung – Forschungsstipendien",
+      "kategorie": "Stiftung",
+      "frist": "2026-09-01",
+      "tage_bis_frist": 3,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.gerda-henkel-stiftung.de/foerderung"
+    },
+    {
+      "id": "erc-plus-2026",
+      "name": "ERC Plus Grant (ERC-2026-PLUS)",
+      "kategorie": "ERC",
+      "frist": "2026-09-02",
+      "tage_bis_frist": 4,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/erc-plus-grant"
+    },
+    {
+      "id": "evita-hpc-training-materials",
+      "name": "EVITA HPC – Call for Modular Training Materials",
+      "kategorie": "EU",
+      "frist": "2026-09-07",
+      "tage_bis_frist": 9,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://www.evitahpc.eu/public-calls/"
+    },
+    {
+      "id": "msca-pf",
+      "name": "MSCA – Postdoctoral Fellowships (PF)",
+      "kategorie": "EU",
+      "frist": "2026-09-09",
+      "tage_bis_frist": 11,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships"
+    },
+    {
+      "id": "cost-netzwerk",
+      "name": "COST – European Cooperation in Science (Netzwerke)",
+      "kategorie": "EU",
+      "frist": "2026-09-10",
+      "tage_bis_frist": 12,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.cost.eu"
+    },
+    {
+      "id": "erc-poc",
+      "name": "ERC Proof of Concept (PoC)",
+      "kategorie": "ERC",
+      "frist": "2026-09-17",
+      "tage_bis_frist": 19,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/proof-concept"
+    }
+  ],
+  "upcoming": [
+    {
+      "id": "gerda-henkel",
+      "name": "Gerda Henkel Stiftung – Forschungsstipendien",
+      "kategorie": "Stiftung",
+      "frist": "2026-09-01",
+      "tage_bis_frist": 3,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.gerda-henkel-stiftung.de/foerderung"
+    },
+    {
+      "id": "erc-plus-2026",
+      "name": "ERC Plus Grant (ERC-2026-PLUS)",
+      "kategorie": "ERC",
+      "frist": "2026-09-02",
+      "tage_bis_frist": 4,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/erc-plus-grant"
+    },
+    {
+      "id": "evita-hpc-training-materials",
+      "name": "EVITA HPC – Call for Modular Training Materials",
+      "kategorie": "EU",
+      "frist": "2026-09-07",
+      "tage_bis_frist": 9,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://www.evitahpc.eu/public-calls/"
+    },
+    {
+      "id": "msca-pf",
+      "name": "MSCA – Postdoctoral Fellowships (PF)",
+      "kategorie": "EU",
+      "frist": "2026-09-09",
+      "tage_bis_frist": 11,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships"
+    },
+    {
+      "id": "cost-netzwerk",
+      "name": "COST – European Cooperation in Science (Netzwerke)",
+      "kategorie": "EU",
+      "frist": "2026-09-10",
+      "tage_bis_frist": 12,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.cost.eu"
+    },
+    {
+      "id": "erc-poc",
+      "name": "ERC Proof of Concept (PoC)",
+      "kategorie": "ERC",
+      "frist": "2026-09-17",
+      "tage_bis_frist": 19,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/proof-concept"
+    },
+    {
+      "id": "dfg-emmy-noether",
+      "name": "DFG – Emmy Noether-Programm (Nachwuchsgruppenleitung)",
+      "kategorie": "DFG",
+      "frist": "2026-10-01",
+      "tage_bis_frist": 33,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/emmy-noether"
+    },
+    {
+      "id": "dfg-heisenberg",
+      "name": "DFG – Heisenberg-Programm (Etablierte Forschende)",
+      "kategorie": "DFG",
+      "frist": "2026-10-01",
+      "tage_bis_frist": 33,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/heisenberg"
+    },
+    {
+      "id": "krebshilfe-onkologie",
+      "name": "Deutsche Krebshilfe – Forschungsprojekte (Onkologie)",
+      "kategorie": "Stiftung",
+      "frist": "2026-10-01",
+      "tage_bis_frist": 33,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.krebshilfe.de/forschen"
+    },
+    {
+      "id": "erc-stg-2027",
+      "name": "ERC Starting Grant (StG) 2027",
+      "kategorie": "ERC",
+      "frist": "2026-10-14",
+      "tage_bis_frist": 46,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/starting-grants"
+    },
+    {
+      "id": "volkswagen-stiftung",
+      "name": "VolkswagenStiftung – Explorationsfonds",
+      "kategorie": "Stiftung",
+      "frist": "2026-10-15",
+      "tage_bis_frist": 47,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.volkswagenstiftung.de/en/funding/our-funding-portfolio"
+    },
+    {
+      "id": "dfg-ub-digiserv",
+      "name": "DFG – Bibliotheks- und Informationsdienste (UB)",
+      "kategorie": "DFG",
+      "frist": "2026-10-15",
+      "tage_bis_frist": 47,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/infrastruktur/lis/lis-foerderangebote/digitalisierung-erschliessung"
+    },
+    {
+      "id": "eu-horizon-climate",
+      "name": "EU Horizon Europe – Klima/Energie (Cluster 5)",
+      "kategorie": "EU",
+      "frist": "2026-10-20",
+      "tage_bis_frist": 52,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders"
+    },
+    {
+      "id": "eu-open-science",
+      "name": "EU Horizon – Open Science Infrastructure (UB/HRZ)",
+      "kategorie": "EU",
+      "frist": "2026-10-20",
+      "tage_bis_frist": 52,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders"
+    },
+    {
+      "id": "eu-horizon-health",
+      "name": "EU Horizon Europe – Gesundheit (Cluster 1)",
+      "kategorie": "EU",
+      "frist": "2026-10-20",
+      "tage_bis_frist": 52,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders"
+    },
+    {
+      "id": "eu-horizon-culture",
+      "name": "EU Horizon Europe – Kultur/Gesellschaft (Cluster 2)",
+      "kategorie": "EU",
+      "frist": "2026-10-20",
+      "tage_bis_frist": 52,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders"
+    },
+    {
+      "id": "eu-horizon-security",
+      "name": "EU Horizon Europe – Zivile Sicherheit (Cluster 3)",
+      "kategorie": "EU",
+      "frist": "2026-10-20",
+      "tage_bis_frist": 52,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders"
+    },
+    {
+      "id": "eu-eic-pathfinder",
+      "name": "EIC Pathfinder Challenges (Horizon Europe)",
+      "kategorie": "EU",
+      "frist": "2026-10-28",
+      "tage_bis_frist": 60,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://eic.ec.europa.eu/eic-pathfinder"
+    },
+    {
+      "id": "hrz-it-infra",
+      "name": "DFG – IT-Infrastruktur für Forschung (HRZ)",
+      "kategorie": "DFG",
+      "frist": "2026-11-01",
+      "tage_bis_frist": 64,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/infrastruktur/wgi/foerderangebote/forschungsgrossgeraete"
+    },
+    {
+      "id": "eu-horizon-digital",
+      "name": "EU Horizon Europe – Digital/Industrie (Cluster 4)",
+      "kategorie": "EU",
+      "frist": "2026-11-08",
+      "tage_bis_frist": 71,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://ec.europa.eu/info/funding-tenders"
+    },
+    {
+      "id": "carl-zeiss-technik",
+      "name": "Carl-Zeiss-Stiftung – Technik/Ingenieurwissenschaften",
+      "kategorie": "Stiftung",
+      "frist": "2026-11-15",
+      "tage_bis_frist": 78,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.carl-zeiss-stiftung.de"
+    }
+  ],
+  "expired": [
+    {
+      "id": "erc-adg-2027",
+      "name": "ERC Advanced Grant (AdG) 2027",
+      "kategorie": "ERC",
+      "frist": "2026-08-27",
+      "tage_bis_frist": -2,
+      "rolling": false,
+      "status": "verifiziert",
+      "quelle": "https://erc.europa.eu/apply-grant/advanced-grants"
+    }
+  ],
+  "counts": {
+    "urgent": 6,
+    "upcoming": 21,
+    "expired": 1,
+    "rolling": 33
+  },
+  "neu_urgent": 6
+}

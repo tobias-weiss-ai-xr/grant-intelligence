@@ -9,6 +9,11 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **Frist-Benachrichtigungs-Pipeline (`deadline_digest.py`):** Strukturierter Digest (dringend ≤30d, anstehend ≤90d, abgelaufen, rolling) aus dem Katalog; persistiert als `deadline-digest.json`; Deduplizierung gegen den vorherigen Lauf (nur *neue* dringende Fristen werden gemeldet). CLI mit `--check` (nur ausgeben). 23 neue Tests.
+- **GitHub Action `deadline-check.yml`:** Wöchentlich (So 06:00 UTC) + manuell; berechnet und committet den Digest; öffnet/aktualisiert bei neuen dringenden Fristen ein GitHub Issue (Label `deadline-warning`).
+- **Dashboard-Panel „Frist-Radar“:** Tabelle der Fristen ≤90 Tage, farbcodiert (≤14d rot, ≤30d orange, >30d grün); neue Kennzahl-Karte „Dringend ≤ 30 Tage“ (rot bei >0).
+- **`sync-data.sh`:** Kopiert optional `deadline-digest.json` in `dashboard/data/`.
+- **`cron_check_expired.sh`:** Ruft zusätzlich `deadline_digest.py` auf (lokaler/systemd-Lauf erzeugt ebenfalls den Digest).
 - **Statisches GitHub-Pages-Dashboard:** `dashboard/` mit Alpine.js (15KB CDN) + Chart.js (70KB CDN). Kein Build-Step, kein Server. Katalog-Explorer (97 Programme, filterbar/sortierbar), Quellen-Browser (26 Quellen), Kategorie/Status/Deadline-Charts, Profil-Matcher (client-seitig, DSGVO-gefiltert). GitHub Action deployt auf Push zu `main`.
 - **`dashboard/sync-data.sh`:** Synchronisiert `mcp/*.json` → `dashboard/data/`; DSGVO-Filter (nur `einwilligung=true` + `status=aktiv`).
 - **Forscherprofil-Modell (`mcp/profile.py`):** `Profile`-Dataclass mit `id`, `name`, `karriere`, `themen`, `orcid`, `publikationen`, `einwilligung`, `status`, `standDatum`, `hinweis`. `from_dict`/`to_dict` mit camelCase-Mapping. `load_profiles()`/`save_profiles()` für Persistenz in `profiles.json`.

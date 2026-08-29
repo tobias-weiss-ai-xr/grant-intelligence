@@ -1,0 +1,80 @@
+name: Deadline Check
+
+on:
+  schedule:
+    - cron: '0 6 * * 0'   # Sonntag 06:00 UTC (Empfehlung aus cron_check_expired.sh)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: deadline
+  cancel-in-progress: false
+
+jobs:
+  deadline-digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Compute deadline digest
+        run: python mcp/deadline_digest.py --out mcp/deadline-digest.json
+
+      - name: Commit digest (if changed)
+        run: |
+          git add mcp/deadline-digest.json
+          if git diff --cached --quiet; then
+            echo "No digest changes."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: deadline digest $(date -u +%Y-%m-%d)"
+            git push
+            echo "Digest committed."
+          fi
+
+      - name: Open/update issue for new urgent deadlines
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NEW=$(python -c "import json; print(json.load(open('mcp/deadline-digest.json')).get('neu_urgent', 0))")
+          if [ "$NEW" = "0" ] || [ -z "$NEW" ]; then
+            echo "No new urgent deadlines — no issue needed."
+            exit 0
+          fi
+
+          # Label sicherstellen
+          gh label create deadline-warning \
+            --color "B85D00" \
+            --description "Dringende Frist-Warnung" >/dev/null 2>&1 || true
+
+          BODY=$(python - <<'PY'
+import json
+d = json.load(open('mcp/deadline-digest.json'))
+lines = ['## 🔴 Neue dringende Fristen (seit letztem Lauf)', '', '| ID | Programm | Kategorie | Frist | Tage | Status |', '|---|---|---|---|---|---|']
+for e in d['urgent']:
+    lines.append(f"| {e['id']} | {e['name']} | {e['kategorie']} | {e['frist']} | {e['tage_bis_frist']} | {e['status']} |")
+lines.append('')
+lines.append('_Stand: ' + d.get('stand', '?') + ' · Quelle im [Katalog](mcp/catalog.json)._')
+print('\n'.join(lines))
+PY
+          )
+
+          EXISTING=$(gh issue list --label deadline-warning --state open \
+            --json number --jq '.[0].number' 2>/dev/null || true)
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "$BODY"
+            echo "Updated existing issue #$EXISTING."
+          else
+            gh issue create \
+              --title "🔴 Frist-Warnung: $NEW neue dringende Frist(en)" \
+              --label deadline-warning \
+              --body "$BODY"
+            echo "Created new issue."
+          fi

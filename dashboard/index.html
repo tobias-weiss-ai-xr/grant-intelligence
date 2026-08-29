@@ -177,7 +177,38 @@
       </nav>
     </section>
 
-    <!-- 3. Statistics (Übersicht & Diagramme) -->
+    <!-- 3. Deadlines (Frist-Radar) -->
+    <section class="deadline-radar" aria-label="Frist-Radar">
+      <h2>Frist-Radar <span class="count" x-text="'(' + upcomingDeadlines.length + ')'"></span></h2>
+      <p class="hint">Fristen der nächsten 90 Tage, sortiert nach Datum. Rot = &le;14 Tage, Orange = &le;30 Tage.</p>
+      <p class="empty" x-show="upcomingDeadlines.length === 0">Keine Fristen in den nächsten 90 Tagen.</p>
+      <table class="deadline-table" x-show="upcomingDeadlines.length > 0">
+        <thead>
+          <tr>
+            <th scope="col">Programm</th>
+            <th scope="col">Kategorie</th>
+            <th scope="col">Frist</th>
+            <th scope="col">Tage</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template x-for="p in upcomingDeadlines" :key="p.id">
+            <tr :class="deadlineClass(p)">
+              <td x-text="p.name"></td>
+              <td><span class="badge" x-text="p.kategorie"></span></td>
+              <td x-text="p.frist"></td>
+              <td x-text="deadlineDays(p)"></td>
+              <td>
+                <span class="badge" :class="'status-' + p.status" x-text="p.status"></span>
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 4. Statistics (Übersicht & Diagramme) -->
     <section class="cards" aria-label="Übersicht">
       <div class="card">
         <span class="card-number" x-text="catalog.length"></span>
@@ -194,6 +225,10 @@
       <div class="card">
         <span class="card-number" x-text="upcomingDeadlines.length"></span>
         <span class="card-label">Fristen ≤ 90 Tage</span>
+      </div>
+      <div class="card">
+        <span class="card-number" :class="{ 'card-danger': urgentDeadlines.length > 0 }" x-text="urgentDeadlines.length"></span>
+        <span class="card-label">Dringend ≤ 30 Tage</span>
       </div>
       <div class="card">
         <span class="card-number" x-text="rollingCount"></span>

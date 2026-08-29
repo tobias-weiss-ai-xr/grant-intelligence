@@ -174,6 +174,9 @@ Details & Aufbau: [`docs/Dashboard.md`](docs/Dashboard.md).
 # Fristen-Prüfung (wöchentlich per Cron)
 python3 mcp/update_catalog.py --check-expired
 
+# Frist-Digest (dringend ≤30d / anstehend ≤90d, dedupliziert)
+python3 mcp/deadline_digest.py
+
 # Manuelles Portal-Update (monatlich)
 python3 mcp/update_catalog.py --validate
 
@@ -183,8 +186,12 @@ python3 mcp/export.py --format csv --out docs/export.csv
 
 **Cron-Beispiel:**
 ```
-0 6 * * 0  cd /opt/git/grant-intelligence/mcp && python3 update_catalog.py --check-expired
+0 6 * * 0  cd /opt/git/grant-intelligence/mcp && python3 update_catalog.py --check-expired && python3 deadline_digest.py
 ```
+
+**Automatisiert (GitHub Action `deadline-check.yml`):** wöchentlich (So 06:00 UTC)
++ manuell; committet `mcp/deadline-digest.json` und öffnet ein GitHub Issue bei
+neuen dringenden Fristen (Label `deadline-warning`).
 
 ## Ingestion-Pipeline
 
