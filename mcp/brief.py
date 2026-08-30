@@ -35,7 +35,14 @@ def _zeile(r: MatchResult) -> str:
         if r.tage_bis_frist is not None
         else ("Rolling" if r.rolling else "—")
     )
-    return f"| {r.name} | {r.kategorie} | {r.score}/5 | {frist} | {r.begruendung} |"
+    # Score transparenter machen: echte Maxima + Komponenten (wenn vorhanden)
+    if r.punkte:
+        max_ges = sum(c.get("max", 0) for c in r.punkte)
+        teile = " · ".join(f"{c['name']} {c['punkte']}/{c['max']}" for c in r.punkte)
+        score = f"{r.score}/{max_ges} ({teile})"
+    else:
+        score = f"{r.score}/4"
+    return f"| {r.name} | {r.kategorie} | {score} | {frist} | {r.begruendung} |"
 
 
 def generate(

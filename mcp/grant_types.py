@@ -255,6 +255,9 @@ class MatchResult:
     stand_datum: str
     begruendung: str
     tage_bis_frist: int | None = None
+    # Strukturierte Punkte-Aufschlüsselung (Transparenz, additiv):
+    # [{"name": "Thema", "punkte": 2, "max": 3, "detail": ...}, ...]
+    punkte: list[dict[str, Any]] | None = None
 
 
 @dataclass

@@ -56,6 +56,7 @@ def _serialize(r: MatchResult) -> dict[str, Any]:
         "standDatum": r.stand_datum,
         "begruendung": r.begruendung,
         "tageBisFrist": r.tage_bis_frist,
+        "punkte": r.punkte,
     }
 
 

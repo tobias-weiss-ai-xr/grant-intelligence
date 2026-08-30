@@ -353,3 +353,99 @@ class TestKatalogInvarianten:
                 assert prog.get("frist") is None, (
                     f"{prog.get('id')}: rolling=true mit frist={prog.get('frist')}"
                 )
+
+
+# =============================================================================
+# 5. Transparenz: strukturierte Punkte-Aufschlüsselung
+# =============================================================================
+
+
+class TestPunkteTransparenz:
+    def _top(self, felder=("Biologie", "Medizin")):
+        katalog = load_catalog()
+        return match_profile(katalog, list(felder), "postdoc", top=10)
+
+    def test_punkte_zusammensetzung_gleich_gesamt(self):
+        """Summe der Komponenten == gesamt; Max korrekt."""
+        for r in self._top():
+            assert r.punkte is not None
+            assert sum(c["punkte"] for c in r.punkte) == r.score
+            assert sum(c["max"] for c in r.punkte) == 4
+            names = [c["name"] for c in r.punkte]
+            assert names == ["Thema", "Karriere"]
+
+    def test_punkte_detail_felder(self):
+        """Thema-Detail listet die getroffenen Felder."""
+        r = self._top()[0]
+        thema = next(c for c in r.punkte if c["name"] == "Thema")
+        if thema["punkte"] > 0:
+            assert thema["detail"]  # nicht leer
+
+    def test_punkte_karriere_detail(self):
+        """Karriere-Detail nur gesetzt, wenn Karrierepunkt vergeben."""
+        r = self._top()[0]
+        karriere = next(c for c in r.punkte if c["name"] == "Karriere")
+        if karriere["punkte"]:
+            assert karriere["detail"] is not None
+        else:
+            assert karriere["detail"] is None
+
+    def test_next_deadline_uebernimmt_punkte(self):
+        katalog = load_catalog()
+        r = next_deadline(katalog, ["Biologie"], "postdoc", top=3)
+        assert all(x.punkte is not None for x in r if x.frist)
+
+    def test_serialize_enthaelt_punkte(self):
+        """MCP-Serialisierung exponiert die Aufschlüsselung."""
+        from server import _serialize
+        from grant_types import MatchResult
+
+        mr = MatchResult(
+            id="x", name="X", kategorie="DFG", score=3, frist=None,
+            rolling=False, status="laufend", quelle="", stand_datum="",
+            begruendung="",
+            punkte=[{"name": "Thema", "punkte": 2, "max": 3, "detail": "Bio"},
+                    {"name": "Karriere", "punkte": 1, "max": 1, "detail": None}],
+        )
+        d = _serialize(mr)
+        assert d["punkte"] == mr.punkte
+
+    def test_brief_row_zeigt_transparenten_score(self):
+        """Brief-Zeile: echte Maxima + Komponenten statt /5."""
+        from brief import _zeile
+        from grant_types import MatchResult
+
+        mr = MatchResult(
+            id="x", name="X", kategorie="DFG", score=3, frist=None,
+            rolling=False, status="laufend", quelle="", stand_datum="",
+            begruendung="Begründungstext",
+            punkte=[{"name": "Thema", "punkte": 2, "max": 3, "detail": "Bio"},
+                    {"name": "Karriere", "punkte": 1, "max": 1, "detail": None}],
+        )
+        line = _zeile(mr)
+        assert "3/4" in line
+        assert "Thema 2/3" in line and "Karriere 1/1" in line
+        assert "/5" not in line
+
+    def test_punkte_ohne_breakdown_faellt_zurueck(self):
+        """Ohne punkte (z. B. Alt-Daten) bleibt /4 als Fallback."""
+        from brief import _zeile
+        from grant_types import MatchResult
+
+        mr = MatchResult(
+            id="x", name="X", kategorie="DFG", score=1, frist=None,
+            rolling=False, status="laufend", quelle="", stand_datum="",
+            begruendung="", punkte=None,
+        )
+        assert "/4" in _zeile(mr) and "/5" not in _zeile(mr)
+
+    def test_punkte_leer_bei_keinem_match(self):
+        """Ohne Matches keine punkte (leere Liste)."""
+        assert match_profile([], ["Biologie"], "postdoc") == []
+
+    def test_punkte_deterministisch(self):
+        """Gleiche Eingabe -> identische punkte (kein RNG)."""
+        katalog = load_catalog()
+        a = match_profile(katalog, ["Biologie"], "postdoc", top=5)
+        b = match_profile(katalog, ["Biologie"], "postdoc", top=5)
+        assert [r.punkte for r in a] == [r.punkte for r in b]

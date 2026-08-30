@@ -211,6 +211,38 @@ def _score(prog: dict[str, Any], fields: list[str], karriere: str | None) -> dic
     return {"gesamt": t + k, "thema": t, "karriere": k, "felder": hits}
 
 
+def _punkte_teile(parts: dict[str, Any]) -> list[dict[str, Any]]:
+    """Strukturierte Punkte-Aufschlüsselung (Transparenz, ändert den Score nicht).
+
+    Macht begründbar, woraus sich der Gesamt-Score zusammensetzt. Additiv zu
+    `_score`: der berechnete Score bleibt unverändert, zusätzlich werden die
+    Komponenten (Name, Punkte, Max, Detail) als strukturierte Daten exponiert.
+
+    Args:
+        parts: Score-Breakdown aus `_score`.
+
+    Returns:
+        Liste von Komponenten {"name", "punkte", "max", "detail"}.
+    """
+    thema_detail = ", ".join(parts.get("felder", [])) or None
+    return [
+        {
+            "name": "Thema",
+            "punkte": parts.get("thema", 0),
+            "max": 3,
+            "detail": thema_detail,
+        },
+        {
+            "name": "Karriere",
+            "punkte": parts.get("karriere", 0),
+            "max": 1,
+            "detail": "Karrierestufe im Programm gelistet"
+            if parts.get("karriere")
+            else None,
+        },
+    ]
+
+
 def _frist_text(frist: str | None, rolling: bool) -> str:
     """Generate human-readable deadline text.
 
@@ -356,6 +388,7 @@ def match_profile(
             quelle=p.get("quelle", ""),
             stand_datum=p.get("standDatum", ""),
             begruendung=begruendung,
+            punkte=_punkte_teile(parts),
         )
         scored.append(result)
 
@@ -412,6 +445,7 @@ def next_deadline(
                 stand_datum=r.stand_datum,
                 begruendung=r.begruendung,
                 tage_bis_frist=delta,
+                punkte=r.punkte,
             )
         )
     return out
