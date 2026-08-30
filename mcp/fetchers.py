@@ -13,7 +13,6 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
@@ -23,6 +22,11 @@ import httpx
 
 from grant_types import parse_frist
 from match import load_catalog as _load_catalog, load_sources as _load_sources
+from parsers import parse_bmbf_rss, slug_id
+
+# Rückwärtskompatibilität: _slug_id bleibt als Alias nutzbar (genutzt von
+# ingest.py und Testcode); die Wahrheit lebt in parsers.slug_id.
+_slug_id = slug_id
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")
 log = logging.getLogger(__name__)
@@ -164,24 +168,6 @@ def fetch_eu_horizon() -> ProgrammeUpdate:
     return ProgrammeUpdate(source, programmes, errors, datetime.now().isoformat(), suggestions)
 
 
-def _slug_id(source: str, title: str) -> str:
-    """Deterministic programme id from source and title.
-
-    Re-fetching the same RSS item produces the same id (upsert-safe),
-    unlike timestamp-based ids which would duplicate entries.
-
-    Args:
-        source: Source identifier (e.g. "bmbf").
-        title: Item title.
-
-    Returns:
-        Slugified id like "bmbf-<slug>".
-    """
-    slug = "".join(c if c.isalnum() else "-" for c in title.lower()).strip("-")
-    slug = "-".join(part for part in slug.split("--") if part)[:60].rstrip("-")
-    return f"{source}-{slug}"
-
-
 def fetch_bmbf_rss() -> ProgrammeUpdate:
     """Attempt to fetch BMBF RSS feed if available.
 
@@ -199,20 +185,10 @@ def fetch_bmbf_rss() -> ProgrammeUpdate:
         log.info(f"{source}: Attempting RSS from {rss_url}")
         resp = httpx.get(rss_url, timeout=10)
         if resp.status_code == 200:
-            root = ET.fromstring(resp.content)
-            for item in root.findall(".//item"):
-                title = item.find("title")
-                link = item.find("link")
-                if title is not None and title.text:
-                    programmes.append(
-                        {
-                            "id": _slug_id(source, title.text),
-                            "name": title.text,
-                            "quelle": link.text if link is not None else rss_url,
-                            "standDatum": datetime.now().isoformat()[:10],
-                            "hinweis": "Automatically imported from RSS - manual verification required",
-                        }
-                    )
+            for partial in parse_bmbf_rss(resp.content, rss_url, source):
+                # Zeitbezug gehört zur Abruf-Schicht (Wann war der Fetch?)
+                partial["standDatum"] = datetime.now().isoformat()[:10]
+                programmes.append(partial)
             log.info(f"{source}: {len(programmes)} items in RSS feed")
         else:
             log.info(f"{source}: RSS not available (Status {resp.status_code})")
