@@ -10,6 +10,8 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 - **Frist-Benachrichtigungs-Pipeline (`deadline_digest.py`):** Strukturierter Digest (dringend ≤30d, anstehend ≤90d, abgelaufen, rolling) aus dem Katalog; persistiert als `deadline-digest.json`; Deduplizierung gegen den vorherigen Lauf (nur *neue* dringende Fristen werden gemeldet). CLI mit `--check` (nur ausgeben). 23 neue Tests.
+- **Katalog-Qualitätsgate (`catalog_lint.py`):** Datenintegritäts-Lint als Nebenläufer zur Link-Prüfung (verify_sources). FAIL-Regeln: fehlende id/name/hinweis/quelle, ungültige kategorie/status/frist, `budget=0` statt `null`, `rolling` mit Frist, doppelte ids. WARN-Regeln: abgelaufene Frist, alter `standDatum` bei `verifiziert` (>60d). CLI mit `--report` (JSON) und `--fail` (Exit 1). 22 neue Tests. GitHub Action `catalog-lint.yml` (wöchentlich So 08:00 UTC + bei Katalog-Änderung), Report als Artifact.
+- **Daten-Fix `erc-adg-2027`:** abgelaufene Frist (2026-08-27) ehrlich korrigiert (`frist=null`, `status=zu-pruefen`, frisches `standDatum`, Hinweis ohne „Rolling“-Fehlangabe, Verweis auf Portal-Check ds nächsten Calls).
 - **GitHub Action `deadline-check.yml`:** Wöchentlich (So 06:00 UTC) + manuell; berechnet und committet den Digest; öffnet/aktualisiert bei neuen dringenden Fristen ein GitHub Issue (Label `deadline-warning`).
 - **Dashboard-Panel „Frist-Radar“:** Tabelle der Fristen ≤90 Tage, farbcodiert (≤14d rot, ≤30d orange, >30d grün); neue Kennzahl-Karte „Dringend ≤ 30 Tage“ (rot bei >0).
 - **`sync-data.sh`:** Kopiert optional `deadline-digest.json` in `dashboard/data/`.

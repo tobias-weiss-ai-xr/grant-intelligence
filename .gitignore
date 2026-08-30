@@ -23,3 +23,6 @@ data/local/*
 
 # verify_sources.py audit report (generated)
 verify-sources-report.json
+
+# catalog_lint.py report (generated)
+catalog-lint-report.json

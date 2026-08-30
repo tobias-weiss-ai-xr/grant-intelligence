@@ -43,12 +43,12 @@
       "budget_min": null,
       "budget_max": 2500000,
       "dauerJahre": 5,
-      "frist": "2026-08-27",
+      "frist": null,
       "rolling": false,
-      "status": "verifiziert",
+      "status": "zu-pruefen",
       "quelle": "https://erc.europa.eu/apply-grant/advanced-grants",
-      "standDatum": "2026-08-03",
-      "hinweis": "ERC Advanced Grant. Etablierte Forscherpersoenlichkeiten. Alle Disziplinen. Rolling."
+      "standDatum": "2026-08-29",
+      "hinweis": "ERC Advanced Grant. Etablierte Forscherpersoenlichkeiten, alle Disziplinen. Frist 2026 (27.08.2026) abgelaufen – Datum des naechsten Calls gegen das ERC-Portal pruefen."
     },
     {
       "id": "erc-syg-2027",

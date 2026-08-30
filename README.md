@@ -177,6 +177,9 @@ python3 mcp/update_catalog.py --check-expired
 # Frist-Digest (dringend ≤30d / anstehend ≤90d, dedupliziert)
 python3 mcp/deadline_digest.py
 
+# Katalog-Qualitätsgate (Datenintegrität; --fail für CI)
+python3 mcp/catalog_lint.py --fail
+
 # Manuelles Portal-Update (monatlich)
 python3 mcp/update_catalog.py --validate
 

@@ -1,0 +1,37 @@
+name: Catalog Lint
+
+on:
+  schedule:
+    # Sonntag 08:00 UTC (nach dem Frist-Digest um 06:00)
+    - cron: '0 8 * * 0'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'mcp/catalog.json'
+      - 'mcp/catalog_lint.py'
+      - '.github/workflows/catalog-lint.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Lint catalog (data-integrity gate)
+        run: python mcp/catalog_lint.py --catalog mcp/catalog.json --report catalog-lint-report.json --fail
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-lint-report
+          path: catalog-lint-report.json
+          if-no-files-found: warn
