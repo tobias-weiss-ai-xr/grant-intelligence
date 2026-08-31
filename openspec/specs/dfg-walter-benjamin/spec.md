@@ -8,7 +8,7 @@ Requirements derived from grant catalog expansion changes.
 
 # Spec: DFG Walter Benjamin Programme
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: R1: DFG Walter Benjamin entry in catalog.json
 The catalog.json MUST include a `dfg-walter-benjamin` programme entry.

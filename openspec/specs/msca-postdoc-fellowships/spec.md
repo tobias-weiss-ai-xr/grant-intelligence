@@ -8,7 +8,7 @@ Requirements derived from grant catalog expansion changes.
 
 # Spec: MSCA Postdoctoral Fellowships
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: R1 — MSCA Postdoctoral Fellowships entry
 The catalog.json MUST include a `msca-pf` programme entry for the MSCA Postdoctoral Fellowships action (max 8 years post-PhD, European + Global, all disciplines).

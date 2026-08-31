@@ -8,7 +8,7 @@ Requirements derived from grant catalog expansion changes.
 
 # Spec: ERC Consolidator Grant + Proof of Concept
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: R1: ERC Consolidator Grant (CoG) entry
 The catalog.json MUST include an `erc-cog-2027` programme entry.

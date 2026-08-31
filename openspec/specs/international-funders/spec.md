@@ -8,7 +8,7 @@ Requirements derived from grant catalog expansion changes.
 
 # Spec: International Funders
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: R1 — NSF entry
 The catalog.json MUST include a `nsf-international` programme entry for US National Science Foundation international collaboration (postdoc+junior+prof, partner role).

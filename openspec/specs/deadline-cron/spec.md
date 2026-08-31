@@ -6,7 +6,7 @@ Requirements derived from initial grant catalog expansion (expand-grant-sources 
 
 ---
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Cron wrapper script
 The system SHALL provide a shell script `mcp/cron_check_expired.sh` that runs

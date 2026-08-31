@@ -6,7 +6,7 @@ Requirements derived from initial grant catalog expansion (expand-grant-sources 
 
 ---
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Deutschlandstipendium programme entry
 The system SHALL include a `deutschlandstipendium` programme entry in the catalog

@@ -8,7 +8,7 @@ Requirements derived from grant catalog expansion changes.
 
 # Spec: DFG Koordinierte Programme
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: R1 — DFG Forschungsgruppen entry
 The catalog.json MUST include a `dfg-forschungsgruppen` programme entry for 5-year collaborative research groups (postdoc+junior+prof).

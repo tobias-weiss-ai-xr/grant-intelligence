@@ -6,7 +6,7 @@ Requirements derived from initial grant catalog expansion (expand-grant-sources 
 
 ---
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Fetchers produce valid Programme records
 The fetchers (`fetch_cost`, `fetch_eu_horizon`, `fetch_bmbf_rss`) SHALL produce

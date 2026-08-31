@@ -8,7 +8,7 @@ Requirements derived from grant catalog expansion changes.
 
 # Spec: Land Extra
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: R1 — NRW MWK Wissenschaft entry
 The catalog.json MUST include a `nrw-mwk-wissenschaft` programme entry for NRW state research funding (postdoc+junior+prof, all disciplines).

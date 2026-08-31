@@ -2,11 +2,11 @@
 
 ## Purpose
 
-Requirements derived from initial grant catalog expansion (expand-grant-sources change).
+Requirements derived from initial grant catalog expansion for PhD and graduate college funding programmes.
 
 ---
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: DFG IRTG programme entry
 The system SHALL include a `dfg-irtg` (International Research Training Group)
@@ -18,14 +18,7 @@ The `hinweis` field SHALL note that IRTGs are bilateral and location-specific.
 - **WHEN** `match_profile()` is called with `karriere="junior"` and any field.
 - **THEN** `dfg-irtg` SHALL appear in results.
 
-### Requirement: DFG Graduate School programme entry
-The system SHALL include a `dfg-graduate-school` programme entry with
-`kategorie="DFG"`, `karriere=["student", "junior"]`, `themen=["thematisch-offen"]`,
-`rolling=False`, and `status="zu-pruefen"`.
 
-#### Scenario: DFG Graduate School visible for PhD students
-- **WHEN** `match_profile()` is called with `karriere="junior"`.
-- **THEN** `dfg-graduate-school` SHALL appear in results.
 
 ### Requirement: Marie Skłodowska-Curie ITN entry
 The system SHALL include an `msc-itn` (Marie Skłodowska-Curie Innovative
