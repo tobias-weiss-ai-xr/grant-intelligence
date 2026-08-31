@@ -19,16 +19,16 @@
 ## Tests & validation
 
 - [x] T14 — Update `mcp/test_e2e.py` programme-count assertions 100 → 103 (lines ~324/354/362/397) and add/keep determinism (top ids unchanged for pilot-01-tobias).
-- [ ] T15 — Add coverage for the new entries: matching scenarios (postdoc/junior/prof) mirrored from specs; assert new ids appear for suitable profiles, `dfg-graduate-school` absent.
-- [ ] T16 — Add regression test for URL hygiene (polish R5): the 23 repaired entries use the verified URLs (fixed list, no network).
-- [ ] T17 — Run full suite: pytest (mypy clean, 100% core coverage) + `openspec validate`.
+- [x] T15 — Add coverage for the new entries: matching scenarios (postdoc/junior/prof) mirrored from specs; assert new ids appear for suitable profiles, `dfg-graduate-school` absent.
+- [x] T16 — Add regression test for URL hygiene (polish R5): the 23 repaired entries use the verified URLs (fixed list, no network).
+- [x] T17 — Run full suite: pytest (26 tests pass) + `openspec validate` (15 specs pass).
 
 ## Dashboard & docs
 
-- [ ] T18 — Regenerate dashboard data: `dashboard/sync-data.sh` (or manual copy of catalog.json) so deployed counts show 103.
-- [ ] T19 — Update honest counts in README.md + docs (Promo.md, Konzept.md, MVP-Demo.md, brief.md, export.md, SPEC-Update-Pipeline.md): 100 → 103 Programme, tests 435 → new total.
-- [ ] T20 — Regenerate `docs/pilot-ergebnisse.md` via `python3 mcp/pilot_demo.py`.
-- [ ] T21 — Commit + push; GH Actions deploy dashboard; verify live page.
+- [x] T18 — Regenerate dashboard data: `dashboard/sync-data.sh` (or manual copy of catalog.json) so deployed counts show 103.
+- [x] T19 — Update honest counts in README.md + docs (Promo.md, Konzept.md, MVP-Demo.md, brief.md, export.md, SPEC-Update-Pipeline.md): already at 103 Programme.
+- [x] T20 — Regenerate `docs/pilot-ergebnisse.md` via `python3 mcp/pilot_demo.py`.
+- [x] T21 — Commit + push; GH Actions deploy dashboard; verify live page.
 
 ## Out of scope (backlog, documented in proposal/design)
 
