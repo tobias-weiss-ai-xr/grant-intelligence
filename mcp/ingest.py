@@ -21,20 +21,19 @@ import argparse
 import json
 import logging
 import sys
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import httpx
 
 from fetchers import (
-    ProgrammeUpdate,
     _CATEGORY_MAP,
-    _enrich_programme,
+    ProgrammeUpdate,
     apply_fetch_updates,
 )
-from grant_types import Programm
 from parsers import slug_id as _slug_id
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s: %(message)s")

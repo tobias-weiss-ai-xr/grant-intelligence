@@ -22,9 +22,16 @@ from hypothesis import given, settings
 from hypothesis import strategies as st
 
 from grant_types import Kategorie, Programm
-from match import _begruendung, _fits, _score, load_catalog, match_profile, next_deadline, save_catalog
-from match import CatalogError
-
+from match import (
+    CatalogError,
+    _begruendung,
+    _fits,
+    _score,
+    load_catalog,
+    match_profile,
+    next_deadline,
+    save_catalog,
+)
 
 # =============================================================================
 # 1. Property-based Tests (Hypothesis)
@@ -135,7 +142,7 @@ class TestFuzz:
         parts = _score(prog, ["Biologie"], "postdoc")
         _begruendung(prog, parts)
         # Auch im Katalog-Kontext: kaputtes Dict stört das Matching nicht
-        match_profile([prog] + katalog, ["Biologie"], "postdoc", top=5)
+        match_profile([prog, *katalog], ["Biologie"], "postdoc", top=5)
 
     @given(st.text(max_size=200))
     @settings(max_examples=100, deadline=None)
@@ -397,8 +404,8 @@ class TestPunkteTransparenz:
 
     def test_serialize_enthaelt_punkte(self):
         """MCP-Serialisierung exponiert die Aufschlüsselung."""
-        from server import _serialize
         from grant_types import MatchResult
+        from server import _serialize
 
         mr = MatchResult(
             id="x", name="X", kategorie="DFG", score=3, frist=None,

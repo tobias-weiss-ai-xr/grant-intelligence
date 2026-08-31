@@ -97,9 +97,8 @@ class TestExport:
 
     def test_cli_stdout(self):
         """CLI --out - writes to stdout."""
-        import io
-        import sys
         import subprocess
+        import sys
         result = subprocess.run(
             [sys.executable, "export.py", "--format", "csv", "--out", "-"],
             capture_output=True, text=True, cwd=str(Path(__file__).parent),

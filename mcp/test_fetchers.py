@@ -357,7 +357,6 @@ class TestSlugId:
 class TestApplyFetchUpdatesAdditional:
     def test_catalog_load_error(self, tmp_path):
         """Corrupt catalog JSON → error status."""
-        import json
         bad = tmp_path / "bad.json"
         bad.write_text("{not json}")
         result = fetchers.apply_fetch_updates([], catalog_path=bad)
@@ -482,7 +481,6 @@ class TestFetchersMain:
 
     def test_main_bmbf(self, monkeypatch, capsys, tmp_path):
         """fetchers.py main() with --source bmbf."""
-        import json as _json
         import sys
         # Mock apply_fetch_updates to avoid writing to real catalog
         # (its default catalog_path is evaluated at import time)

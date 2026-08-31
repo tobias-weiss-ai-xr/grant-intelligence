@@ -14,10 +14,10 @@ from __future__ import annotations
 import argparse
 import sys
 from datetime import date
+from profile import get_profile_by_id
 
 from grant_types import MatchResult
 from match import load_catalog, match_profile, next_deadline
-from profile import get_profile_by_id
 from saia import erweiterte_begruendung
 
 
@@ -127,7 +127,7 @@ def generate(
             if zusatz:
                 zusatz_zeilen.append(f"- **{r.name}:** {zusatz}")
         if zusatz_zeilen:
-            lines += ["## KI-Begruendungen (SAIA)", ""] + zusatz_zeilen + [""]
+            lines += ["## KI-Begruendungen (SAIA)", "", *zusatz_zeilen, ""]
 
     # Warnings section
     if warn:

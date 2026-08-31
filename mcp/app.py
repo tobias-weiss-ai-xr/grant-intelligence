@@ -19,13 +19,13 @@ import html
 import logging
 from dataclasses import dataclass
 from datetime import date
+from profile import load_profiles
 
 from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse
 
 from grant_types import parse_frist
 from match import load_catalog, match_profile
-from profile import Profile, load_profiles
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)

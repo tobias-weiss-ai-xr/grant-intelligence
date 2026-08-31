@@ -6,7 +6,6 @@ browser stage is disabled (browser=False) so no Playwright is needed.
 import json
 from unittest import mock
 
-import pytest
 import requests
 
 import verify_sources as vs
@@ -82,7 +81,7 @@ def test_run_rate_limit_is_botblock_not_broken(tmp_path):
     cat = {"programme": [{"id": "r", "quelle": "https://rate.example/r"}]}
     cfg = _write_cfg(tmp_path, cat)
     with mock.patch("requests.get", side_effect=_fake_get):
-        totals, results, status = vs.run(cfg, str(tmp_path / "x.json"))
+        totals, _, status = vs.run(cfg, str(tmp_path / "x.json"))
     assert totals["broken"] == 0 and totals["botblock"] == 1 and status == 0
 
 
@@ -100,7 +99,7 @@ def test_run_fails_early_sets_status_on_broken(tmp_path):
     }
     (tmp_path / "catalog.json").write_text(json.dumps(cat))
     with mock.patch("requests.get", side_effect=_fake_get):
-        totals, results, status = vs.run(cfg, str(tmp_path / "x.json"))
+        _, results, status = vs.run(cfg, str(tmp_path / "x.json"))
     assert status == 1
     assert any(r.verdict == "broken" for r in results)
 
@@ -119,7 +118,7 @@ def test_run_no_fail_early_collects_all(tmp_path):
     }
     (tmp_path / "catalog.json").write_text(json.dumps(cat))
     with mock.patch("requests.get", side_effect=_fake_get):
-        totals, results, status = vs.run(cfg, str(tmp_path / "x.json"))
+        _, results, status = vs.run(cfg, str(tmp_path / "x.json"))
     assert status == 1
     assert len(results) == 2  # with --no-fail-early every link is still checked
 
@@ -153,7 +152,7 @@ def test_run_end_to_end_counts_and_fails(tmp_path):
     ]}
     cfg = _write_cfg(tmp_path, cat)
     with mock.patch("requests.get", side_effect=_fake_get):
-        totals, results, status = vs.run(cfg, str(tmp_path / "x.json"))
+        totals, _, status = vs.run(cfg, str(tmp_path / "x.json"))
     assert totals["ok"] == 1 and totals["broken"] == 1 and totals["botblock"] == 1
     assert status == 1  # broken -> fail
 
@@ -162,7 +161,7 @@ def test_run_botblock_does_not_fail(tmp_path):
     cat = {"programme": [{"id": "c", "quelle": "https://block.example/c"}]}
     cfg = _write_cfg(tmp_path, cat)
     with mock.patch("requests.get", side_effect=_fake_get):
-        totals, results, status = vs.run(cfg, str(tmp_path / "x.json"))
+        totals, _, status = vs.run(cfg, str(tmp_path / "x.json"))
     assert totals["broken"] == 0
     assert status == 0  # only bot-block -> ok
 
@@ -181,5 +180,6 @@ def test_main_no_fail_override(tmp_path, capsys):
     assert rc == 0  # --no-fail overrides fail_on_broken
     # main() also writes the JSON report
     assert (tmp_path / "r.json").exists()
-    rep = json.load(open(tmp_path / "r.json"))
+    with open(tmp_path / "r.json", encoding="utf-8") as _f:
+        rep = json.load(_f)
     assert rep["totals"]["broken"] == 1

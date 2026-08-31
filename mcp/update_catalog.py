@@ -19,7 +19,6 @@ from datetime import date
 from pathlib import Path
 
 import fetchers
-
 from grant_types import Programm, parse_frist
 from match import load_catalog_doc as _load_catalog_doc
 from match import load_sources as _load_sources

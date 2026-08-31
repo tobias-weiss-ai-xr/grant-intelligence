@@ -15,11 +15,11 @@ import re
 from dataclasses import asdict, dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import httpx
 
-from grant_types import Karrierestufe, parse_frist
+from grant_types import Karrierestufe
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
@@ -87,7 +87,7 @@ class Profile:
     hinweis: str = ""
 
     # Valid profile status values (distinct from programme Status enum)
-    _VALID_STATUS = {"aktiv", "inaktiv"}
+    _VALID_STATUS: ClassVar[set[str]] = {"aktiv", "inaktiv"}
 
     def __post_init__(self) -> None:
         """Validate required fields and enum membership.

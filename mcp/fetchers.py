@@ -21,7 +21,8 @@ from typing import Any
 import httpx
 
 from grant_types import parse_frist
-from match import load_catalog as _load_catalog, load_sources as _load_sources
+from match import load_catalog as _load_catalog
+from match import load_sources as _load_sources
 from parsers import parse_bmbf_rss, slug_id
 
 # Rückwärtskompatibilität: _slug_id bleibt als Alias nutzbar (genutzt von
@@ -416,7 +417,7 @@ def apply_fetch_updates(
         audit_entry = (
             f"## {datetime.now().isoformat()} – Fetch Pipeline\n\n"
             + "\n".join(f"- {r}" for r in source_reports)
-            + (f"\n\nErrors:\n" + "\n".join(f"- {e}" for e in all_errors) if all_errors else "")
+            + ("\n\nErrors:\n" + "\n".join(f"- {e}" for e in all_errors) if all_errors else "")
             + "\n"
         )
         try:

@@ -17,8 +17,9 @@ from pathlib import Path
 # Ensure mcp/ is on the path
 sys.path.insert(0, str(Path(__file__).parent))
 
+from profile import load_profiles
+
 from match import load_catalog, match_profile, next_deadline
-from profile import Profile, load_profiles
 
 
 def generate_pilot_results() -> str:
@@ -35,7 +36,7 @@ def generate_pilot_results() -> str:
         "# Pilot-Ergebnisse – Förder-Radar",
         "",
         f"**Stand:** {today} · Katalog: {len(programmes)} Programme",
-        f"**Pilot-Fakultät:** Philipps-Universität Marburg, Fachbereich Mathematik",
+        "**Pilot-Fakultät:** Philipps-Universität Marburg, Fachbereich Mathematik",
         f"**Profile:** {len(profiles)} ({sum(1 for p in profiles if p.einwilligung)} mit Einwilligung)",
         "",
         "---",

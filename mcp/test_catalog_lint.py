@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import pytest
-
 import json
 import sys
 from datetime import date, timedelta
+
+import pytest
 
 import catalog_lint as cl
 

@@ -17,13 +17,13 @@ Usage:
 from __future__ import annotations
 
 import logging
+from profile import get_profile_by_id, load_profiles
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
 from grant_types import MatchResult, Programm
 from match import load_catalog, match_profile, next_deadline, save_catalog
-from profile import Profile, get_profile_by_id, load_profiles
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)

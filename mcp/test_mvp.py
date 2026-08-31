@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from datetime import date, datetime
 from pathlib import Path
+from typing import ClassVar
 
 import pytest
 
@@ -17,6 +18,7 @@ import brief as briefmod
 import server
 from match import (
     CATALOG,
+    CatalogError,
     _begruendung,
     _frist_text,
     load_catalog,
@@ -28,7 +30,8 @@ from match import (
 PROGS = load_catalog()
 POSTDOC = ["Biologie", "Nachhaltigkeit"]
 
-SOURCES = json.load(open(Path(__file__).parent / "sources.json"))
+with open(Path(__file__).parent / "sources.json", encoding="utf-8") as _f:
+    SOURCES = json.load(_f)
 
 # Schutz: echte catalog.json darf durch Tests nie veraendert werden
 _KATALOG_SNAPSHOT = CATALOG.read_bytes()
@@ -115,7 +118,7 @@ class TestKatalog:
 class TestKatalog2026:
     """Neue 2026-Eintraege, entferntes Duplikat, reparierte Quelle-URLs."""
 
-    NEU = {"msca-staff-exchanges", "humboldt-feodor-lynen",
+    NEU: ClassVar[set[str]] = {"msca-staff-exchanges", "humboldt-feodor-lynen",
            "dfg-int-kooperationen", "dfg-int-veranstaltungen"}
 
     def test_neue_eintraege_vorhanden(self):
@@ -521,7 +524,8 @@ class TestAppHttp:
     """HTTP-Ebene: Browser-Formular-Verhalten inkl. leerer Eingaben."""
 
     @pytest.fixture(scope="class")
-    def client(self):
+    @classmethod
+    def client(cls):
         from fastapi.testclient import TestClient
 
         return TestClient(appmod.app)
@@ -611,8 +615,6 @@ class TestBrief:
 
 
 # ---------------------------------------------------------------- Coverage Edges
-import app as appmod
-from match import CatalogError, save_catalog
 
 
 class TestCoverageEdges:
@@ -732,7 +734,7 @@ class TestCoverageEdges:
         save_catalog(PROGS, kat)
         monkeypatch.setattr(matchmod, "CATALOG", kat)
         server.PROGRAMME[:] = load_catalog()
-        target = server.PROGRAMME[0]["id"]
+        _target = server.PROGRAMME[0]["id"]
         res = server.ingest([{
             **server.PROGRAMME[0],
             "hinweis": "updated by test",
@@ -754,7 +756,9 @@ class TestCoverageEdges:
 
     # -- export.py: main() (144-158, 162) --
     def test_export_csv_main(self, tmp_path, monkeypatch):
-        import export as expmod, sys
+        import sys
+
+        import export as expmod
         out = tmp_path / "export.csv"
         monkeypatch.setattr(sys, "argv", ["export", "--format", "csv", "--out", str(out)])
         expmod.main()
@@ -763,19 +767,24 @@ class TestCoverageEdges:
         assert len(lines) > 1  # header + data
 
     def test_export_json_main(self, tmp_path, monkeypatch):
-        import export as expmod, sys
+        import sys
+
+        import export as expmod
         out = tmp_path / "export.json"
         monkeypatch.setattr(sys, "argv", ["export", "--format", "json", "--out", str(out)])
         expmod.main()
         assert out.exists()
         import json
+
         from match import load_catalog
         data = json.loads(out.read_text())
         katalog = load_catalog()
         assert len(data["programme"]) == len(katalog)
 
     def test_export_markdown_main(self, tmp_path, monkeypatch):
-        import export as expmod, sys
+        import sys
+
+        import export as expmod
         out = tmp_path / "export.md"
         monkeypatch.setattr(sys, "argv", ["export", "--format", "markdown", "--out", str(out)])
         expmod.main()
@@ -788,7 +797,7 @@ class TestCoverageEdges:
         """Ohne SAIA_API_URL/KEY: keine Anfrage, kein Effekt."""
         monkeypatch.delenv("SAIA_API_URL", raising=False)
         monkeypatch.delenv("SAIA_API_KEY", raising=False)
-        from saia import saia_konfiguriert, erweiterte_begruendung
+        from saia import erweiterte_begruendung, saia_konfiguriert
         assert not saia_konfiguriert()
         assert erweiterte_begruendung({"name": "X"}, ["Biologie"], "postdoc") is None
 
@@ -796,7 +805,7 @@ class TestCoverageEdges:
         """Konfiguriert, aber Endpoint nicht erreichbar: None (Fail-open)."""
         monkeypatch.setenv("SAIA_API_URL", "http://127.0.0.1:1/nope")
         monkeypatch.setenv("SAIA_API_KEY", "test-key")
-        from saia import saia_konfiguriert, erweiterte_begruendung
+        from saia import erweiterte_begruendung, saia_konfiguriert
         assert saia_konfiguriert()
         assert erweiterte_begruendung({"name": "X"}, ["Biologie"], "postdoc") is None
 

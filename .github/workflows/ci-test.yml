@@ -1,0 +1,48 @@
+name: Test & Quality Gate
+
+# Runs the full test suite + lint + type-check + coverage gate on every
+# push to main and on pull requests. Uses standard GitHub runners
+# (ubuntu-latest) since this only needs Python — no self-hosted services.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-test-${{ hashFiles('mcp/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-test-
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r mcp/requirements.txt -r mcp/requirements-dev.txt
+
+      - name: Lint (ruff)
+        run: ruff check mcp/*.py
+
+      - name: Type-check (mypy)
+        run: mypy mcp/*.py
+
+      - name: Test + coverage
+        run: |
+          cd mcp
+          pytest --cov=. --cov-report=term-missing --cov-fail-under=95

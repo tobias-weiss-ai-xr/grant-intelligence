@@ -6,11 +6,6 @@ Abdeckung: Profile-Dataclass, from_dict/to_dict Round-Trip, Persistenz
 
 from __future__ import annotations
 
-from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
-
 from profile import (
     Profile,
     derive_themen,
@@ -19,6 +14,9 @@ from profile import (
     load_profiles,
     save_profiles,
 )
+from unittest.mock import MagicMock, patch
+
+import pytest
 
 # ---------------------------------------------------------------------------
 # Profil-Dataclass & Validierung
@@ -444,8 +442,9 @@ class TestServerProfileTool:
 
     def test_brief_with_profil_id(self, profiles_file, monkeypatch):
         """brief with profil_id loads profile and uses its themen."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         # Monkeypatch get_profile_by_id to use our temp file
         def mock_get_profile(pid, path=None):
@@ -460,8 +459,9 @@ class TestServerProfileTool:
 
     def test_brief_no_consent(self, profiles_file, monkeypatch):
         """brief with profil_id of no-consent profile returns error."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -476,8 +476,9 @@ class TestServerProfileTool:
 
     def test_brief_unknown_profil_id(self, monkeypatch):
         """brief with unknown profil_id returns error."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid)  # uses real profiles.json
@@ -491,8 +492,9 @@ class TestServerProfileTool:
 
     def test_match_best_with_profil_id(self, profiles_file, monkeypatch):
         """match_best with profil_id uses profile themen."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -505,8 +507,9 @@ class TestServerProfileTool:
 
     def test_match_best_no_consent(self, profiles_file, monkeypatch):
         """match_best with no-consent profile returns empty."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -581,8 +584,8 @@ class TestPilotDemo:
 
     def test_pilot_demo_writes_file(self, tmp_path):
         """pilot_demo main() writes to file."""
+
         import pilot_demo
-        import importlib
         # Just verify generate_pilot_results works (main() writes to docs/)
         result = pilot_demo.generate_pilot_results()
         assert "Pilot-Ergebnisse" in result
@@ -672,8 +675,9 @@ class TestServerProfilIdEdgeCases:
 
     def test_match_best_unknown_profil_id(self, profiles_file, monkeypatch):
         """match_best with unknown profil_id returns empty list."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -685,8 +689,9 @@ class TestServerProfilIdEdgeCases:
 
     def test_match_best_no_consent(self, profiles_file, monkeypatch):
         """match_best with no-consent profile returns empty list."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -698,8 +703,9 @@ class TestServerProfilIdEdgeCases:
 
     def test_naechste_fristen_unknown_profil_id(self, profiles_file, monkeypatch):
         """naechste_fristen with unknown profil_id returns empty list."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -711,8 +717,9 @@ class TestServerProfilIdEdgeCases:
 
     def test_naechste_fristen_no_consent(self, profiles_file, monkeypatch):
         """naechste_fristen with no-consent profile returns empty list."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -724,8 +731,9 @@ class TestServerProfilIdEdgeCases:
 
     def test_notify_unknown_profil_id(self, profiles_file, monkeypatch):
         """notify with unknown profil_id returns empty list."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -737,8 +745,9 @@ class TestServerProfilIdEdgeCases:
 
     def test_notify_no_consent(self, profiles_file, monkeypatch):
         """notify with no-consent profile returns empty list."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)
@@ -750,8 +759,9 @@ class TestServerProfilIdEdgeCases:
 
     def test_brief_with_active_profil(self, profiles_file, monkeypatch):
         """brief with active profile returns results."""
-        import server
         from profile import get_profile_by_id
+
+        import server
 
         def mock_get_profile(pid, path=None):
             return get_profile_by_id(pid, profiles_file)

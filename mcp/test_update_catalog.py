@@ -234,7 +234,7 @@ class TestFetchManual:
     def test_fetch_manual_cost_fetcher(self, monkeypatch):
         """Cost source uses fetcher, returns programmes (or None if empty)."""
         import httpx
-        import fetchers
+
         class FakeResp:
             status_code = 302
             content = b""
@@ -306,7 +306,7 @@ class TestUpdateCatalogMain:
         sys.argv = ["update_catalog.py", "--validate", "--out", str(cat_path)]
         try:
             uc.main()
-        except SystemExit as e:
+        except SystemExit:
             # --validate exits 1 on errors, 0 on success (or no exit)
             pass
         finally:
@@ -376,6 +376,7 @@ class TestUpdateCatalogMain:
         """--fetch bmbf with mocked RSS."""
         import json as _json
         import sys
+
         import httpx
         catalog = {"stand": "2026-01-01", "quelleHinweis": "test", "programme": [VOLL]}
         cat_path = tmp_path / "catalog.json"
@@ -466,6 +467,7 @@ class TestUpdateCatalogMain:
         """--fetch cost (portal check, no programmes)."""
         import json as _json
         import sys
+
         import httpx
         catalog = {"stand": "2026-01-01", "quelleHinweis": "test", "programme": [VOLL]}
         cat_path = tmp_path / "catalog.json"
@@ -489,6 +491,7 @@ class TestUpdateCatalogMain:
         """--fetch eu (portal check, no programmes)."""
         import json as _json
         import sys
+
         import httpx
         catalog = {"stand": "2026-01-01", "quelleHinweis": "test", "programme": [VOLL]}
         cat_path = tmp_path / "catalog.json"

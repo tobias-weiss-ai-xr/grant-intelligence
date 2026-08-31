@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import sys
 from datetime import date, timedelta
+from pathlib import Path
 
 import deadline_digest as dd
 
@@ -119,7 +120,7 @@ class TestDiffUrgent:
         # Wenn ein zuvor dringendes Programm abgelaufen ist (nicht mehr in
         # urgent), ist es KEINE neue dringende Frist.
         old = {"urgent": [{"id": "a"}]}
-        new = {"urgent": []}
+        new: dict = {"urgent": []}
         assert dd.diff_urgent(new, old) == []
 
 
@@ -179,8 +180,9 @@ class TestMain:
         self._write_catalog(tmp_path, [{**VOLL, "id": "u1", "frist": _iso(10)}])
         out = tmp_path / "digest.json"
         monkeypatch.setattr(dd, "date", _FixedDate)
-        argv = lambda: ["deadline_digest", "--catalog", str(tmp_path / "catalog.json"),
-                        "--out", str(out)]
+        def argv():
+            return ["deadline_digest", "--catalog", str(tmp_path / "catalog.json"),
+                    "--out", str(out)]
         monkeypatch.setattr(sys, "argv", argv())
         dd.main()
         monkeypatch.setattr(sys, "argv", argv())
@@ -231,15 +233,15 @@ class TestIssueBody:
 
 
 # --- Import des Issue-Body-Skripts (nutzt dd.render) ---
-from pathlib import Path as _P
-
-_SCRIPT = _P(__file__).resolve().parents[1] / ".github/scripts/deadline_issue_body.py"
+_SCRIPT = Path(__file__).resolve().parents[1] / ".github/scripts/deadline_issue_body.py"
 if _SCRIPT.exists():
     import importlib.util as _ilu
 
     _spec = _ilu.spec_from_file_location("deadline_issue_body", _SCRIPT)
+    assert _spec is not None
+    assert _spec.loader is not None
     _mod = _ilu.module_from_spec(_spec)
-    _spec.loader.exec_module(_mod)  # type: ignore[union-attr]
+    _spec.loader.exec_module(_mod)
 
     class TestBodyScript:
         def test_render_body_datei(self, tmp_path, monkeypatch):

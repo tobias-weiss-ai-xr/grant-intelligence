@@ -207,9 +207,9 @@ def http_check(url: str, timeout: int, ua: str) -> dict:
             return {"status": None, "kind": "uncertain", "note": "timeout"}
         except requests.exceptions.ConnectionError:
             return {"status": None, "kind": "broken", "note": "connection error"}
-        except Exception as e:  # noqa: BLE001 - classify everything else as uncertain
+        except Exception as e:
             return {"status": None, "kind": "uncertain", "note": type(e).__name__}
-    return last or {"status": None, "kind": "uncertain", "note": "unknown"}
+    return last or {"status": None, "kind": "uncertain", "note": "unknown"}  # pragma: no cover
 
 
 def browser_check(url: str, ua: str) -> dict:
@@ -232,7 +232,7 @@ def browser_check(url: str, ua: str) -> dict:
         if s in (401, 403):
             return {"kind": "botblock", "note": f"browser {s} (valid official URL)"}
         return {"kind": "broken", "note": f"browser {s}"}
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         return {"kind": "uncertain", "note": f"browser err: {type(e).__name__}"}
 
 
@@ -369,5 +369,5 @@ def main(argv: list[str] | None = None) -> int:
     return status
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(main())
