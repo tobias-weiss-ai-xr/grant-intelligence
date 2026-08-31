@@ -407,12 +407,12 @@ class TestStory2026Programmes:
 
     def test_new_programmes_appear_and_cover_specs(self):
         """New programmes from change 2026-08-26 are in catalog and matchable."""
-        from match import load_catalog
         import server
+        from match import load_catalog
 
         catalog = load_catalog()
         new_ids = [
-            "msc-staff-exchanges",
+            "msca-staff-exchanges",
             "humboldt-feodor-lynen",
             "dfg-int-kooperationen",
             "dfg-int-veranstaltungen",
@@ -425,10 +425,10 @@ class TestStory2026Programmes:
         assert not any(p["id"] == "dfg-graduate-school" for p in catalog)
 
         # New programmes appear in match results for suitable profiles
-        # msc-staff-exchanges: postdoc/junior/prof, thematisch-offen
+        # msca-staff-exchanges: postdoc/junior/prof, thematisch-offen
         result = server.match_best(felder=["thematisch-offen"], karriere="postdoc", top=50)
         ids = {p["id"] for p in result}
-        assert "msc-staff-exchanges" in ids, f"msc-staff-exchanges not found in top 50: {sorted(ids)}"
+        assert "msca-staff-exchanges" in ids, f"msca-staff-exchanges not found in top 50: {sorted(ids)}"
         assert "humboldt-feodor-lynen" in ids
         # dfg-int-kooperationen & dfg-int-veranstaltungen need partner/lead roles
         result = server.match_best(felder=["thematisch-offen"], karriere="prof", top=50)
