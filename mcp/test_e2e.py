@@ -395,3 +395,76 @@ class TestStoryKonsistenz:
         file_n = len(json.loads((MCP_DIR / "catalog.json").read_text(encoding="utf-8"))["programme"])
 
         assert web_n == mcp_n == cli_n == file_n == 103
+
+
+# ===========================================================================
+# FR-07 · 2026 Programme Additions & URL Hygiene
+# ===========================================================================
+
+
+class TestStory2026Programmes:
+    """Tests for new 2026 programme entries and source-link repairs."""
+
+    def test_new_programmes_appear_and_cover_specs(self):
+        """New programmes from change 2026-08-26 are in catalog and matchable."""
+        from match import load_catalog
+        import server
+
+        catalog = load_catalog()
+        new_ids = [
+            "msc-staff-exchanges",
+            "humboldt-feodor-lynen",
+            "dfg-int-kooperationen",
+            "dfg-int-veranstaltungen",
+        ]
+        # All 4 new programmes exist in catalog
+        for pid in new_ids:
+            assert any(p["id"] == pid for p in catalog), f"{pid} missing from catalog"
+
+        # dfg-graduate-school is REMOVED
+        assert not any(p["id"] == "dfg-graduate-school" for p in catalog)
+
+        # New programmes appear in match results for suitable profiles
+        # msc-staff-exchanges: postdoc/junior/prof, thematisch-offen
+        result = server.match_best(felder=["thematisch-offen"], karriere="postdoc", top=50)
+        ids = {p["id"] for p in result}
+        assert "msc-staff-exchanges" in ids, f"msc-staff-exchanges not found in top 50: {sorted(ids)}"
+        assert "humboldt-feodor-lynen" in ids
+        # dfg-int-kooperationen & dfg-int-veranstaltungen need partner/lead roles
+        result = server.match_best(felder=["thematisch-offen"], karriere="prof", top=50)
+        ids = {p["id"] for p in result}
+        assert "dfg-int-kooperationen" in ids, f"dfg-int-kooperationen not found in top 50: {sorted(ids)}"
+        assert "dfg-int-veranstaltungen" in ids
+
+    def test_url_hygiene_all_repaired(self):
+        """Regression test for polish R5: the 23 repaired entries use verified URLs."""
+        from match import load_catalog
+
+        catalog = load_catalog()
+        # Bad old patterns that must NOT appear
+        bad_patterns = [
+            "bmbf.de",  # must be foerderinfo.bund.de
+        ]
+        for p in catalog:
+            q = p.get("quelle", "")
+            for pattern in bad_patterns:
+                assert pattern not in q, f"{p['id']} still has bad URL: {q}"
+
+        # Specific verified URLs (deterministic list, no network)
+        verified = {
+            "dfg-sachbeihilfe": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/sachbeihilfe",
+            "dfg-emmy-noether": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/einzelfoerderung/emmy-noether",
+            "msc-itn": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/doctoral-networks",
+            "msc-cofund": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/cofund",
+            "erc-plus-2026": "https://erc.europa.eu/apply-grant/erc-plus-grant",
+            "loewe-hessen": "https://wissenschaft.hessen.de/forschen/landesprogramm-loewe",
+            "bmbf-digital-ai": "https://www.foerderinfo.bund.de/foerderinfo/de/home/home_node.html",
+            "volkswagen-stiftung": "https://www.volkswagenstiftung.de/en/funding/our-funding-portfolio",
+            "max-weber-bayern": "https://www.studienstiftung.de/max-weber-programm",
+            "nrw-mwk-wissenschaft": "https://www.mkw.nrw/",
+            "krebshilfe-onkologie": "https://www.krebshilfe.de/forschen",
+        }
+        for pid, expected_url in verified.items():
+            prog = next((p for p in catalog if p["id"] == pid), None)
+            assert prog is not None, f"{pid} missing from catalog"
+            assert prog["quelle"] == expected_url, f"{pid}: {prog['quelle']} != {expected_url}"
