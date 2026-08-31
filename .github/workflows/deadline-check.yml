@@ -16,13 +16,24 @@ concurrency:
 
 jobs:
   deadline-digest:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, ci-host]
     steps:
       - uses: actions/checkout@v4
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-deadline-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+
+      - name: Install dependencies (cached)
+        run: pip install pyyaml --quiet
 
       - name: Compute deadline digest
         run: python mcp/deadline_digest.py --out mcp/deadline-digest.json
