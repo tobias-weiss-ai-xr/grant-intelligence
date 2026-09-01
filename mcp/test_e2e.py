@@ -192,6 +192,59 @@ class TestStoryProfilBrief:
         assert web_name == mcp_name
 
 
+class TestMcpFetchTool:
+    """MCP-Tool `fetch`: Live-Quellen read-only, nur Vorschläge (kein Auto-Import)."""
+
+    @staticmethod
+    def _upd(source: str, vorschlaege: list[str]) -> object:
+        from fetchers import ProgrammeUpdate
+
+        return ProgrammeUpdate(
+            source=source,
+            programmes=[],
+            errors=[],
+            fetched_at="2026-09-01T00:00:00",
+            suggestions=vorschlaege,
+        )
+
+    def test_fetch_all_liefert_beide_live_quellen(self, monkeypatch):
+        import server
+
+        monkeypatch.setattr(
+            server,
+            "fetch_openalex_funders",
+            lambda: self._upd("openalex", ["Norges Forskningsråd"]),
+        )
+        monkeypatch.setattr(
+            server,
+            "fetch_eu_tenders",
+            lambda: self._upd("eu-tenders", ["MSCA Postdoctoral Fellowships"]),
+        )
+        r = server.fetch("all")
+        assert r["status"] == "ok"
+        assert [q["source"] for q in r["quellen"]] == ["openalex", "eu-tenders"]
+        assert r["quellen"][0]["vorschlaege"] == ["Norges Forskningsråd"]
+        # read-only: keine Programme automatisch importiert
+        assert all(q["neue_programme"] == 0 for q in r["quellen"])
+
+    def test_fetch_einzelne_quelle(self, monkeypatch):
+        import server
+
+        monkeypatch.setattr(
+            server, "fetch_eu_tenders", lambda: self._upd("eu-tenders", [])
+        )
+        r = server.fetch("eu-tenders")
+        assert r["status"] == "ok"
+        assert len(r["quellen"]) == 1
+
+    def test_fetch_unbekannte_quelle_listet_erlaubte(self):
+        import server
+
+        r = server.fetch("gibtsnicht")
+        assert r["status"] == "unbekannte Quelle"
+        assert "openalex" in r["erlaubt"] and "all" in r["erlaubt"]
+
+
 # ===========================================================================
 # FR-03 · DSGVO: "Ohne Einwilligung gibt es kein Matching."
 # ===========================================================================

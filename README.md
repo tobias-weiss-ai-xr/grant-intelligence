@@ -58,7 +58,7 @@ python3 server.py                    # MCP-Server (stdio, für Agents)
 | **Wochen-Brief** | Markdown-Brief mit Top-Matches und Fristen-Übersicht |
 | **Export** | CSV, JSON, Markdown für weitere Verarbeitung |
 | **Update-Pipeline** | Automatisches Fetching + manuelle Portal-Checks |
-| **MCP-Server** | Agent-fähige Tools (ingest, search, match, notify) |
+| **MCP-Server** | Agent-fähige Tools (ingest, search, match, notify, fetch — Live-Quellen als Vorschläge) |
 
 ## Profile
 
@@ -169,6 +169,10 @@ Details & Aufbau: [`docs/Dashboard.md`](docs/Dashboard.md).
 | `docs/update_log.md` | Audit-Trail aller Katalog-Updates |
 
 ## Update-Pipeline
+
+Alle Kern-Workflows sind auch als Make-Targets verfügbar:
+`make fetch` (Live-Quellen + Fristen), `make digest` (Frist-Digest),
+`make lint-catalog` (Qualitätsgate), `make verify` (Link-Audit), `make check` (CI-Gate).
 
 ```bash
 # Live-Quellen (OpenAlex Vorschläge + EU Funding & Tenders) + Fristen-Check

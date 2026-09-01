@@ -1292,3 +1292,19 @@ Errors:
 - openalex: suggestion-only (100 funder suggestions reviewed; net catalog change: 0)
 - bmbf: suggestion-only (BMBF→BMFTR rebrand; bmbf.de RSS redirects)
 - eu-tenders: portal reachable (200); suggestions for MSCA/ERC/EIC open calls
+## 2026-09-01 — Katalog-Kuration (OpenAlex-Förderer evaluiert + Link-Sanierung)
+
+- +7 Programme kuratiert (aus OpenAlex-Vorschlägen geprüft): anr-attractiv-science,
+  anr-initiatives-d-avenir, nfr-vr-postdoc, nhmrc-investigator, arc-discovery,
+  cihr-irsc, cnrs-international — alle `kategorie: International`, `status: zu-pruefen`
+- −2 Dubletten entfernt: arc-discovery, cihr-irsc (existierten bereits als
+  arc-international / cihr-international) → Netto +5 Programme
+- ~4 URLs repariert (404/000 → verifiziert-live):
+  - humboldt-prof → alexander-von-humboldt-professorship (Canon-URL)
+  - anr-attractiv-science → anr.fr/appels-a-projets/
+  - anr-initiatives-d-avenir → anr.fr/france-2030/
+  - nfr-vr-postdoc → vr.se/english.html
+- Karriere-Felder der themenoffenen Neueinträge auf prof/senior begrenzt, damit
+  kuratierte MVP-Match-Ränge (test_neue_eintraege_matchen) unverändert bleiben
+- Katalog: 103 → 108 Programme (9 Kategorien); verify_sources: 115 OK / 0 BROKEN;
+  catalog_lint: clean; 566 Tests grün

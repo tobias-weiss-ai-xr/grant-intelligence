@@ -5,6 +5,7 @@ Official MCP-SDK FastMCP server providing grant discovery tools:
   - search     : Keyword search across name/themes/source
   - ingest     : Add/update programs (persisted immediately)
   - loeschen   : Remove programs by ID
+  - fetch      : Run live sources (read-only) and return suggestions
   - match_best : Find best matches for a profile
   - naechste_fristen : Programs with upcoming deadlines
   - notify     : Deadline warnings (within N days, rolling always)
@@ -22,6 +23,7 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from fetchers import ProgrammeUpdate, fetch_eu_tenders, fetch_openalex_funders
 from grant_types import MatchResult, Programm
 from match import load_catalog, match_profile, next_deadline, save_catalog
 
@@ -30,6 +32,15 @@ log = logging.getLogger(__name__)
 
 # Load catalog at startup (mutable in-memory state for ingest)
 PROGRAMME = load_catalog()
+
+# Live sources exposed via the fetch tool (read-only, suggestion-only).
+# Store function *names* and resolve via globals() at call time — keeps the
+# tool mock-friendly in tests (monkeypatch the named module function) while
+# the .__name__ references keep the imports used for ruff.
+LIVE_FETCHERS: dict[str, str] = {
+    "openalex": fetch_openalex_funders.__name__,
+    "eu-tenders": fetch_eu_tenders.__name__,
+}
 
 mcp = FastMCP("grant-agent")
 
@@ -228,6 +239,47 @@ def profile(profil_id: str | None = None) -> dict[str, Any] | list[dict[str, Any
     if p is None:
         return {"fehler": f"Profil nicht gefunden: {profil_id}"}
     return p.to_dict()
+
+
+@mcp.tool()
+def fetch(quelle: str = "all") -> dict[str, Any]:
+    """Run live grant-discovery sources (read-only) and return suggestions.
+
+    Never auto-imports anything into the catalog — live sources are
+    suggestion-only by design (human-in-the-loop curation).
+
+    Args:
+        quelle: "openalex", "eu-tenders", or "all" (default).
+
+    Returns:
+        Dict with status and per-source results (suggestions, errors).
+    """
+    if quelle == "all":
+        keys = list(LIVE_FETCHERS)
+    elif quelle in LIVE_FETCHERS:
+        keys = [quelle]
+    else:
+        return {
+            "status": "unbekannte Quelle",
+            "erlaubt": [*LIVE_FETCHERS, "all"],
+        }
+
+    quellen: list[dict[str, Any]] = []
+    for key in keys:
+        fetcher = globals()[LIVE_FETCHERS[key]]
+        upd: ProgrammeUpdate = fetcher()
+        quellen.append(
+            {
+                "source": upd.source,
+                "neue_programme": len(upd.programmes),
+                "vorschlaege": upd.suggestions,
+                "fehler": upd.errors,
+            }
+        )
+        if upd.errors:
+            log.warning("Fetch %s: %d Fehler", key, len(upd.errors))
+
+    return {"status": "ok", "quellen": quellen}
 
 
 @mcp.tool()

@@ -9,6 +9,13 @@ Format folgt [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Added
+- **MCP-Tool `fetch` (`server.py`):** Führt die Live-Quellen (`openalex`, `eu-tenders`, `all`) aus und liefert nur Vorschläge zurück – read-only, kein Auto-Import (Human-in-the-loop). Namen-basierte Auflösung über `globals()` (testfreundlich, keine Netzwerk-Calls in Tests). 3 neue Tests; 566 → 569.
+- **Make-Targets für die Audit-Workflows:** `make fetch`, `make digest`, `make lint-catalog`, `make verify` (neben `make check`); README-Update-Pipeline verweist darauf.
+- **Zero-Warnings-Testlauf:** gezielte `filterwarnings` in `mcp/pyproject.toml` für zwei Dependency-interne Warnungen (starlette `import multipart` PendingDeprecation; FastMCP-Settings-Feld `lifespan` Forward-Ref aus pydantic-settings) – erfüllt das Acceptance-Kriterium „0 warnings" aus `plans/project-improvements.md`.
+- **Audit-Trail nachgetragen (`docs/update_log.md`):** Eintrag zur Katalog-Kuration 2026-09-01 (+7 kuratiert, −2 Dubletten, ~4 URLs repariert, 103 → 108 Programme).
+
+### Fixed
+- **Dashboard-Meta-Beschreibung:** „103 Programme, 26 Quellen" → „108 Programme, 28 Quellen" (index.html).
 - **Zwei Live-Quellen in der Update-Pipeline (`fetchers.py`):** `openalex` (OpenAlex Funders API, einzige auth-freie JSON-Quelle, ~100 Vorschläge/Lauf, nur Vorschläge – kein Auto-Import) und `eu-tenders` (EU Funding & Tenders Portal: Erreichbarkeit + konkrete Open-Call-Links für MSCA/ERC/EIC, nur verifiziert-erreichbare URLs). Beide in `sources.json` registriert (28 Quellgruppen), in `fetch_all()` und CLI (`--source openalex|eu-tenders`) verdrahtet. Quellgruppen 26 → 28.
 - **7 internationale Förderprogramme aus OpenAlex-Vorschlägen kuratiert:** ANR Attractiv Science 2027 + Investissements d'Avenir/France 2030 (FR), NFR/Vetenskapsrådet VR Postdoktor (SE), NHMRC Investigator Grants (AU), CNRS International Engagement (FR). Kategorien-Check: alle als `zu-pruefen` mit `standDatum`, Karriere-Felder so gesetzt, dass themenoffene Einträge die kuratierten MVP-Match-Ränge nicht verdrängen (test_neue_eintraege_matchen bleibt grün).
 - **Dead-Link-Sanierung (verify_sources, 115 OK / 0 BROKEN):** `humboldt-prof` 404 → neue Canon-URL der Alexander-von-Humboldt-Professur; ANR-geratene URLs (2× 404) → verifiziert-live (`anr.fr/appels-a-projets/`, `anr.fr/france-2030/`); VR Postdoktor 404 → `vr.se/english.html`.

@@ -25,6 +25,14 @@ ignore_missing_imports = true
 [tool.pytest.ini_options]
 testpaths = ["."]
 addopts = "--strict-markers"
+filterwarnings = [
+    # starlette formparsers importiert intern 'multipart' statt 'python_multipart'
+    # (Bibliothek-intern; verschwindet mit neuem starlette-Release)
+    "ignore:Please use `import python_multipart` instead.*:PendingDeprecationWarning",
+    # FastMCP-Settings-Feld 'lifespan' hat einen Forward-Ref, den pydantic-settings
+    # erst bei model_rebuild() aufloesen kann (mcp-Paket, nicht unser Code)
+    "ignore:Field 'lifespan' has an incomplete definition.*",
+]
 
 [tool.coverage.run]
 source = ["mcp"]
