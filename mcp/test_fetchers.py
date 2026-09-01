@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from datetime import date, timedelta
 
 import httpx
@@ -13,6 +14,11 @@ class FakeResponse:
     def __init__(self, status_code: int = 200, content: bytes = b""):
         self.status_code = status_code
         self.content = content
+
+    def json(self):
+        return json.loads(
+            self.content.decode("utf-8") if isinstance(self.content, bytes) else self.content
+        )
 
 
 RSS_BODY = b"""<?xml version="1.0"?><rss><channel>
@@ -96,6 +102,48 @@ class TestFetch:
         assert a != fetchers._slug_id("bmbf", "Ganz anderes Thema")
 
 
+class TestOpenAlex:
+    """Tests for the OpenAlex funders live source (suggestion-only)."""
+
+    FAKE_BODY = json.dumps(
+        {
+            "meta": {"count": 2},
+            "results": [
+                {"display_name": "Example Funder", "homepage_url": "https://example.org"},
+                {"display_name": "", "homepage_url": "https://no-name.example.org"},
+            ],
+        }
+    )
+
+    def test_openalex_success_emits_suggestions_only(self, monkeypatch):
+        """OpenAlex funders become suggestions — never catalog entries."""
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, self.FAKE_BODY))
+        r = fetchers.fetch_openalex_funders()
+        assert r.source == "openalex"
+        assert r.programmes == []  # never auto-import funders
+        assert not r.errors
+        assert len(r.suggestions) == 1  # only the non-empty funder counted
+        assert any("Example Funder" in s for s in r.suggestions)
+
+    def test_openalex_failure_suggestion(self, monkeypatch):
+        """Non-200 falls back to a manual-check suggestion."""
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(503))
+        r = fetchers.fetch_openalex_funders()
+        assert r.programmes == []
+        assert any("openalex.org/funders" in s for s in r.suggestions)
+
+    def test_openalex_network_error(self, monkeypatch):
+        """Network errors registered, no exception raised."""
+
+        def boom(*a, **k):
+            raise httpx.ConnectError("network")
+
+        monkeypatch.setattr(httpx, "get", boom)
+        r = fetchers.fetch_openalex_funders()
+        assert r.errors
+        assert any("API error" in s for s in r.suggestions)
+
+
 class TestSuggestions:
     def test_alter_stand_datum(self):
         alt = (date.today() - timedelta(days=100)).isoformat()
@@ -131,7 +179,9 @@ class TestEnrichProgramme:
 
     def test_partial_with_known_themes_preserved(self):
         partial = {
-            "id": "bmbf-ki", "name": "KI-Forschung", "themen": ["KI", "Digital"],
+            "id": "bmbf-ki",
+            "name": "KI-Forschung",
+            "themen": ["KI", "Digital"],
             "karriere": ["postdoc"],
         }
         result = fetchers._enrich_programme(partial, "bmbf")
@@ -160,6 +210,7 @@ class TestEnrichProgramme:
         assert result["kategorie"] == "International"
         # must survive validation (invalid kategorie used to slip through)
         from grant_types import Programm
+
         Programm.from_dict(result)
 
 
@@ -171,10 +222,21 @@ class TestApplyFetchUpdates:
         catalog = {
             "stand": "2026-01-01",
             "quelleHinweis": "test",
-            "programme": [{"id": "existing", "name": "Existing", "kategorie": "DFG",
-                             "themen": ["frei"], "karriere": ["postdoc"], "rolle": ["lead"],
-                             "frist": None, "rolling": True, "status": "laufend",
-                             "quelle": "", "standDatum": "2026-01-01"}],
+            "programme": [
+                {
+                    "id": "existing",
+                    "name": "Existing",
+                    "kategorie": "DFG",
+                    "themen": ["frei"],
+                    "karriere": ["postdoc"],
+                    "rolle": ["lead"],
+                    "frist": None,
+                    "rolling": True,
+                    "status": "laufend",
+                    "quelle": "",
+                    "standDatum": "2026-01-01",
+                }
+            ],
         }
         catalog_path = tmp_path / "catalog.json"
         catalog_path.write_text(json.dumps(catalog))
@@ -186,8 +248,11 @@ class TestApplyFetchUpdates:
         )
         assert new_prog is not None
         update = fetchers.ProgrammeUpdate(
-            source="bmbf", programmes=[new_prog], errors=[],
-            fetched_at="2026-08-12", suggestions=[],
+            source="bmbf",
+            programmes=[new_prog],
+            errors=[],
+            fetched_at="2026-08-12",
+            suggestions=[],
         )
 
         result = fetchers.apply_fetch_updates(
@@ -212,8 +277,11 @@ class TestApplyFetchUpdates:
         # Invalid: missing required fields
         invalid_prog = {"id": "bad", "name": "Incomplete"}
         update = fetchers.ProgrammeUpdate(
-            source="test", programmes=[invalid_prog], errors=[],
-            fetched_at="2026-08-12", suggestions=[],
+            source="test",
+            programmes=[invalid_prog],
+            errors=[],
+            fetched_at="2026-08-12",
+            suggestions=[],
         )
 
         result = fetchers.apply_fetch_updates(
@@ -233,8 +301,11 @@ class TestApplyFetchUpdates:
 
         invalid = {"name": "No ID"}
         update = fetchers.ProgrammeUpdate(
-            source="test", programmes=[invalid], errors=[],
-            fetched_at="2026-08-12", suggestions=[],
+            source="test",
+            programmes=[invalid],
+            errors=[],
+            fetched_at="2026-08-12",
+            suggestions=[],
         )
 
         result = fetchers.apply_fetch_updates(
@@ -256,8 +327,11 @@ class TestApplyFetchUpdates:
         )
         assert new_prog is not None
         update = fetchers.ProgrammeUpdate(
-            source="bmbf", programmes=[new_prog], errors=[],
-            fetched_at="2026-08-12", suggestions=[],
+            source="bmbf",
+            programmes=[new_prog],
+            errors=[],
+            fetched_at="2026-08-12",
+            suggestions=[],
         )
 
         fetchers.apply_fetch_updates([update], catalog_path=catalog_path, audit_path=audit_path)
@@ -277,8 +351,10 @@ class TestFetchEuHorizon:
 
     def test_eu_horizon_netzfehler(self, monkeypatch):
         """Network error → errors list populated."""
+
         def _fail(*a, **k):
             raise httpx.ConnectError("boom")
+
         monkeypatch.setattr(httpx, "get", _fail)
         r = fetchers.fetch_eu_horizon()
         assert r.errors
@@ -320,8 +396,10 @@ class TestFetchBmbfRss:
 
     def test_bmbf_rss_netzfehler(self, monkeypatch):
         """Network error → errors + suggestions."""
+
         def _fail(*a, **k):
             raise httpx.ConnectError("boom")
+
         monkeypatch.setattr(httpx, "get", _fail)
         r = fetchers.fetch_bmbf_rss()
         assert r.errors
@@ -366,24 +444,40 @@ class TestApplyFetchUpdatesAdditional:
     def test_update_existing_programme(self, tmp_path):
         """Upsert: existing programme with same ID gets updated."""
         import json
+
         catalog = {
-            "stand": "2026-01-01", "quelleHinweis": "test",
-            "programme": [{
-                "id": "upd-1", "name": "Old Name", "kategorie": "BMBF",
-                "themen": ["frei"], "karriere": ["postdoc"], "rolle": ["lead"],
-                "frist": None, "rolling": True, "status": "laufend",
-                "quelle": "https://old.de", "standDatum": "2026-01-01",
-            }],
+            "stand": "2026-01-01",
+            "quelleHinweis": "test",
+            "programme": [
+                {
+                    "id": "upd-1",
+                    "name": "Old Name",
+                    "kategorie": "BMBF",
+                    "themen": ["frei"],
+                    "karriere": ["postdoc"],
+                    "rolle": ["lead"],
+                    "frist": None,
+                    "rolling": True,
+                    "status": "laufend",
+                    "quelle": "https://old.de",
+                    "standDatum": "2026-01-01",
+                }
+            ],
         }
         cat_path = tmp_path / "catalog.json"
         cat_path.write_text(json.dumps(catalog))
 
         updated = fetchers._enrich_programme(
-            {"id": "upd-1", "name": "New Name", "quelle": "https://new.de"}, "bmbf",
+            {"id": "upd-1", "name": "New Name", "quelle": "https://new.de"},
+            "bmbf",
         )
         assert updated is not None
         update = fetchers.ProgrammeUpdate(
-            "bmbf", [updated], [], "now", [],
+            "bmbf",
+            [updated],
+            [],
+            "now",
+            [],
         )
         result = fetchers.apply_fetch_updates(
             [update], catalog_path=cat_path, audit_path=tmp_path / "audit.md"
@@ -398,6 +492,7 @@ class TestApplyFetchUpdatesAdditional:
     def test_no_save_when_no_changes(self, tmp_path):
         """No added/updated → catalog not saved."""
         import json
+
         catalog = {"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}
         cat_path = tmp_path / "catalog.json"
         cat_path.write_text(json.dumps(catalog))
@@ -411,18 +506,22 @@ class TestApplyFetchUpdatesAdditional:
     def test_audit_log_oserror(self, tmp_path, monkeypatch):
         """Audit log write failure is logged but not fatal."""
         import json
+
         catalog = {"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}
         cat_path = tmp_path / "catalog.json"
         cat_path.write_text(json.dumps(catalog))
         audit_path = tmp_path / "nonexistent" / "audit.md"  # dir doesn't exist
 
         new_prog = fetchers._enrich_programme(
-            {"id": "audit-oserr", "name": "Test", "quelle": "https://test.de"}, "bmbf",
+            {"id": "audit-oserr", "name": "Test", "quelle": "https://test.de"},
+            "bmbf",
         )
         assert new_prog is not None
         update = fetchers.ProgrammeUpdate("bmbf", [new_prog], [], "now", [])
         # Should not raise
-        result = fetchers.apply_fetch_updates([update], catalog_path=cat_path, audit_path=audit_path)
+        result = fetchers.apply_fetch_updates(
+            [update], catalog_path=cat_path, audit_path=audit_path
+        )
         assert result["status"] == "ok"
         assert result["gesamt_neu"] == 1
 
@@ -451,8 +550,11 @@ class TestFetchersMain:
         """fetchers.py main() with --source cost."""
         import json as _json
         import sys
+
         cat_path = tmp_path / "catalog.json"
-        cat_path.write_text(_json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}))
+        cat_path.write_text(
+            _json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []})
+        )
         monkeypatch.setattr(fetchers, "CATALOG_JSON", cat_path)
         monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(302))
         old_argv = sys.argv
@@ -468,8 +570,11 @@ class TestFetchersMain:
         """fetchers.py main() with --source all."""
         import json as _json
         import sys
+
         cat_path = tmp_path / "catalog.json"
-        cat_path.write_text(_json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}))
+        cat_path.write_text(
+            _json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []})
+        )
         monkeypatch.setattr(fetchers, "CATALOG_JSON", cat_path)
         monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(302))
         old_argv = sys.argv
@@ -482,9 +587,21 @@ class TestFetchersMain:
     def test_main_bmbf(self, monkeypatch, capsys, tmp_path):
         """fetchers.py main() with --source bmbf."""
         import sys
+
         # Mock apply_fetch_updates to avoid writing to real catalog
         # (its default catalog_path is evaluated at import time)
-        monkeypatch.setattr(fetchers, "apply_fetch_updates", lambda *a, **k: {"status": "ok", "gesamt_neu": 0, "gesamt_aktualisiert": 0, "gesamt_abgelehnt": 0, "fehler": [], "quellen": []})
+        monkeypatch.setattr(
+            fetchers,
+            "apply_fetch_updates",
+            lambda *a, **k: {
+                "status": "ok",
+                "gesamt_neu": 0,
+                "gesamt_aktualisiert": 0,
+                "gesamt_abgelehnt": 0,
+                "fehler": [],
+                "quellen": [],
+            },
+        )
         rss = b'<?xml version="1.0"?><rss><channel><item><title>Test</title><link>https://bmbf.de</link></item></channel></rss>'
         monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, content=rss))
         old_argv = sys.argv
@@ -520,6 +637,7 @@ class TestFetchersCoverage:
     def test_apply_fetch_updates_validation_rejection(self, tmp_path):
         """Programme that fails Programm.from_dict validation is rejected."""
         import json
+
         catalog = {"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}
         cat_path = tmp_path / "catalog.json"
         cat_path.write_text(json.dumps(catalog))
@@ -561,10 +679,15 @@ class TestFetchersCoverage:
         monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(302))
         # Mock load_sources to have a manual source with old last_check
         from datetime import date, timedelta
+
         old = (date.today() - timedelta(days=30)).isoformat()
-        monkeypatch.setattr(fetchers, "load_sources", lambda: {
-            "erc": {"type": "manual", "last_check": old, "update_frequency": "weekly"},
-        })
+        monkeypatch.setattr(
+            fetchers,
+            "load_sources",
+            lambda: {
+                "erc": {"type": "manual", "last_check": old, "update_frequency": "weekly"},
+            },
+        )
         results = fetchers.fetch_all(check_deadlines_flag=True)
         assert isinstance(results, list)
 
@@ -572,9 +695,13 @@ class TestFetchersCoverage:
         """fetch_all with >10 suggestions triggers '... and N more' log."""
         monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(302))
         from datetime import date, timedelta
+
         old = (date.today() - timedelta(days=30)).isoformat()
         # Create 15 manual sources with old last_check → >10 suggestions
-        sources: dict[str, dict] = {f"src{i}": {"type": "manual", "last_check": old, "update_frequency": "weekly"} for i in range(15)}
+        sources: dict[str, dict] = {
+            f"src{i}": {"type": "manual", "last_check": old, "update_frequency": "weekly"}
+            for i in range(15)
+        }
         monkeypatch.setattr(fetchers, "load_sources", lambda: sources)
         monkeypatch.setattr(fetchers, "load_catalog", lambda: [])
         results = fetchers.fetch_all(check_deadlines_flag=True)
@@ -584,8 +711,11 @@ class TestFetchersCoverage:
         """fetchers.py main() with --source eu."""
         import json as _json
         import sys
+
         cat_path = tmp_path / "catalog.json"
-        cat_path.write_text(_json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}))
+        cat_path.write_text(
+            _json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []})
+        )
         monkeypatch.setattr(fetchers, "CATALOG_JSON", cat_path)
         monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(301))
         old_argv = sys.argv
@@ -599,12 +729,17 @@ class TestFetchersCoverage:
         """main() logs errors from fetchers."""
         import json as _json
         import sys
+
         cat_path = tmp_path / "catalog.json"
-        cat_path.write_text(_json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}))
+        cat_path.write_text(
+            _json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []})
+        )
         monkeypatch.setattr(fetchers, "CATALOG_JSON", cat_path)
+
         # Mock fetch_cost to return errors
         def _fail(*a, **k):
             raise httpx.ConnectError("network down")
+
         monkeypatch.setattr(httpx, "get", _fail)
         old_argv = sys.argv
         sys.argv = ["fetchers.py", "--source", "cost"]
@@ -617,11 +752,25 @@ class TestFetchersCoverage:
         """main() logs apply_fetch_updates errors."""
         import json as _json
         import sys
+
         cat_path = tmp_path / "catalog.json"
-        cat_path.write_text(_json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []}))
+        cat_path.write_text(
+            _json.dumps({"stand": "2026-01-01", "quelleHinweis": "test", "programme": []})
+        )
         monkeypatch.setattr(fetchers, "CATALOG_JSON", cat_path)
         # Mock apply_fetch_updates to return errors
-        monkeypatch.setattr(fetchers, "apply_fetch_updates", lambda *a, **k: {"status": "ok", "gesamt_neu": 0, "gesamt_aktualisiert": 0, "gesamt_abgelehnt": 1, "fehler": ["test error"], "quellen": []})
+        monkeypatch.setattr(
+            fetchers,
+            "apply_fetch_updates",
+            lambda *a, **k: {
+                "status": "ok",
+                "gesamt_neu": 0,
+                "gesamt_aktualisiert": 0,
+                "gesamt_abgelehnt": 1,
+                "fehler": ["test error"],
+                "quellen": [],
+            },
+        )
         rss = b'<?xml version="1.0"?><rss><channel><item><title>Test</title><link>https://bmbf.de</link></item></channel></rss>'
         monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200, content=rss))
         old_argv = sys.argv
@@ -634,6 +783,7 @@ class TestFetchersCoverage:
     def test_generate_update_suggestions_edge_cases(self):
         """Cover continue branches in generate_update_suggestions."""
         from datetime import date, timedelta
+
         today = date.today()
         # Programme without standDatum → continue
         # Programme with invalid standDatum → continue
@@ -642,7 +792,11 @@ class TestFetchersCoverage:
             {"id": "no-stand", "status": "verifiziert"},  # no standDatum
             {"id": "bad-stand", "status": "verifiziert", "standDatum": "bad-date"},  # invalid
             {"id": "recent", "status": "verifiziert", "standDatum": today.isoformat()},  # recent
-            {"id": "old", "status": "verifiziert", "standDatum": (today - timedelta(days=100)).isoformat()},  # old → suggestion
+            {
+                "id": "old",
+                "status": "verifiziert",
+                "standDatum": (today - timedelta(days=100)).isoformat(),
+            },  # old → suggestion
         ]
         sources: dict[str, dict] = {}
         suggestions = fetchers.generate_update_suggestions(catalog, sources)
@@ -655,13 +809,22 @@ class TestFetchersCoverage:
     def test_generate_update_suggestions_source_edge_cases(self):
         """Cover source-specific continue branches."""
         from datetime import date, timedelta
+
         today = date.today()
         old = (today - timedelta(days=30)).isoformat()
         sources = {
-            "auto-src": {"type": "api", "last_check": old, "update_frequency": "weekly"},  # non-manual → continue
+            "auto-src": {
+                "type": "api",
+                "last_check": old,
+                "update_frequency": "weekly",
+            },  # non-manual → continue
             "no-check": {"type": "manual"},  # no last_check → continue
             "bad-check": {"type": "manual", "last_check": "bad-date"},  # invalid → continue
-            "manual-old": {"type": "manual", "last_check": old, "update_frequency": "weekly"},  # valid → suggestion
+            "manual-old": {
+                "type": "manual",
+                "last_check": old,
+                "update_frequency": "weekly",
+            },  # valid → suggestion
         }
         suggestions = fetchers.generate_update_suggestions([], sources)
         # Only manual-old should generate a suggestion

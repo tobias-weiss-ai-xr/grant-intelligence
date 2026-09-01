@@ -44,6 +44,7 @@ _CATEGORY_MAP: dict[str, str] = {
     "erc": "ERC",
     "dfg": "DFG",
     "openaire": "EU",
+    "openalex": "International",
     "crossref": "International",
     "nih": "International",
     "nsf": "International",
@@ -180,7 +181,11 @@ def fetch_bmbf_rss() -> ProgrammeUpdate:
     errors: list[str] = []
     suggestions: list[str] = []
 
+    # BMBF became BMFTR in 2025; bmbf.de RSS/foerderung now redirect (303→400).
+    # BMFTR bekanntmachungen are browsed at the service portal (no public RSS feed,
+    # but the portal is the current check target).
     rss_url = "https://www.bmbf.de/bmbf/de/forschung/foerderung/bekanntmachungen/rss.xml"
+    portal_url = "https://www.bmftr.bund.de/SiteGlobals/Forms/Suche/Bekanntmachungsuche/Bekanntmachungsuche_Formular.html"
 
     try:
         log.info(f"{source}: Attempting RSS from {rss_url}")
@@ -194,12 +199,64 @@ def fetch_bmbf_rss() -> ProgrammeUpdate:
         else:
             log.info(f"{source}: RSS not available (Status {resp.status_code})")
             suggestions.append(
-                f"{source}: No RSS feed available. Manual portal check: "
-                f"bmbf.de/forschung/foerderung/bekanntmachungen"
+                f"{source}: No BMBF RSS feed available (bmbf.de redirects to BMFTR). Manual portal check: {portal_url}"
             )
     except Exception as e:
         errors.append(str(e))
         suggestions.append(f"{source}: RSS error - manual check required")
+
+    return ProgrammeUpdate(source, programmes, errors, datetime.now().isoformat(), suggestions)
+
+
+def fetch_openalex_funders() -> ProgrammeUpdate:
+    """Discover new funders (grant-awarding bodies) via the OpenAlex API.
+
+    Polls OpenAlex ``/funders`` for public research-funding agencies and turns
+    each into a catalogue suggestion (status ``zu-pruefen``). The endpoint is
+    genuinely reachable JSON (no anti-bot), making this a reliable live source
+    for surfacing new granting bodies absent from the catalogue.
+
+    Returns:
+        ProgrammeUpdate with programme suggestions.
+    """
+    source = "openalex"
+    programmes: list[dict[str, Any]] = []
+    errors: list[str] = []
+    suggestions: list[str] = []
+
+    api_url = (
+        "https://api.openalex.org/funders?per_page=100&mailto=research@contextual-intelligence.org"
+    )
+    try:
+        resp = httpx.get(
+            api_url, headers={"User-Agent": "grant-intelligence (research)"}, timeout=20
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            count = data.get("meta", {}).get("count", "?")
+            for f in data.get("results", []):
+                name = f.get("display_name", "").strip()
+                if not name:
+                    continue
+                # These are funder *agencies*, not specific programmes — they
+                # must NOT be auto-imported into the curated catalog (they are
+                # not valid Programm entries). Emit them only as suggestions.
+                homepage = f.get("homepage_url") or f.get("id", "")
+                suggestions.append(
+                    f"{source}: review new funder '{name}' ({homepage}) — "
+                    f"add a proper programme entry to catalog.json if relevant"
+                )
+            log.info(
+                f"{source}: {len(data.get('results', []))} funders reviewed, "
+                f"{len(suggestions)} suggestions (OpenAlex total={count})"
+            )
+        else:
+            suggestions.append(
+                f"{source}: API returned {resp.status_code}. Manual check: https://openalex.org/funders"
+            )
+    except Exception as e:
+        errors.append(str(e))
+        suggestions.append(f"{source}: API error - retry later or check openalex.org/funders")
 
     return ProgrammeUpdate(source, programmes, errors, datetime.now().isoformat(), suggestions)
 
@@ -295,6 +352,7 @@ def _enrich_programme(partial: dict[str, Any], source: str) -> dict[str, Any] | 
     # Unknown sources fall back to "International" (a valid Kategorie value)
     # so that semi-automatic entries never inject an invalid category.
     from grant_types import Kategorie
+
     provided_kategorie = partial.get("kategorie")
     if provided_kategorie and Kategorie.is_valid(provided_kategorie):
         kategorie = provided_kategorie
@@ -399,9 +457,7 @@ def apply_fetch_updates(
         all_errors.extend(source_errors)
 
         if added or updated or rejected:
-            source_reports.append(
-                f"{update.source}: +{added} / ~{updated} / x{rejected}"
-            )
+            source_reports.append(f"{update.source}: +{added} / ~{updated} / x{rejected}")
 
     # Save catalog
     if total_added or total_updated:
@@ -458,8 +514,11 @@ def fetch_all(check_deadlines_flag: bool = False) -> list[ProgrammeUpdate]:
     results.append(fetch_cost())
     results.append(fetch_eu_horizon())
 
-    # BMBF RSS (produces programme records)
+    # BMBF RSS (produces programme records; BMBF->BMFTR since 2025)
     results.append(fetch_bmbf_rss())
+
+    # OpenAlex funders (genuinely reachable JSON; live discovery of new granting bodies)
+    results.append(fetch_openalex_funders())
 
     # Deadline check
     if check_deadlines_flag:
@@ -486,7 +545,10 @@ def main() -> None:
     """CLI entry point."""
     ap = argparse.ArgumentParser(description="Förder-Radar – Automatic Fetching")
     ap.add_argument(
-        "--source", choices=["cost", "eu", "bmbf", "all"], default="all", help="Source to query"
+        "--source",
+        choices=["cost", "eu", "bmbf", "openalex", "all"],
+        default="all",
+        help="Source to query",
     )
     ap.add_argument("--check-deadlines", action="store_true", help="Check deadlines in catalog")
     args = ap.parse_args()
@@ -499,6 +561,8 @@ def main() -> None:
         results = [fetch_eu_horizon()]
     elif args.source == "bmbf":
         results = [fetch_bmbf_rss()]
+    elif args.source == "openalex":
+        results = [fetch_openalex_funders()]
 
     log.info("\n=== Fetch Results ===")
     for r in results:
@@ -515,7 +579,9 @@ def main() -> None:
     if programmes_fetched:
         log.info("\n=== Applying Fetch Updates ===")
         summary = apply_fetch_updates(programmes_fetched)
-        log.info(f"  Result: +{summary.get('gesamt_neu', 0)} / ~{summary.get('gesamt_aktualisiert', 0)} / x{summary.get('gesamt_abgelehnt', 0)}")
+        log.info(
+            f"  Result: +{summary.get('gesamt_neu', 0)} / ~{summary.get('gesamt_aktualisiert', 0)} / x{summary.get('gesamt_abgelehnt', 0)}"
+        )
         if summary.get("fehler"):
             for e in summary["fehler"]:
                 log.warning(f"  {e}")

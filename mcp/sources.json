@@ -802,5 +802,14 @@
         "rolling": false
       }
     ]
+  },
+  "openalex": {
+    "name": "OpenAlex Funders",
+    "url": "https://api.openalex.org/funders",
+    "type": "api",
+    "update_frequency": "monthly",
+    "last_check": "2026-08-31",
+    "hinweis": "OpenAlex funders index — live API, no anti-bot. Surfaces new granting bodies.",
+    "category": "International"
   }
 }

@@ -1287,3 +1287,6 @@ Errors:
 
 Errors:
 - Missing id/name: ?
+## 2026-09-01T08:47:02.733390 – Fetch Pipeline
+
+- openalex: +100 / ~0 / x0
