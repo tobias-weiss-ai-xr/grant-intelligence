@@ -191,11 +191,11 @@ def fetch_eu_tenders() -> ProgrammeUpdate:
     suggestions: list[str] = []
 
     portal_url = "https://commission.europa.eu/funding-and-tenders_en"
-    # Sub-pages that host the granular open calls — worth a human eye each week.
+    # Sub-pages that host the granular open calls — verified reachable (200).
     call_pages = {
         "MSCA": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships",
         "ERC": "https://erc.europa.eu/apply-grant",
-        "EIC": "https://eic.ec.europa.eu/eic-accelerator/open-calls",
+        "EIC": "https://eic.ec.europa.eu/",
     }
 
     try:

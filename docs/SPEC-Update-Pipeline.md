@@ -487,7 +487,7 @@ python mcp/ingest.py --all --apply
 | Item | Status |
 |------|--------|
 | Datenmodell | ✓ definiert |
-| Quellen-Registrierung | ✓ (`sources.json`, 27 Quellgruppen; Live-Source `openalex` via `fetchers.py`) |
+| Quellen-Registrierung | ✓ (`sources.json`, 28 Quellgruppen; Live-Quellen `openalex` + `eu-tenders` via `fetchers.py`) |
 | Update-Skript | ✓ (`update_catalog.py`) |
 | Fetch→Persist Pipeline | ✓ (`fetchers.py` `apply_fetch_updates`) |
 | **Ingestion Pipeline** | ✓ (`ingest.py` — Registry-basiert, 7 Fetcher, Dry-Run/Apply) |

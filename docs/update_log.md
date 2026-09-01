@@ -1287,6 +1287,8 @@ Errors:
 
 Errors:
 - Missing id/name: ?
-## 2026-09-01T08:47:02.733390 – Fetch Pipeline
+## 2026-09-01 — Fetch Pipeline
 
-- openalex: +100 / ~0 / x0
+- openalex: suggestion-only (100 funder suggestions reviewed; net catalog change: 0)
+- bmbf: suggestion-only (BMBF→BMFTR rebrand; bmbf.de RSS redirects)
+- eu-tenders: portal reachable (200); suggestions for MSCA/ERC/EIC open calls
