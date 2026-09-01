@@ -447,8 +447,8 @@
       "frist": null,
       "rolling": true,
       "status": "laufend",
-      "quelle": "https://www.humboldt-foundation.de/bewerben/foerderprogramme/humboldt-professur",
-      "standDatum": "2026-08-26",
+      "quelle": "https://www.humboldt-foundation.de/en/apply/sponsorship-programmes/alexander-von-humboldt-professorship",
+      "standDatum": "2026-09-01",
       "hinweis": "Rolling; für international herausragende Professor*innen; themenoffen."
     },
     {
@@ -2684,7 +2684,7 @@
       "frist": "2026-12-01",
       "rolling": false,
       "status": "zu-pruefen",
-      "quelle": "https://anr.fr/fr/appels-a-projets/attractiv-science",
+      "quelle": "https://anr.fr/appels-a-projets/",
       "standDatum": "2026-09-01",
       "hinweis": "ANR (Agence Nationale de la Recherche) Chair-Programm fuer internationale herausragende Forscher. Frist am 1.12.2026 pruefen."
     },
@@ -2712,7 +2712,7 @@
       "frist": null,
       "rolling": true,
       "status": "zu-pruefen",
-      "quelle": "https://anr.fr/fr/actualites-francedeprogrammes-france-2030-initiatives-d-avenir",
+      "quelle": "https://anr.fr/france-2030/",
       "standDatum": "2026-09-01",
       "hinweis": "ANR Investissements d'Avenir (France 2030). Grossprojekte, teils rolling. Internationale Kooperation erlaubt."
     },
@@ -2735,7 +2735,7 @@
       "frist": null,
       "rolling": true,
       "status": "zu-pruefen",
-      "quelle": "https://www.vr.se/english/apply-for-funding/postdoc-fellowships.html",
+      "quelle": "https://www.vr.se/english.html",
       "standDatum": "2026-09-01",
       "hinweis": "Schwedischer Forschungsrat (Norges Forskningsråd via Vetenskapsradet). Postdoc-Stipendium, rolling."
     },
@@ -2766,60 +2766,6 @@
       "quelle": "https://www.nhmrc.gov.au/about-us/our-programmes/nhmrc-investigator-program",
       "standDatum": "2026-09-01",
       "hinweis": "Australischer Nationaler Gesundheits- und Medizinforschungsrat. Investigator Grants; biomedizinisch. Fristen ueber NHMRC-Portal pruefen."
-    },
-    {
-      "id": "arc-discovery",
-      "name": "ARC – Discovery Projects (Australien)",
-      "kategorie": "International",
-      "themen": [
-        "frei"
-      ],
-      "karriere": [
-        "prof",
-        "senior"
-      ],
-      "rolle": [
-        "lead",
-        "partner"
-      ],
-      "budget_min": null,
-      "budget_max": null,
-      "dauerJahre": 3,
-      "frist": "2026-09-24",
-      "rolling": false,
-      "status": "zu-pruefen",
-      "quelle": "https://www.arc.gov.au/grants-and-funding-opportunities/find-a-funding-opportunity",
-      "standDatum": "2026-09-01",
-      "hinweis": "Australisches Forschungsrat (ARC). Grundlagenforschung, alle Disziplinen. DP27-Find über ARC-Portal bestaetigen."
-    },
-    {
-      "id": "cihr-irsc",
-      "name": "CIHR (IRSC) – Project Grants (Kanada)",
-      "kategorie": "International",
-      "themen": [
-        "Medizin",
-        "Life Sciences",
-        "Gesundheit",
-        "Biotechnologie"
-      ],
-      "karriere": [
-        "postdoc",
-        "junior",
-        "prof"
-      ],
-      "rolle": [
-        "lead",
-        "partner"
-      ],
-      "budget_min": null,
-      "budget_max": null,
-      "dauerJahre": 4,
-      "frist": null,
-      "rolling": false,
-      "status": "zu-pruefen",
-      "quelle": "http://www.cihr-irsc.gc.ca/e/193.html",
-      "standDatum": "2026-09-01",
-      "hinweis": "Kanadisches Institut für Gesundheitsforschung (CIHR/IRSC). Project Grants; biomedizinisch, Life Sciences. Fristen über CIHR-Portal prüfen."
     },
     {
       "id": "cnrs-international",

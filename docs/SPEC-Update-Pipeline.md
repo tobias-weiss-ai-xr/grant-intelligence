@@ -494,7 +494,7 @@ python mcp/ingest.py --all --apply
 | Validierung | ✓ (`Programm.from_dict`) |
 | Audit-Log | ✓ (`docs/update_log.md`) |
 | Deadline-Cron | ✓ (`cron_check_expired.sh` + systemd-Timer) |
-| Katalog | ✓ 103 Programme (9 Kategorien: DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International) |
+| Katalog | ✓ 108 Programme (9 Kategorien: DFG, ERC, BMBF, EU, Land, Stiftung, Industrie, Bund, International) |
 | CI/CD | optional |
 
 ---

@@ -27,7 +27,7 @@ größere Liste.
 1. **Profil:** ORCID/Publikationen/Stichworte, DSGVO-geklärt, mit Einwilligung;
    Karrierestufe (Postdoc/Junior/Prof). Öffentliche oder private Pflege.
 2. **Kuratierter Katalog:** DFG, ERC, BMBF, EU, Bund, Land, Stiftungen,
-   Industrie, International – 103 Programme aus offiziellen Quellen.
+   Industrie, International – 108 Programme aus offiziellen Quellen.
 3. **Matching:** Themen-Überlappung, Karrierestufe, Rolle (Lead/Partner),
    Geografie.
 4. **Begründung:** „Warum passt diese Ausschreibung zu dir?" – kein Keyword-Dump.
@@ -70,9 +70,9 @@ Datenbank" gepitcht.
 |---------|--------|
 | Pilot-Fakultät festlegen | offen (deferred) |
 | 2–3 reale Profile | ⚠ 1 aktiv (pilot-01-tobias), weitere offen |
-| Förderprogramme sammeln | ✅ 103 Programme, 9 Kategorien |
+| Förderprogramme sammeln | ✅ 108 Programme, 9 Kategorien |
 | Prototyp umsetzen | ✅ Agent-Schleife + UI + MCP-Server + Brief |
 | Einreichungstext finalisieren | ✅ V2, ≤300 Wörter |
 | Update-Pipeline | ✅ Fetchers + Cron + Audit-Log |
 | Open Source | ✅ MIT-Lizenz, GitHub |
-| Tests + Qualität | ✅ 443 Tests, 100% Coverage, mypy clean |
+| Tests + Qualität | ✅ 566 Tests, 99 % Coverage, mypy clean |

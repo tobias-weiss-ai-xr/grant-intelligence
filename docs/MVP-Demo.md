@@ -2,7 +2,7 @@
 
 > **Status:** ✅ umgesetzt als lokale Ein-Bildschirm-UI
 > `mcp/app.py` (uvicorn, http://127.0.0.1:8000) + MCP-Server `mcp/server.py`.
-> Katalog: 103 Programme aus 9 Kategorien, alle aus offiziellen Quellen.
+> Katalog: 108 Programme aus 9 Kategorien, alle aus offiziellen Quellen.
 
 ## Zweck
 Ein greifbarer, ehrlicher Prototyp: ein Beispiel-Profil eingeben → die

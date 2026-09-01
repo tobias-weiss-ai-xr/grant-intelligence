@@ -10,7 +10,7 @@ eine Live-Ansicht zum Anklicken:
 **[▶ Live-Dashboard öffnen](https://tobias-weiss-ai-xr.github.io/grant-intelligence/)**
 · [🖥️ Lokal starten](#schnellstart) · [🏛️ Was es kann](#was-es-kann) · [📖 Dokumentation](#dokumentation)
 
-*Screenshot: Fristen-Timeline (nächste 90 Tage) & Status-Charts · Stand 2026-08-26 · 103 Programme · 26 Quellen*
+*Screenshot: Fristen-Timeline (nächste 90 Tage) & Status-Charts · Stand 2026-09-01 · 108 Programme · 28 Quellen*
 
 </div>
 
@@ -19,8 +19,8 @@ kein Tracking – und wird bei jedem Push automatisch neu deployed:
 
 | | |
 |---|---|
-| 📋 **Katalog-Explorer** | 103 Förderprogramme durchsuchen & filtern (Text, Kategorie, Status) |
-| 🏛️ **Quellen-Browser** | 26 Institutionen – DFG, ERC, MSCA, BMBF/BMFTR, LOEWE, Stiftungen, international |
+| 📋 **Katalog-Explorer** | 108 Förderprogramme durchsuchen & filtern (Text, Kategorie, Status) |
+| 🏛️ **Quellen-Browser** | 28 Institutionen – DFG, ERC, MSCA, BMBF/BMFTR, LOEWE, Stiftungen, international – inkl. 2 automatisierten Live-Quellen (OpenAlex Funders API + EU Funding & Tenders Portal) |
 | ⏳ **Fristen-Timeline** | nächste 90 Tage, farbcodiert: ≤14 Tage rot · ≤30 orange · sonst grün |
 | 📊 **Charts** | Status (verifiziert/laufend/zu prüfen) & Kategorien, Dark Mode, WCAG 2.1 AA |
 | 🔒 **DSGVO-freundlich** | statisch & lokal, keine Cloud, keine Nutzerdaten, kein Tracking |
@@ -28,7 +28,7 @@ kein Tracking – und wird bei jedem Push automatisch neu deployed:
 ---
 
 > **Status:** Produktionsreif (lokaler MVP). FLASH-Einreichung abgegeben (2026-08).
-> Open Source (MIT). 103 Programme, 443 Tests, 99–100 % Coverage (Kernmodule 100 %).
+> Open Source (MIT). 108 Programme, 566 Tests, 99 % Coverage (Kernmodule 100 %).
 
 **Kern-These:** Es fehlt nicht an Förderangeboten (DFG, ERC, …), sondern an der
 Übertragung auf *dein* Profil – und an der einzigen Zahl, die zählt: **deine Fristen**.
@@ -171,6 +171,9 @@ Details & Aufbau: [`docs/Dashboard.md`](docs/Dashboard.md).
 ## Update-Pipeline
 
 ```bash
+# Live-Quellen (OpenAlex Vorschläge + EU Funding & Tenders) + Fristen-Check
+python3 mcp/fetchers.py --source all --check-deadlines
+
 # Fristen-Prüfung (wöchentlich per Cron)
 python3 mcp/update_catalog.py --check-expired
 

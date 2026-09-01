@@ -1,6 +1,6 @@
 # Pilot-Ergebnisse – Förder-Radar
 
-**Stand:** 2026-09-01 · Katalog: 110 Programme
+**Stand:** 2026-09-01 · Katalog: 108 Programme
 **Pilot-Fakultät:** Philipps-Universität Marburg, Fachbereich Mathematik
 **Profile:** 3 (1 mit Einwilligung)
 

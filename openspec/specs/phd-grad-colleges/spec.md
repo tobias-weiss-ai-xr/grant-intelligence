@@ -18,8 +18,6 @@ The `hinweis` field SHALL note that IRTGs are bilateral and location-specific.
 - **WHEN** `match_profile()` is called with `karriere="junior"` and any field.
 - **THEN** `dfg-irtg` SHALL appear in results.
 
-
-
 ### Requirement: Marie Skłodowska-Curie ITN entry
 The system SHALL include an `msc-itn` (Marie Skłodowska-Curie Innovative
 Training Networks) programme entry with `kategorie="EU"`,
@@ -67,3 +65,12 @@ The system SHALL include a `fritz-thyssen` programme entry with
 #### Scenario: Fritz Thyssen visible for postdocs
 - **WHEN** `match_profile()` is called with `karriere="postdoc"`.
 - **THEN** `fritz-thyssen` SHALL appear in results.
+
+### Requirement: DFG Graduate School programme entry
+The system SHALL include a `dfg-graduate-school` programme entry with
+`kategorie="DFG"`, `karriere=["student", "junior"]`, `themen=["thematisch-offen"]`,
+`rolling=False`, and `status="zu-pruefen"`.
+
+#### Scenario: DFG Graduate School visible for PhD students
+- **WHEN** `match_profile()` is called with `karriere="junior"`.
+- **THEN** `dfg-graduate-school` SHALL appear in results.
