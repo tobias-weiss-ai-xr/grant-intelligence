@@ -6,6 +6,8 @@ Checks current deadlines against sources.json and generates update suggestions.
 Usage:
     python mcp/fetchers.py --source all --check-deadlines
     python mcp/fetchers.py --source bmbf --rss
+    python mcp/fetchers.py --source openalex
+    python mcp/fetchers.py --source eu-tenders
 """
 
 from __future__ import annotations
@@ -153,19 +155,60 @@ def fetch_eu_horizon() -> ProgrammeUpdate:
     suggestions: list[str] = []
 
     try:
-        # EU Horizon portal (301 redirect, no API)
-        resp = httpx.get(
-            "https://ec.europa.eu/info/funding-tenders", timeout=10, follow_redirects=False
-        )
+        # EU Funding & Tenders Portal (current URL after 2025 migration to
+        # commission.europa.eu/funding-and-tenders_en). The /info/funding-tenders
+        # path 301-redirects; follow_redirects=False lets us report the move.
+        portal_url = "https://commission.europa.eu/funding-and-tenders_en"
+        resp = httpx.get(portal_url, timeout=10, follow_redirects=False)
         log.info(f"{source}: Portal reachable (Status {resp.status_code})")
 
         suggestions.append(
-            f"{source}: Check Horizon Europe calls at portal (ec.europa.eu/funding) - "
-            f"Cluster 4 (Digital), Cluster 5 (Climate/Energy), Cluster 6 (Biodiversity)"
+            f"{source}: Check Horizon Europe calls at "
+            f"{portal_url} - Cluster 4 (Digital), Cluster 5 (Climate/Energy), "
+            f"Cluster 6 (Biodiversity)"
         )
 
     except Exception as e:
         errors.append(str(e))
+
+    return ProgrammeUpdate(source, programmes, errors, datetime.now().isoformat(), suggestions)
+
+
+def fetch_eu_tenders() -> ProgrammeUpdate:
+    """Check the EU Funding & Tenders Portal for new open calls.
+
+    The Portal's JSON/REST API is auth-gated (returns an SPA HTML shell to
+    unauthenticated requests), so — like COST — this fetcher performs a live
+    reachability check and emits *suggestions* pointing at the specific
+    call-seeking pages (MSCA, ERC, EIC) rather than parsing programmes.
+
+    Returns:
+        ProgrammeUpdate with suggestions for manual review.
+    """
+    source = "eu_tenders"
+    programmes: list[dict[str, Any]] = []
+    errors: list[str] = []
+    suggestions: list[str] = []
+
+    portal_url = "https://commission.europa.eu/funding-and-tenders_en"
+    # Sub-pages that host the granular open calls — worth a human eye each week.
+    call_pages = {
+        "MSCA": "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships",
+        "ERC": "https://erc.europa.eu/apply-grant",
+        "EIC": "https://eic.ec.europa.eu/eic-accelerator/open-calls",
+    }
+
+    try:
+        resp = httpx.get(portal_url, timeout=10, follow_redirects=False)
+        log.info(f"{source}: Portal reachable (Status {resp.status_code})")
+        suggestions.append(
+            f"{source}: {portal_url} reachable — review open calls: "
+            f"MSCA ({call_pages['MSCA']}), ERC ({call_pages['ERC']}), "
+            f"EIC ({call_pages['EIC']})"
+        )
+    except Exception as e:
+        errors.append(str(e))
+        suggestions.append(f"{source}: API error - manual check {portal_url}")
 
     return ProgrammeUpdate(source, programmes, errors, datetime.now().isoformat(), suggestions)
 
@@ -514,8 +557,11 @@ def fetch_all(check_deadlines_flag: bool = False) -> list[ProgrammeUpdate]:
     results.append(fetch_cost())
     results.append(fetch_eu_horizon())
 
-    # BMBF RSS (produces programme records; BMBF->BMFTR since 2025)
+    # BMBF RSS (BMBF->BMFTR since 2025 — check only, bmbf.de redirects)
     results.append(fetch_bmbf_rss())
+
+    # EU Funding & Tenders Portal (auth-gated API → reachability + call suggestions)
+    results.append(fetch_eu_tenders())
 
     # OpenAlex funders (genuinely reachable JSON; live discovery of new granting bodies)
     results.append(fetch_openalex_funders())
@@ -546,7 +592,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Förder-Radar – Automatic Fetching")
     ap.add_argument(
         "--source",
-        choices=["cost", "eu", "bmbf", "openalex", "all"],
+        choices=["cost", "eu", "eu-tenders", "bmbf", "openalex", "all"],
         default="all",
         help="Source to query",
     )
@@ -563,6 +609,8 @@ def main() -> None:
         results = [fetch_bmbf_rss()]
     elif args.source == "openalex":
         results = [fetch_openalex_funders()]
+    elif args.source == "eu-tenders":
+        results = [fetch_eu_tenders()]
 
     log.info("\n=== Fetch Results ===")
     for r in results:

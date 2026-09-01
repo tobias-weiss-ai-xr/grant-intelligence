@@ -94,6 +94,25 @@ class TestFetch:
         assert r.programmes == []
         assert any("RSS" in s for s in r.suggestions)
 
+    def test_fetch_eu_tenders_portal_reachable(self, monkeypatch):
+        """EU FT Portal reachable → suggestions with MSCA/ERC/EIC links."""
+        monkeypatch.setattr(httpx, "get", lambda *a, **k: FakeResponse(200))
+        r = fetchers.fetch_eu_tenders()
+        assert r.source == "eu_tenders"
+        assert r.programmes == []  # suggestion-only (auth-gated API)
+        assert not r.errors
+        assert any("MSCA" in s or "ERC" in s or "EIC" in s for s in r.suggestions)
+        assert any("commission.europa.eu" in s for s in r.suggestions)
+
+    def test_fetch_eu_tenders_netzfehler(self, monkeypatch):
+        def boom(*a, **k):
+            raise httpx.ConnectError("down")
+
+        monkeypatch.setattr(httpx, "get", boom)
+        r = fetchers.fetch_eu_tenders()
+        assert r.errors
+        assert any("manual check" in s for s in r.suggestions)
+
     def test_slug_id_deterministisch(self):
         a = fetchers._slug_id("bmbf", "Test Bekanntmachung: KI!")
         b = fetchers._slug_id("bmbf", "Test Bekanntmachung: KI!")

@@ -205,10 +205,10 @@
   },
   "eu": {
     "name": "EU Horizon",
-    "url": "https://ec.europa.eu/info/funding-tenders",
+    "url": "https://commission.europa.eu/funding-and-tenders_en",
     "type": "manual",
     "update_frequency": "weekly",
-    "last_check": "2026-08-03",
+    "last_check": "2026-09-01",
     "hinweis": "EU Horizon Calls per Portal-Check",
     "calls": [
       {
@@ -811,5 +811,30 @@
     "last_check": "2026-08-31",
     "hinweis": "OpenAlex funders index — live API, no anti-bot. Surfaces new granting bodies.",
     "category": "International"
+  },
+  "eu-tenders": {
+    "name": "EU Funding & Tenders Portal (open calls)",
+    "url": "https://commission.europa.eu/funding-and-tenders_en",
+    "type": "manual",
+    "update_frequency": "weekly",
+    "last_check": "2026-09-01",
+    "hinweis": "EU Horizon Europe, ERC, EIC, MSCA calls — live portal; API is auth-gated so this is a reachability check.",
+    "calls": [
+      {
+        "id": "eu-erc",
+        "name": "ERC Open Calls (StG/AdG/CoG/SyG/PoC)",
+        "cluster": "ERC"
+      },
+      {
+        "id": "eu-eic",
+        "name": "EIC Accelerator & Pathfinder (Cluster 5/6)",
+        "cluster": "Innovation"
+      },
+      {
+        "id": "eu-msca",
+        "name": "MSCA Postdoctoral Fellowships + ITN + COFUND",
+        "cluster": "MSCA"
+      }
+    ]
   }
 }
