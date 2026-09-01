@@ -1,5 +1,5 @@
 {
-  "stand": "2026-08-26",
+  "stand": "2026-09-01",
   "quelleHinweis": "Kuratierter Katalog. status = verifiziert (live geprueft am standDatum) | laufend (keine Frist, rolling) | zu-pruefen (bekanntes Programm, Frist vor Nutzung gegen Portal pruefen). Keine rechtliche Bindung; fuer produktive Nutzung gegen offizielle Stellen pruefen.",
   "programme": [
     {
@@ -2663,6 +2663,188 @@
       "quelle": "https://www.dfg.de/de/foerderung/foerdermoeglichkeiten/programme/inter-foerdermassnahmen/int-wiss-veranstaltungen",
       "standDatum": "2026-08-26",
       "hinweis": "DFG-Foerderung internationaler wissenschaftlicher Veranstaltungen (Konferenzen, Workshops im Aus-/Inland). Antraege fortlaufend; Vorlaufzeiten beachten."
+    },
+    {
+      "id": "anr-attractiv-science",
+      "name": "ANR – Attractiv Science 2027 (Chaire)",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": 250000,
+      "dauerJahre": 4,
+      "frist": "2026-12-01",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://anr.fr/fr/appels-a-projets/attractiv-science",
+      "standDatum": "2026-09-01",
+      "hinweis": "ANR (Agence Nationale de la Recherche) Chair-Programm fuer internationale herausragende Forscher. Frist am 1.12.2026 pruefen."
+    },
+    {
+      "id": "anr-initiatives-d-avenir",
+      "name": "ANR – Investissements d'Avenir (IdA), France 2030",
+      "kategorie": "International",
+      "themen": [
+        "Digital",
+        "KI",
+        "Infrastruktur",
+        "Life Sciences"
+      ],
+      "karriere": [
+        "postdoc",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": 1000000,
+      "budget_max": 8000000,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": true,
+      "status": "zu-pruefen",
+      "quelle": "https://anr.fr/fr/actualites-francedeprogrammes-france-2030-initiatives-d-avenir",
+      "standDatum": "2026-09-01",
+      "hinweis": "ANR Investissements d'Avenir (France 2030). Grossprojekte, teils rolling. Internationale Kooperation erlaubt."
+    },
+    {
+      "id": "nfr-vr-postdoc",
+      "name": "NFR (Vetenskapsrådet) – VR Postdoktor (Schweden)",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "postdoc"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "zu-pruefen",
+      "quelle": "https://www.vr.se/english/apply-for-funding/postdoc-fellowships.html",
+      "standDatum": "2026-09-01",
+      "hinweis": "Schwedischer Forschungsrat (Norges Forskningsråd via Vetenskapsradet). Postdoc-Stipendium, rolling."
+    },
+    {
+      "id": "nhmrc-investigator",
+      "name": "NHMRC – Investigator Grants (Australien)",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Life Sciences",
+        "Gesundheit",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 5,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.nhmrc.gov.au/about-us/our-programmes/nhmrc-investigator-program",
+      "standDatum": "2026-09-01",
+      "hinweis": "Australischer Nationaler Gesundheits- und Medizinforschungsrat. Investigator Grants; biomedizinisch. Fristen ueber NHMRC-Portal pruefen."
+    },
+    {
+      "id": "arc-discovery",
+      "name": "ARC – Discovery Projects (Australien)",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 3,
+      "frist": "2026-09-24",
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "https://www.arc.gov.au/grants-and-funding-opportunities/find-a-funding-opportunity",
+      "standDatum": "2026-09-01",
+      "hinweis": "Australisches Forschungsrat (ARC). Grundlagenforschung, alle Disziplinen. DP27-Find über ARC-Portal bestaetigen."
+    },
+    {
+      "id": "cihr-irsc",
+      "name": "CIHR (IRSC) – Project Grants (Kanada)",
+      "kategorie": "International",
+      "themen": [
+        "Medizin",
+        "Life Sciences",
+        "Gesundheit",
+        "Biotechnologie"
+      ],
+      "karriere": [
+        "postdoc",
+        "junior",
+        "prof"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 4,
+      "frist": null,
+      "rolling": false,
+      "status": "zu-pruefen",
+      "quelle": "http://www.cihr-irsc.gc.ca/e/193.html",
+      "standDatum": "2026-09-01",
+      "hinweis": "Kanadisches Institut für Gesundheitsforschung (CIHR/IRSC). Project Grants; biomedizinisch, Life Sciences. Fristen über CIHR-Portal prüfen."
+    },
+    {
+      "id": "cnrs-international",
+      "name": "CNRS – International Engagement (Frankreich)",
+      "kategorie": "International",
+      "themen": [
+        "frei"
+      ],
+      "karriere": [
+        "prof",
+        "senior"
+      ],
+      "rolle": [
+        "lead",
+        "partner"
+      ],
+      "budget_min": null,
+      "budget_max": null,
+      "dauerJahre": 2,
+      "frist": null,
+      "rolling": true,
+      "status": "zu-pruefen",
+      "quelle": "https://www.cnrs.fr/en/international",
+      "standDatum": "2026-09-01",
+      "hinweis": "CNRS (Centre National de la Recherche Scientifique) – internationale Kooperationsteams und Gastprogramme für etablierte PIs. Rolling/einzelne Calls."
     }
   ]
 }
