@@ -1,0 +1,1 @@
+/home/weissto_local/taskfleet-configs/grant-intelligence/run.sh
