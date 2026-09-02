@@ -26,3 +26,4 @@ verify-sources-report.json
 
 # catalog_lint.py report (generated)
 catalog-lint-report.json
+.taskfleet-state/
