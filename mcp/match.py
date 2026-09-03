@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Förder-Radar – Daten-, Matching- und Begründungs-Schicht.
 
 Reine, side-effect-arme Logik ohne MCP-/Web-Abhängigkeit: Katalog laden/speichern,
@@ -17,7 +19,6 @@ Konventionen:
     - Karriere ist ein harter Filter, sofern das Programm Karrierestufen listet.
 """
 
-from __future__ import annotations
 
 import json
 import logging
@@ -41,7 +42,6 @@ SOURCES = Path(__file__).with_name("sources.json")
 # Performance: pfad-basierter in-memory Cache für Catalog-Loads
 _CATALOG_CACHE: dict[str, list[dict[str, Any]]] = {}
 
-from __future__ import annotations
 
 import json
 import logging
