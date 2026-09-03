@@ -69,8 +69,21 @@ function _parseFrist(s) {
   if (!s) return null;
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
   if (!m) return null;
-  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-  return Number.isNaN(d.getTime()) ? null : d;
+  const y = Number(m[1]);
+  const mo = Number(m[2]);
+  const d = Number(m[3]);
+  // Parität zu Python date.fromisoformat: überlaufende Komponenten
+  // (z.B. 2026-13-99, 2026-02-30, 9999-99-99) ablehnen statt sie von der
+  // Date-Konstruktion normalisieren zu lassen.
+  const probe = new Date(Date.UTC(y, mo - 1, d));
+  if (
+    probe.getUTCFullYear() !== y ||
+    probe.getUTCMonth() !== mo - 1 ||
+    probe.getUTCDate() !== d
+  ) {
+    return null;
+  }
+  return new Date(y, mo - 1, d);
 }
 
 // def _frist_text(frist, rolling) -> str
@@ -312,6 +325,28 @@ check('real catalog: wildcard programmes match arbitrary fields', () => {
   assert.ok(allOpen.every((p) => _fits(p.themen, 'Astroteilchenphysik')));
 });
 
+// 2.1.8 Weitere Randfälle – alle Erwartungswerte gegen mcp/match.py verifiziert
+check('theme is substring of longer compound field', () => {
+  // Python: 'chemie' in 'chemieingenieurwesen' -> True
+  assert.strictEqual(_fits(['Chemie'], 'Chemieingenieurwesen'), true);
+});
+check('field with trailing whitespace is trimmed before matching', () => {
+  // Python: field.lower().strip()
+  assert.strictEqual(_fits(['Bio'], 'Bio '), true);
+});
+check('theme with surrounding whitespace still matches', () => {
+  // Python: Themen werden NICHT gestrippt -> '  biologie  ' enthält 'biologie'
+  assert.strictEqual(_fits(['  Biologie  '], 'Biologie'), true);
+});
+check('empty-string theme inside non-empty field matches (Python semantics)', () => {
+  // Python: '' in 'x' -> True;  JS: 'x'.includes('') -> True  =>  Parität
+  assert.strictEqual(_fits([''], 'x'), true);
+});
+check('empty-string theme + empty field returns false (beide Seiten)', () => {
+  assert.strictEqual(_fits([''], ''), false);
+  assert.strictEqual(_fits([''], '   '), false);
+});
+
 // ---------------------------------------------------------------------------
 // _themeScore(): Deckelung bei 3  (Port-Parität, TEST-JS-2 baut darauf auf)
 // ---------------------------------------------------------------------------
@@ -479,6 +514,206 @@ check('real catalog scenario C: ["Chemie"] no karriere, top 3', () => {
 check('real catalog: empty fields return []', () => {
   assert.deepStrictEqual(matchProfile(PROGS, [], 'postdoc', { top: 3 }), []);
 });
+
+// ---------------------------------------------------------------------------
+// 2.3  _fristText(): deterministische Zweige (keine Tagesdatum-Abhängigkeit)
+//      Erwartungswerte 1:1 aus mcp/match.py übernommen
+// ---------------------------------------------------------------------------
+section('2.3  _fristText() – deterministische Zweige');
+
+check('rolling takes precedence over any frist', () => {
+  assert.strictEqual(
+    _fristText('2026-09-02', true),
+    'Rolling – jederzeit einreichbar, keine feste Frist'
+  );
+  assert.strictEqual(
+    _fristText(null, true),
+    'Rolling – jederzeit einreichbar, keine feste Frist'
+  );
+});
+
+check('no frist and not rolling', () => {
+  assert.strictEqual(
+    _fristText(null, false),
+    'Frist noch offen – vor Nutzung gegen Portal prüfen'
+  );
+  assert.strictEqual(
+    _fristText('', false),
+    'Frist noch offen – vor Nutzung gegen Portal prüfen'
+  );
+});
+
+check('invalid date (month/day overflow) -> Format unklar (Python: fromisoformat wirft)', () => {
+  assert.strictEqual(_fristText('2026-13-99', false), 'Frist 2026-13-99 (Format unklar, prüfen)');
+  assert.strictEqual(_fristText('2026-02-30', false), 'Frist 2026-02-30 (Format unklar, prüfen)');
+  assert.strictEqual(_fristText('9999-99-99', false), 'Frist 9999-99-99 (Format unklar, prüfen)');
+});
+
+check('unparseable frist string -> Format unklar', () => {
+  assert.strictEqual(_fristText('nix', false), 'Frist nix (Format unklar, prüfen)');
+  assert.strictEqual(_fristText('2026-1-1', false), 'Frist 2026-1-1 (Format unklar, prüfen)');
+  assert.strictEqual(_fristText('2026/09/02', false), 'Frist 2026/09/02 (Format unklar, prüfen)');
+});
+
+check('valid frist parses (delta is computed, format used)', () => {
+  // Nur Struktur prüfen: Tag/Monat/Jahr korrekt formatiert; der Tages-Delta
+  // ist tagesdatum-abhängig und wird hier nicht hart kodiert.
+  const t = _fristText('2999-01-01', false);
+  assert.ok(t.startsWith('Frist 01.01.2999 –'), t);
+});
+
+// ---------------------------------------------------------------------------
+// 2.4  _punkteTeile(): Struktur (Parität zu Python _punkte_teile)
+// ---------------------------------------------------------------------------
+section('2.4  _punkteTeile() – Struktur');
+
+check('breakdown with matched fields, no karriere', () => {
+  assert.deepStrictEqual(
+    _punkteTeile({ gesamt: 2, thema: 2, karriere: 0, felder: ['Bio', 'Physik'] }),
+    [
+      { name: 'Thema', punkte: 2, max: 3, detail: 'Bio, Physik' },
+      { name: 'Karriere', punkte: 0, max: 1, detail: null },
+    ]
+  );
+});
+
+check('breakdown with karriere hit (max theme score)', () => {
+  assert.deepStrictEqual(
+    _punkteTeile({ gesamt: 4, thema: 3, karriere: 1, felder: ['Bio', 'Chemie', 'Physik'] }),
+    [
+      { name: 'Thema', punkte: 3, max: 3, detail: 'Bio, Chemie, Physik' },
+      { name: 'Karriere', punkte: 1, max: 1, detail: 'Karrierestufe im Programm gelistet' },
+    ]
+  );
+});
+
+check('breakdown with no hits', () => {
+  assert.deepStrictEqual(
+    _punkteTeile({ gesamt: 0, thema: 0, karriere: 0, felder: [] }),
+    [
+      { name: 'Thema', punkte: 0, max: 3, detail: null },
+      { name: 'Karriere', punkte: 0, max: 1, detail: null },
+    ]
+  );
+});
+
+// ---------------------------------------------------------------------------
+// 2.5  _begruendung(): deterministische Volltexte gegen mcp/match.py
+//      (fixtures ohne frist -> keine Tagesdatum-Abhängigkeit)
+// ---------------------------------------------------------------------------
+section('2.5  _begruendung() – deterministische Volltexte');
+
+check('_begruendung: offenes Programm (frei) exakt wie Python', () => {
+  const prog = { themen: ['frei'], karriere: ['postdoc'], frist: null, rolling: false, budget_max: 500000, status: 'verifiziert' };
+  const parts = _score(prog, ['Astrophysik'], 'postdoc');
+  assert.strictEqual(
+    _begruendung(prog, parts),
+    'Themen-Ueberlappung: Astrophysik; offen fuer alle Fachrichtungen; Karrierestufe passt zum Programm; ' +
+      'Frist noch offen – vor Nutzung gegen Portal prüfen; bis ca. 500 Tausend Euro'
+  );
+});
+
+check('_begruendung: zu-pruefen, keine Karriere-Liste, kein Budget exakt wie Python', () => {
+  const prog = { themen: ['Bio'], karriere: [], frist: null, rolling: false, status: 'zu-pruefen' };
+  const parts = _score(prog, ['Biologie'], 'postdoc');
+  assert.deepStrictEqual(parts, { gesamt: 1, thema: 1, karriere: 0, felder: ['Biologie'] });
+  assert.strictEqual(
+    _begruendung(prog, parts),
+    'Themen-Ueberlappung: Biologie; Karrierestufe nicht gelistet – Eignung im Einzelfall prüfen; ' +
+      'Frist noch offen – vor Nutzung gegen Portal prüfen; Achtung: Details/Frist vor Antrag gegen Portal prüfen'
+  );
+});
+
+// ---------------------------------------------------------------------------
+// 2.2  matchProfile(): weitere Katalog-Szenarien
+//      (Erwartungswerte mit mcp/match.py berechnet; nur id/score/frist)
+// ---------------------------------------------------------------------------
+section('2.2  matchProfile() – weitere Katalog-Szenarien (Erwartungswerte aus mcp/match.py)');
+
+function expectScenario(label, fields, karriere, rolle, top, expected) {
+  check(label, () => {
+    const opts = rolle ? { top, rolle } : { top };
+    const res = matchProfile(PROGS, fields, karriere, opts);
+    assert.deepStrictEqual(
+      res.map((r) => [r.id, r.score, r.frist ?? null]),
+      expected
+    );
+  });
+}
+
+expectScenario('Physik prof top10', ['Physik'], 'prof', null, 10, [
+  ['erc-plus-2026', 2, '2026-09-02'], ['cost-netzwerk', 2, '2026-09-10'],
+  ['dfg-heisenberg', 2, '2026-10-01'], ['volkswagen-stiftung', 2, '2026-10-15'],
+  ['eu-eic-pathfinder', 2, '2026-10-28'], ['anr-attractiv-science', 2, '2026-12-01'],
+  ['fritz-thyssen', 2, '2027-02-01'], ['erc-syg-2027', 2, '2027-05-11'],
+  ['erc-adg-2027', 2, null], ['dfg-sachbeihilfe', 2, null],
+]);
+
+expectScenario('Informatik postdoc top5', ['Informatik'], 'postdoc', null, 5, [
+  ['erc-plus-2026', 2, '2026-09-02'], ['msca-pf', 2, '2026-09-09'],
+  ['cost-netzwerk', 2, '2026-09-10'], ['dfg-emmy-noether', 2, '2026-10-01'],
+  ['erc-stg-2027', 2, '2026-10-14'],
+]);
+
+expectScenario('Medizin ohne Karriere top4', ['Medizin'], null, null, 4, [
+  ['erc-plus-2026', 1, '2026-09-02'], ['msca-pf', 1, '2026-09-09'],
+  ['cost-netzwerk', 1, '2026-09-10'], ['dfg-emmy-noether', 1, '2026-10-01'],
+]);
+
+expectScenario('KI prof top6', ['KI'], 'prof', null, 6, [
+  ['erc-plus-2026', 2, '2026-09-02'], ['cost-netzwerk', 2, '2026-09-10'],
+  ['dfg-heisenberg', 2, '2026-10-01'], ['volkswagen-stiftung', 2, '2026-10-15'],
+  ['eu-eic-pathfinder', 2, '2026-10-28'], ['eu-horizon-digital', 2, '2026-11-08'],
+]);
+
+expectScenario('mehrere Felder prof top10 (Thema-Score gedeckelt auf 3)', ['Biologie', 'Chemie', 'Physik'], 'prof', null, 10, [
+  ['erc-plus-2026', 4, '2026-09-02'], ['cost-netzwerk', 4, '2026-09-10'],
+  ['dfg-heisenberg', 4, '2026-10-01'], ['volkswagen-stiftung', 4, '2026-10-15'],
+  ['eu-eic-pathfinder', 4, '2026-10-28'], ['anr-attractiv-science', 4, '2026-12-01'],
+  ['fritz-thyssen', 4, '2027-02-01'], ['erc-syg-2027', 4, '2027-05-11'],
+  ['erc-adg-2027', 4, null], ['dfg-sachbeihilfe', 4, null],
+]);
+
+expectScenario('wenige Felder ohne Karriere top2', ['Maschinelles Lernen', 'Robotik'], null, null, 2, [
+  ['erc-plus-2026', 2, '2026-09-02'], ['msca-pf', 2, '2026-09-09'],
+]);
+
+expectScenario('rolle=lead top5', ['Biologie'], 'postdoc', 'lead', 5, [
+  ['erc-plus-2026', 2, '2026-09-02'], ['msca-pf', 2, '2026-09-09'],
+  ['cost-netzwerk', 2, '2026-09-10'], ['dfg-emmy-noether', 2, '2026-10-01'],
+  ['erc-stg-2027', 2, '2026-10-14'],
+]);
+
+expectScenario('rolle=partner schränkt ein (top3)', ['Physik'], 'prof', 'partner', 3, [
+  ['cost-netzwerk', 2, '2026-09-10'], ['eu-eic-pathfinder', 2, '2026-10-28'],
+  ['erc-syg-2027', 2, '2027-05-11'],
+]);
+
+expectScenario('unbekannte Karrierestufe -> leere Trefferliste', ['Physik'], 'professorin', null, 5, []);
+
+expectScenario('top1 liefert nur den besten Treffer', ['Physik'], 'postdoc', null, 1, [
+  ['erc-plus-2026', 2, '2026-09-02'],
+]);
+
+expectScenario('breites Profil ohne Karriere top8 (stable sort bei gleichem Frist-Tag)', ['KI', 'Informatik', 'Robotik'], null, null, 8, [
+  ['erc-plus-2026', 3, '2026-09-02'], ['msca-pf', 3, '2026-09-09'],
+  ['cost-netzwerk', 3, '2026-09-10'], ['dfg-emmy-noether', 3, '2026-10-01'],
+  ['dfg-heisenberg', 3, '2026-10-01'], ['erc-stg-2027', 3, '2026-10-14'],
+  ['volkswagen-stiftung', 3, '2026-10-15'], ['eu-eic-pathfinder', 3, '2026-10-28'],
+]);
+
+expectScenario('viele Felder prof top20 (None-Fristen am Ende, alle Score 4)', ['AI', 'Informatik', 'Mathematik'], 'prof', null, 20, [
+  ['erc-plus-2026', 4, '2026-09-02'], ['cost-netzwerk', 4, '2026-09-10'],
+  ['dfg-heisenberg', 4, '2026-10-01'], ['volkswagen-stiftung', 4, '2026-10-15'],
+  ['eu-eic-pathfinder', 4, '2026-10-28'], ['anr-attractiv-science', 4, '2026-12-01'],
+  ['fritz-thyssen', 4, '2027-02-01'], ['erc-syg-2027', 4, '2027-05-11'],
+  ['erc-adg-2027', 4, null], ['dfg-sachbeihilfe', 4, null],
+  ['dfg-sfb', 4, null], ['loewe-hessen', 4, null],
+  ['humboldt-prof', 4, null], ['dfg-reinhart-koselleck', 4, null],
+  ['dfg-forschungsgruppen', 4, null], ['dfg-schwerpunktprogramme', 4, null],
+  ['dfg-kolleg-forschungsgruppen', 4, null], ['dfg-wissenschaftliche-netzwerke', 4, null],
+  ['dfg-forschungsimpulse', 4, null], ['humboldt-forschungsstipendium', 4, null],
+]);
 
 // ---------------------------------------------------------------------------
 // Zusammenfassung
