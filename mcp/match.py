@@ -1,11 +1,45 @@
 """Förder-Radar – Daten-, Matching- und Begründungs-Schicht.
 
-Reine Logik ohne MCP-/Web-Abhaengigkeit: Katalog laden/speichern,
-gewichteter Matching-Score, menschenlesbare Begruendung (deutsch, regelbasiert),
-naechste Fristen.
+Reine, side-effect-arme Logik ohne MCP-/Web-Abhängigkeit: Katalog laden/speichern,
+gewichteter Matching-Score (Thema + Karriere), menschenlesbare Begründung
+(deutsch, regelbasiert), nächste Fristen. Die Module `app`/`server`/`brief` bauen
+auf dieser Schicht auf; Tests und der JS-Port `dashboard/app.js` müssen zu
+identischen Ergebnissen kommen.
 
-Type-safe, well-documented, and testable.
+Public API:
+    - load_catalog / save_catalog: JSON-Persistenz des Programmkatalogs.
+    - match_profile / next_deadline: zentrale Matching-Einstiegspunkte.
+    - _score / _theme_score / _fits: Score-Bausteine, auch einzeln testbar.
+
+Konventionen:
+    - Matching ist case-insensitive und substring-basiert (bidirektional).
+    - Die Wildcards 'alle', 'frei' und 'thematisch-offen' matchen jedes Feld.
+    - Karriere ist ein harter Filter, sofern das Programm Karrierestufen listet.
 """
+
+from __future__ import annotations
+
+import json
+import logging
+from datetime import date
+from pathlib import Path
+from typing import Any
+
+from grant_types import MatchResult, budget_beschreibung, parse_frist
+
+try:
+    from profile import Profile
+except ImportError:  # pragma: no cover
+    Profile = None  # type: ignore[assignment, misc]
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
+
+CATALOG = Path(__file__).with_name("catalog.json")
+SOURCES = Path(__file__).with_name("sources.json")
+
+# Performance: pfad-basierter in-memory Cache für Catalog-Loads
+_CATALOG_CACHE: dict[str, list[dict[str, Any]]] = {}
 
 from __future__ import annotations
 
@@ -33,7 +67,18 @@ _CATALOG_CACHE: dict[str, list[dict[str, Any]]] = {}
 
 
 def _clear_catalog_cache(path: Path | None = None) -> None:
-    """Cache leeren (für Pfad oder komplett)."""
+    """Clear the in-memory catalog cache.
+
+    Needed for test isolation and after `save_catalog`, so subsequent
+    `load_catalog` calls read fresh data from disk.
+
+    Args:
+        path: Optional specific catalog path to evict from the cache. If None,
+            the entire cache is cleared.
+
+    Returns:
+        None.
+    """
     global _CATALOG_CACHE
     if path is not None:
         key = str(path.resolve())
@@ -154,17 +199,23 @@ def save_catalog(programme: list[dict[str, Any]], path: Path | None = None) -> N
 
 
 def _fits(theme_defs: list[str], field: str) -> bool:
-    """Check if a field matches the program's theme definitions.
+    """Check if a research field matches the programme's theme definitions.
 
-    'alle'/'frei'/'thematisch-offen' match everything (wildcards).
-    Otherwise, case-insensitive substring match.
+    Matching rules:
+        - The wildcards 'alle', 'frei' and 'thematisch-offen' match any
+          non-empty field (open-ended programmes are visible to every search).
+        - Otherwise the match is case-insensitive and bidirectional substring:
+          the definition matches if it is contained in the field OR the field
+          is contained in the definition, e.g. 'Physik' matches
+          'Astroteilchenphysik' and vice versa.
+        - Empty or whitespace-only fields never match.
 
     Args:
-        theme_defs: List of theme definitions from the program.
+        theme_defs: List of theme definitions from the programme (``themen``).
         field: User-provided research field.
 
     Returns:
-        True if field matches any theme definition.
+        True if the field matches at least one theme definition, else False.
     """
     wildcards = ("alle", "frei", "thematisch-offen")
     f = field.lower().strip()
@@ -176,16 +227,20 @@ def _fits(theme_defs: list[str], field: str) -> bool:
 
 
 def _theme_score(prog: dict[str, Any], fields: list[str]) -> tuple[int, list[str]]:
-    """Calculate weighted theme overlap score.
+    """Calculate the theme-overlap score for a programme.
 
-    Maximum score of 3, with list of matched fields.
+    Iterates the user's fields and counts how many match the programme's
+    themes. The score is capped at 3 so the theme contribution to the total
+    match score stays bounded, independent of how many fields were supplied.
 
     Args:
-        prog: Program dictionary.
+        prog: Programme dictionary (uses the ``themen`` key).
         fields: User-provided research fields.
 
     Returns:
-        Tuple of (score, list of matched fields).
+        Tuple of (score, matched_fields): score is at most 3; matched_fields
+        lists every field that matched (not truncated to 3), so the
+        justification can name all of them.
     """
     hits = [f for f in fields if _fits(prog.get("themen", []), f)]
     return min(len(hits), 3), hits
@@ -195,16 +250,21 @@ def _score(prog: dict[str, Any], fields: list[str], karriere: str | None) -> dic
     """Calculate weighted match score (0-5) with component breakdown.
 
     Components:
-        - Thema: 0-3 points for theme overlap
-        - Karriere: 1 point if career level matches
+        - Thema: 0-3 points for theme overlap (`_theme_score`).
+        - Karriere: 1 point if the career level is listed in the programme.
+          No penalty is applied when the programme declares no careers.
 
     Args:
-        prog: Program dictionary.
+        prog: Programme dictionary (uses ``themen`` and ``karriere`` keys).
         fields: User-provided research fields.
-        karriere: User's career level.
+        karriere: User's career level, or None to skip the career component.
 
     Returns:
-        Dictionary with total score, theme score, career score, and matched fields.
+        Dictionary with the keys:
+            - ``gesamt``: total score 0-5 (theme + career).
+            - ``thema``: theme sub-score 0-3.
+            - ``karriere``: career sub-score 0 or 1.
+            - ``felder``: list of matched research fields.
     """
     t, hits = _theme_score(prog, fields)
     k = 1 if (karriere and karriere in prog.get("karriere", [])) else 0
@@ -244,14 +304,18 @@ def _punkte_teile(parts: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _frist_text(frist: str | None, rolling: bool) -> str:
-    """Generate human-readable deadline text.
+    """Generate a human-readable, German deadline description.
+
+    Priority: rolling admissions > missing/unparseable deadline > days until
+    deadline (or how long it has expired). Used inside `_begruendung`.
 
     Args:
         frist: Deadline date in ISO format (YYYY-MM-DD) or None.
-        rolling: Whether the program has rolling admissions.
+        rolling: Whether the programme has rolling admissions.
 
     Returns:
-        Human-readable deadline description.
+        Human-readable deadline description, e.g. "Frist 30.06.2027 – noch 120
+        Tage".
     """
     if rolling:
         return "Rolling – jederzeit einreichbar, keine feste Frist"
@@ -267,14 +331,20 @@ def _frist_text(frist: str | None, rolling: bool) -> str:
 
 
 def _begruendung(prog: dict[str, Any], parts: dict[str, Any]) -> str:
-    """Generate human-readable explanation for match score.
+    """Generate a human-readable, German explanation for a match.
+
+    Combines the matched themes, open-to-all-fields signals, career fit,
+    deadline, budget and status warnings into one ";".join()-ed sentence.
+    Rule-based and deterministic, so it is testable and stays stable across
+    identical inputs.
 
     Args:
-        prog: Program dictionary.
-        parts: Score breakdown from _score().
+        prog: Programme dictionary (uses ``themen``, ``karriere``, ``frist``,
+            ``rolling``, ``budget_max``, ``budget_text``, ``status``).
+        parts: Score breakdown from `_score`.
 
     Returns:
-        German explanation string.
+        An explanatory string in German.
     """
     bits: list[str] = []
 
@@ -320,24 +390,30 @@ def match_profile(
     top: int = 3,
     profil: Profile | None = None,
 ) -> list[MatchResult]:
-    """Find top matching programs for a profile.
+    """Find the top matching programmes for a profile.
 
-    Career level is a hard filter: programs without the specified career level
-    are excluded. Empty fields return no results.
+    Career level is a hard filter: a programme that lists careers is excluded
+    when it does not contain the user's career level. Programmes that declare
+    no careers at all are not filtered. Matches need a positive theme score,
+    pure-career matches (no theme overlap) are dropped. Empty/whitespace-only
+    fields or ``top <= 0`` return no results.
 
     Args:
-        programme: List of program dictionaries.
-        fields: User's research fields. If None, profile.themen is used.
-        karriere: User's career level (hard filter). If None, profile.karriere is used.
-        rolle: Optional role filter (lead/partner).
+        programme: List of programme dictionaries.
+        fields: User's research fields. If None, ``profil.themen`` is used.
+        karriere: User's career level (hard filter). If None,
+            ``profil.karriere`` is used.
+        rolle: Optional role filter (lead/partner); programmes not listing the
+            role are excluded when set.
         top: Maximum number of results to return.
         profil: Optional Profile object. If provided, its themen and karriere
             are used as defaults. Explicit fields/karriere arguments take
-            precedence over profile values. If profil.einwilligung is False,
-            returns an empty list (DSGVO consent gate).
+            precedence over profile values. If ``profil.einwilligung`` is
+            False, an empty list is returned (DSGVO consent gate).
 
     Returns:
-        List of MatchResult objects, sorted by score and deadline.
+        List of MatchResult objects, sorted by score (descending) and then by
+        deadline (ascending, missing deadlines last), truncated to ``top``.
     """
     # DSGVO consent gate
     if profil is not None and not profil.einwilligung:
@@ -406,21 +482,27 @@ def next_deadline(
     today: date | None = None,
     profil: Profile | None = None,
 ) -> list[MatchResult]:
-    """Find programs with upcoming deadlines.
+    """Find noteworthy programmes with upcoming (or recent) deadlines.
 
-    Like match_profile, but includes days until deadline.
+    Delegates scoring and filtering to `match_profile` (same hard career
+    filter, consent gate and sorting) and additionally computes the days
+    until each deadline relative to `today`. Unparseable deadlines yield
+    None for ``tage_bis_frist`` instead of failing.
 
     Args:
-        programs: List of program dictionaries.
-        fields: User's research fields. If None, profile.themen is used.
-        karriere: User's career level. If None, profile.karriere is used.
-        rolle: Optional role filter.
-        top: Maximum number of results.
-        today: Reference date (defaults to today).
+        programs: List of programme dictionaries.
+        fields: User's research fields. If None, ``profil.themen`` is used.
+        karriere: User's career level. If None, ``profil.karriere`` is used.
+        rolle: Optional role filter (lead/partner).
+        top: Maximum number of results (default 2, smaller than
+            `match_profile` because only the imminent deadlines matter).
+        today: Reference date for the day delta (defaults to date.today()).
         profil: Optional Profile object for defaults and consent gate.
 
     Returns:
-        List of MatchResult objects with tage_bis_frist set.
+        List of MatchResult objects, each with ``tage_bis_frist`` set (None
+        when the deadline is missing or unparseable), sorted as in
+        `match_profile`.
     """
     today = today or date.today()
     results = match_profile(programs, fields, karriere, rolle=rolle, top=top, profil=profil)
