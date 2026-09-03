@@ -21,6 +21,8 @@ from match import (
     CatalogError,
     _begruendung,
     _frist_text,
+    _score,
+    _theme_score,
     load_catalog,
     match_profile,
     next_deadline,
@@ -862,3 +864,154 @@ class TestCoverageEdges:
         text = brief.generate(["Biologie"], "postdoc", top=3, saia=True)
         assert "## KI-Begruendungen (SAIA)" in text
         assert "Starke Themenueberlappung." in text
+
+
+# --------------------------------------------------------------- _theme_score capping
+class TestThemeScoreCapping:
+    """Unit-Tests für _theme_score(): Score wird bei 3 gekappt, leere Inputs -> 0.
+
+    Erwartetes Verhalten laut match.py:
+      - _theme_score(prog, fields) -> (score, hits)
+      - Score = min(Anzahl gematchter Felder, 3)
+      - leere fields / fehlende "themen" -> (0, [])
+    """
+
+    def _prog(self, themes):
+        """Minimales Programm-Dict nur mit Themenliste."""
+        return {"themen": themes}
+
+    # -- Capping bei 3 --------------------------------------------------------
+    def test_themeScore_capped_at_3(self):
+        """Vier passende Felder -> Score ist weiterhin 3 (Cap)."""
+        score, hits = _theme_score(self._prog(["Biologie"]),
+                                   ["Biologie"] * 4)
+        assert score == 3
+        assert len(hits) == 4  # alle Treffer bleiben sichtbar
+
+    def test_themeScore_many_distinct_fields_capped_at_3(self):
+        """Viele verschiedene Treffer: Score bleibt 3, hits listet alle."""
+        fields = ["Biologie", "Chemie", "Physik", "Mathematik"]
+        score, hits = _theme_score(self._prog(fields[:]), fields)
+        assert score == 3
+        assert set(hits) == set(fields)
+
+    def test_themeScore_cap_never_exceeds_3(self):
+        """Beliebig viele Felder: Score kann 3 nicht überschreiten."""
+        fields = ["A", "B", "C", "D", "E", "F", "G", "H"]
+        score, _ = _theme_score(self._prog(fields[:]), fields)
+        assert score == 3
+
+    # -- Unterhalb des Caps ---------------------------------------------------
+    def test_themeScore_single_match(self):
+        score, hits = _theme_score(self._prog(["Biologie"]), ["Biologie"])
+        assert score == 1
+        assert hits == ["Biologie"]
+
+    def test_themeScore_two_matches(self):
+        score, hits = _theme_score(self._prog(["Biologie", "Chemie"]),
+                                   ["Biologie", "Chemie"])
+        assert score == 2
+        assert hits == ["Biologie", "Chemie"]
+
+    def test_themeScore_exactly_three_matches(self):
+        """Genau 3 Treffer: Cap noch nicht greifend, Score == 3."""
+        score, hits = _theme_score(self._prog(["Biologie", "Chemie", "Physik"]),
+                                   ["Biologie", "Chemie", "Physik"])
+        assert score == 3
+        assert len(hits) == 3
+
+    # -- Kein Treffer / leere Inputs -> 0 -------------------------------------
+    def test_themeScore_no_match_zero(self):
+        score, hits = _theme_score(self._prog(["Biologie"]), ["Literatur"])
+        assert score == 0
+        assert hits == []
+
+    def test_themeScore_mixed_match_and_nonmatch(self):
+        """Nur passende Felder zählen; Nicht-Treffer bleiben außen vor."""
+        score, hits = _theme_score(self._prog(["Biologie"]),
+                                   ["Biologie", "Literatur", "Musik"])
+        assert score == 1
+        assert hits == ["Biologie"]
+
+    def test_themeScore_empty_fields_zero(self):
+        score, hits = _theme_score(self._prog(["Biologie"]), [])
+        assert score == 0
+        assert hits == []
+
+    def test_themeScore_empty_themes_zero(self):
+        """Programm ohne 'themen'-Schlüssel -> keine Treffer."""
+        score, hits = _theme_score({"name": "No Themes"}, ["Biologie"])
+        assert score == 0
+        assert hits == []
+
+    def test_themeScore_no_themen_key_zero(self):
+        """Prog ohne 'themen'-Eintrag: minimale Punkte pro Feld, Cap egal."""
+        score, hits = _theme_score({"id": "x"}, ["A", "B", "C", "D"])
+        assert score == 0
+        assert hits == []
+
+    def test_themeScore_blank_fields_ignored(self):
+        """Leere/Whitespace-Felder matchen nichts."""
+        score, hits = _theme_score(self._prog(["Biologie"]),
+                                   ["", "   ", "Biologie"])
+        assert score == 1
+        assert hits == ["Biologie"]
+
+    # -- Wildcards -------------------------------------------------------------
+    def test_themeScore_wildcard_alle(self):
+        score, hits = _theme_score(self._prog(["alle"]), ["Archäologie", "Kunst"])
+        assert score == 2
+        assert set(hits) == {"Archäologie", "Kunst"}
+
+    def test_themeScore_wildcard_frei(self):
+        score, _ = _theme_score(self._prog(["frei"]), ["Beliebiges Fach"])
+        assert score == 1
+
+    def test_themeScore_wildcard_thematisch_offen(self):
+        score, _ = _theme_score(self._prog(["thematisch-offen"]),
+                                ["Querschnittsfeld"])
+        assert score == 1
+
+    # -- Substring & Groß-/Kleinschreibung ------------------------------------
+    def test_themeScore_case_insensitive(self):
+        score, hits = _theme_score(self._prog(["biologie"]), ["BIOLOGIE"])
+        assert score == 1
+        assert hits == ["BIOLOGIE"]
+
+    def test_themeScore_substring_both_directions(self):
+        """Teilstring-Überlappung in beide Richtungen zählt."""
+        assert _theme_score(self._prog(["Bio"]), ["Biologie"])[0] == 1
+        assert _theme_score(self._prog(["Biologie"]), ["Bio"])[0] == 1
+
+    # -- Integration mit realem Katalog ----------------------------------------
+    def test_themeScore_integration_real_catalog(self):
+        """Echter Katalog: Thema-Score bleibt immer im Bereich 0..3."""
+        fields = ["Biologie", "Chemie", "Physik", "Mathematik", "Informatik"]
+        for prog in PROGS:
+            score, hits = _theme_score(prog, fields)
+            assert 0 <= score <= 3
+            assert all(h in fields for h in hits)
+            assert len(hits) == sum(
+                _fits_probe(prog.get("themen", []), f) for f in fields
+            )
+
+    def test_themeScore_integration_consistent_with_score(self):
+        """Konsistenz: _theme_score == 'thema'-Komponente von _score."""
+        fields = ["Biologie", "Nachhaltigkeit", "Physik"]
+        for prog in PROGS[:20]:
+            t_score, _ = _theme_score(prog, fields)
+            parts = _score(prog, fields, None)
+            assert parts["thema"] == t_score
+            assert 0 <= parts["thema"] <= 3
+
+
+def _fits_probe(theme_defs, field):
+    """Kleines Inline-Modell der _fits-Logik für Konsistenzprobe."""
+    f = field.lower().strip()
+    if not f:
+        return False
+    wildcards = ("alle", "frei", "thematisch-offen")
+    return any(
+        t.lower() in wildcards or t.lower() in f or f in t.lower()
+        for t in theme_defs or []
+    )
