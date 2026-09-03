@@ -20,6 +20,7 @@ from match import (
     CATALOG,
     CatalogError,
     _begruendung,
+    _fits,
     _frist_text,
     _score,
     _theme_score,
@@ -864,6 +865,137 @@ class TestCoverageEdges:
         text = brief.generate(["Biologie"], "postdoc", top=3, saia=True)
         assert "## KI-Begruendungen (SAIA)" in text
         assert "Starke Themenueberlappung." in text
+
+
+# --------------------------------------------------------------- _fits unit tests
+class TestFits:
+    """Unit-Tests für _fits(): Wildcards, Substring (bidirektional), leere Inputs.
+
+    Erwartetes Verhalten laut match.py:
+      - _fits(theme_defs, field) -> bool
+      - 'alle' / 'frei' / 'thematisch-offen' als Theme-Definition = Wildcard,
+        matcht jedes nicht-leere Feld
+      - sonst case-insensitiver Substring-Match in BEIDE Richtungen
+        (t in f ODER f in t)
+      - leeres/Whitespace-Feld -> False, leere Theme-Liste -> False
+    """
+
+    # -- Exakter Match --------------------------------------------------------
+    def test_fits_exact_match(self):
+        assert _fits(["Biologie"], "Biologie") is True
+
+    def test_fits_exact_match_multiple_themes(self):
+        """Trifft, sobald EINE Theme-Definition passt (any-Semantik)."""
+        assert _fits(["Chemie", "Physik", "Biologie"], "Biologie") is True
+        assert _fits(["Chemie", "Physik", "Biologie"], "Chemie") is True
+
+    # -- Bidirektionaler Substring ---------------------------------------------
+    def test_fits_substring_theme_in_field(self):
+        """Kurze Theme-Definition steckt im Feld (t in f)."""
+        assert _fits(["Bio"], "Biologie") is True
+
+    def test_fits_substring_field_in_theme(self):
+        """Kurzes Feld steckt in der Theme-Definition (f in t)."""
+        assert _fits(["Biologie"], "Bio") is True
+
+    def test_fits_substring_bidirectional(self):
+        """Teilstring-Überlappung zählt in beide Richtungen."""
+        assert _fits(["Bio"], "Biologie") is True      # t in f
+        assert _fits(["Biologie"], "Bio") is True      # f in t
+        assert _fits(["nach"], "Nachhaltigkeit") is True
+        assert _fits(["Nachhaltigkeit"], "nach") is True
+
+    def test_fits_substring_inside_word(self):
+        """Substring mittig im Wort (nicht nur Präfix) zählt."""
+        assert _fits(["halti"], "Nachhaltigkeit") is True
+        assert _fits(["chhalt"], "Nachhaltigkeit") is True
+
+    def test_fits_no_match_returns_false(self):
+        assert _fits(["Biologie"], "Literatur") is False
+
+    def test_fits_no_match_any_theme(self):
+        """Keine der Definitionen passt -> False."""
+        assert _fits(["Chemie", "Physik"], "Biologie") is False
+
+    # -- Groß-/Kleinschreibung ------------------------------------------------
+    def test_fits_case_insensitive(self):
+        assert _fits(["biologie"], "BIOLOGIE") is True
+        assert _fits(["BIOLOGIE"], "biologie") is True
+
+    def test_fits_mixed_case_themes(self):
+        assert _fits(["NaChHaLtIgKeIt"], "nachhaltigkeit") is True
+
+    # -- Wildcards: frei / alle / thematisch-offen ----------------------------
+    def test_fits_wildcard_frei(self):
+        assert _fits(["frei"], "Archäologie") is True
+
+    def test_fits_wildcard_alle(self):
+        assert _fits(["alle"], "Beliebiges Querschnittsfeld") is True
+
+    def test_fits_wildcard_thematisch_offen(self):
+        assert _fits(["thematisch-offen"], "Astroteilchenphysik") is True
+
+    def test_fits_wildcard_any_field(self):
+        """Wildcard matcht jedes nicht-leere Feld."""
+        for field in ("Biologie", "Kunst", "Mathematik", "Soziologie"):
+            assert _fits(["frei"], field) is True
+            assert _fits(["alle"], field) is True
+            assert _fits(["thematisch-offen"], field) is True
+
+    def test_fits_wildcard_case_insensitive(self):
+        """Wildcards werden case-insensitiv erkannt (t.lower())."""
+        assert _fits(["FREI"], "Biologie") is True
+        assert _fits(["Alle"], "Biologie") is True
+        assert _fits(["Thematisch-Offen"], "Biologie") is True
+
+    def test_fits_wildcard_among_other_themes(self):
+        """Wildcard neben konkreten Themen matcht trotzdem alles."""
+        assert _fits(["Biologie", "frei"], "Kunst") is True
+
+    def test_fits_wildcard_not_triggered_by_plain_substring(self):
+        """Kein Wildcard: 'offen' allein ist kein Wildcard, nur 'thematisch-offen'."""
+        assert _fits(["offen"], "Physik") is False
+        assert _fits(["frei"], "freiwillig") is True  # frei ist Wildcard, egal
+
+    # -- Leere Inputs -> False -------------------------------------------------
+    def test_fits_empty_field_false(self):
+        assert _fits(["Biologie"], "") is False
+
+    def test_fits_whitespace_field_false(self):
+        assert _fits(["Biologie"], "   ") is False
+
+    def test_fits_empty_themes_false(self):
+        assert _fits([], "Biologie") is False
+
+    def test_fits_whitespace_theme_does_not_match(self):
+        """Nur-Whitespace-Definitionen erzeugen keinen Treffer."""
+        assert _fits(["   "], "Biologie") is False
+        assert _fits(["\t\n"], "Biologie") is False
+
+    def test_fits_no_themen_key_semantics(self):
+        """Leere Liste == kein einziges Theme -> nichts matcht."""
+        assert _fits([], "") is False
+        assert _fits([], "Biologie") is False
+
+    # -- Integration mit realem Katalog ----------------------------------------
+    def test_fits_integration_real_catalog(self):
+        """Echter Katalog: _fits verhält sich konsistent zum Inline-Modell."""
+        fields = ["Biologie", "Chemie", "Physik", "Mathematik", "Kunst"]
+        for prog in PROGS:
+            themes = prog.get("themen", [])
+            for f in fields:
+                assert _fits(themes, f) == _fits_probe(themes, f), (
+                    f"Abweichung für {prog.get('id')} / Feld {f!r}"
+                )
+
+    def test_fits_integration_consistent_with_theme_score(self):
+        """Konsistenz: _fits-Treffer == hits von _theme_score."""
+        fields = ["Biologie", "Chemie", "Physik", "Kunst"]
+        for prog in PROGS[:30]:
+            themes = prog.get("themen", [])
+            expected = [f for f in fields if _fits(themes, f)]
+            _, hits = _theme_score(prog, fields)
+            assert hits == expected
 
 
 # --------------------------------------------------------------- _theme_score capping
